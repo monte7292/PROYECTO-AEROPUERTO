@@ -37,12 +37,10 @@ CREATE TABLE IF NOT EXISTS trabajador (
 
 CREATE TABLE IF NOT EXISTS ruta (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    id_avion INT NOT NULL,
-    idAeropuertoOrigen INT NOT NULL,
-    idAeropuertoDestino INT NOT NULL,
     duracion INT NOT NULL, --La duración en minutos.
     distancia INT NOT NULL, --La distancia en km.
-    FOREIGN KEY (id_avion) REFERENCES avion(id) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (idAeropuertoOrigen) REFERENCES aeropuerto(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (idAeropuertoDestino) REFERENCES aeropuerto(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS pasajero (
