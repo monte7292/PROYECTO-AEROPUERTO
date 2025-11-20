@@ -1,0 +1,10 @@
+package org.iesalixar.daw2.gonzalomariomontero.aeropuerto.repositories;
+
+import org.iesalixar.daw2.gonzalomariomontero.aeropuerto.entities.Avion;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface AvionRepository extends JpaRepository<Avion, Long> {
+    Page<Avion> findAll(Pageable pageable);
+}
