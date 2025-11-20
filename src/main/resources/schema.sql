@@ -19,7 +19,8 @@ CREATE TABLE IF NOT EXISTS avion (
     id_aeropuerto INT NOT NULL,
     modelo VARCHAR(100) NOT NULL,
     fabricante VARCHAR(100) NOT NULL,
-    capacidad INT(10) NOT NULL,
+    --La capacidad será maxima de un número de 3 digitios 300 personas o así
+    capacidad INT(3) NOT NULL,
     estado VARCHAR(100) NOT NULL,
     FOREIGN KEY (id_aeropuerto) REFERENCES aeropuerto(id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
