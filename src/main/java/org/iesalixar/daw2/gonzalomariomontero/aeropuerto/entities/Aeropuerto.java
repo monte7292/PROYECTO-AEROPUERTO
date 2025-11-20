@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 
 @Entity // Marca esta clase como una entidad gestionada por JPA.
 @Table(name = "aeropuerto") // Especifica el nombre de la tabla asociada a esta entidad.
@@ -15,7 +17,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Aeropuerto {
 
-    // Campo que almacena el identificador único de la región.
+    // Campo que almacena el identificador único del aeropuerto.
     // Es una clave primaria autogenerada por la base de datos.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
