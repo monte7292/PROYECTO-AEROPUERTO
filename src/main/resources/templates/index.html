@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head ('Ticket Logger - Home')"></head>
+<body class="d-flex flex-column h-100">
+<!-- Insertar el fragmento del header -->
+<header th:replace="fragments/header :: header"></header>
+
+<main class="flex-shrink-0">
+    <div class="container py-5">
+
+        <!-- Banner principal -->
+        <div class="p-5 mb-4 bg-light rounded-3 shadow">
+            <div class="container-fluid py-5">
+                <h1 class="display-5 fw-bold">Bienvenido a AeroLog</h1>
+                <p class="col-md-8 fs-5">
+                    Gestiona vuelos, pasajeros y operaciones aeroportuarias desde una plataforma rápida y moderna.
+                </p>
+                <a href="/vuelos" class="btn btn-primary btn-lg">Ver vuelos</a>
+            </div>
+        </div>
+
+        <!-- Secciones rápidas -->
+        <div class="row text-center g-4">
+            <div class="col-md-4">
+                <div class="card shadow h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Gestión de Vuelos</h5>
+                        <p class="card-text">Consulta, crea y administra vuelos nacionales e internacionales.</p>
+                        <a href="/vuelos" class="btn btn-outline-primary">Ir a vuelos</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Pasajeros</h5>
+                        <p class="card-text">Busca, registra y administra pasajeros fácilmente.</p>
+                        <a href="/pasajeros" class="btn btn-outline-primary">Ver pasajeros</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Puertas y Operaciones</h5>
+                        <p class="card-text">Gestiona puertas de embarque, horarios y personal en operación.</p>
+                        <a href="/operaciones" class="btn btn-outline-primary">Ver operaciones</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+
+<!-- Insertar el fragmento del footer -->
+<footer th:replace="fragments/footer :: footer"></footer>
+</body>
+</html>
