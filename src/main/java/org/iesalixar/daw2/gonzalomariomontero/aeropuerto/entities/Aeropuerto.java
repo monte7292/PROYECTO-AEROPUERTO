@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Aeropuerto {
 
-    // Campo que almacena el identificador único de la región.
+    // Campo que almacena el identificador único del aeropuerto.
     // Es una clave primaria autogenerada por la base de datos.
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
