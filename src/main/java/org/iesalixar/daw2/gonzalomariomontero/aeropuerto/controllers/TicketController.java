@@ -88,7 +88,7 @@ public class TicketController {
             model.addAttribute("ticket", ticketOpt);
         }
         model.addAttribute("rutas", rutaRepository.findAll()); // Agregar lista de rutas para elegir
-        model.addAttribute("rutas", rutaRepository.findAll()); // Agregar lista de rutas para elegir
+        model.addAttribute("pasajero", pasajeroRepository.findAll()); // Agregar lista de pasajeros para elegir
         return "ticket-form";
     }
 
