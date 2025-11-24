@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  * La clase `pasajero` representa una entidad que modela un pasajero dentro de la
  base de datos.
@@ -52,6 +54,8 @@ public class Pasajero {
     @Column(name = "email", nullable = true, length = 100)
     private String email;
 
+    @ManyToMany(mappedBy = "pasajeros")
+    private List<Avion> aviones;
     /**
      * @param nombre Nombre del pasajero.
      * @param apellidos Apellidos del pasajero.
