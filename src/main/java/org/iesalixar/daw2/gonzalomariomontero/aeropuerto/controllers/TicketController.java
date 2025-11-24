@@ -51,13 +51,8 @@ public class TicketController {
         Pageable pageable = PageRequest.of(page - 1, 5, getSort(sort));
         Page<Ticket> tickets;
         int totalPages = 0;
-        if (search != null && !search.isBlank()) {
-            tickets = ticketRepository.findByNameContainingIgnoreCase(search, pageable);
-            totalPages = (int) Math.ceil((double) ticketRepository.countByNameContainingIgnoreCase(search) / 5);
-        } else {
-            tickets = ticketRepository.findAll(pageable);
-            totalPages = (int) Math.ceil((double) ticketRepository.count() / 5);
-        }
+        tickets = ticketRepository.findAll(pageable);
+        totalPages = (int) Math.ceil((double) ticketRepository.count() / 5);
         logger.info("Se han cargado {} tickets.", tickets.toList().size());
         model.addAttribute("listTickets", tickets.toList()); // Pasar la lista de provincias al modelo
         model.addAttribute("totalPages", totalPages);
@@ -93,7 +88,7 @@ public class TicketController {
             model.addAttribute("ticket", ticketOpt);
         }
         model.addAttribute("rutas", rutaRepository.findAll()); // Agregar lista de rutas para elegir
-        model.addAttribute("rutas", rutaRepository.findAll()); // Agregar lista de rutas para elegir
+        model.addAttribute("pasajero", pasajeroRepository.findAll()); // Agregar lista de pasajeros para elegir
         return "ticket-form";
     }
 
