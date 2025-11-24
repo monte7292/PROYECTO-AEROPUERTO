@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface AeropuertoRepository extends JpaRepository<Aeropuerto, Long> {
     Page<Aeropuerto> findAll(Pageable pageable);
 
-    Page<Aeropuerto> findByNameContainingIgnoreCase(String name, Pageable pageable);
+    Page<Aeropuerto> findByNombreContainingIgnoreCase(String nombre, Pageable pageable);
 
-    long countByNameContainingIgnoreCase(String name);
+    long countByNombreContainingIgnoreCase(String nombre);
 
     // Resto de métodos que vayamos considerando hacer
 }

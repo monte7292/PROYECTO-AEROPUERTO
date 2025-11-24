@@ -39,8 +39,8 @@ public class AeropuertoController {
         Page<Aeropuerto> aeropuertos;
         int totalPages = 0;
         if (search != null && !search.isBlank()) {
-            aeropuertos = aeropuertoRepository.findByNameContainingIgnoreCase(search, pageable);
-            totalPages = (int) Math.ceil((double) aeropuertoRepository.countByNameContainingIgnoreCase(search) / 5);
+            aeropuertos = aeropuertoRepository.findByNombreContainingIgnoreCase(search, pageable);
+            totalPages = (int) Math.ceil((double) aeropuertoRepository.countByNombreContainingIgnoreCase(search) / 5);
         } else {
             aeropuertos = aeropuertoRepository.findAll(pageable);
             totalPages = (int) Math.ceil((double) aeropuertoRepository.count() / 5);
