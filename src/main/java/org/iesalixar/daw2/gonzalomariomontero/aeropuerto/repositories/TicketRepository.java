@@ -6,5 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
     Page<Ticket> findAll(Pageable pageable);
+
+    Page<Ticket> findByNameContainingIgnoreCase(String name, Pageable pageable);
+
+    long countByNameContainingIgnoreCase(String name);
+
+
 }
 
