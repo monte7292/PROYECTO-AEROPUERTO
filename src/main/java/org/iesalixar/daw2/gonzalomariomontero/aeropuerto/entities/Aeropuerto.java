@@ -2,6 +2,7 @@ package org.iesalixar.daw2.gonzalomariomontero.aeropuerto.entities;
 
 import jakarta.persistence.*; // Anotaciones de JPA
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -46,6 +47,12 @@ public class Aeropuerto {
     @Size(max = 3, message = "{msg.aeropuerto.codIata.size}")
     @Column(name = "codIata", nullable = false, length = 100) // Define la columna correspondiente en la tabla.
     private String codIata;
+
+    // Relación con la entidad `Director`, representando el director del Aeropuerto. NO SÉ SI ESTÁ BIEN!!!
+    @NotNull(message = "{msg.province.region.notNull}")
+    @ManyToOne(fetch = FetchType.LAZY) // Relación de muchos aeropuertos a un director.
+    @JoinColumn(name = "idDirector", nullable = false) // Clave foránea en la tabla Aeropuerto que referencia a la tabla Director.
+    private Director director;
 
     @OneToMany(mappedBy = "aeropuerto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Avion> aviones;
