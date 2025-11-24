@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head ('Insertar/Actualizar Aeropuerto')"></head>
+<body>
+
+<!-- Incluir el fragmento del header -->
+<header th:replace="fragments/header :: header"></header>
+
+<main class="container mt-5">
+    <h1 th:text="${aeropuerto.id == null ? ${msg.aeropuerto.anadir} : ${msg.aeropuerto.editar}}"></h1>
+
+    <!-- Muestra un mensaje de error si hay algún problema -->
+    <div th:if="${errorMessage}" class="alert alert-danger">
+        <p th:text="${errorMessage}"></p>
+    </div>
+
+    <!-- Mostrar un mensaje de error si existe -->
+    <div th:if="${errorMessage}" class="alert alert-danger"
+         th:text="${errorMessage}"></div>
+
+    <form th:action="${aeropuerto.id == null} ? 'Añadir aeropuerto' : 'Editar aeropuerto'"
+          th:object="${aeropuerto}" method="post" class="mt-4">
+        <input type="hidden" th:field="*{id}" />
+
+        <div class="mb-3">
+            <label for="nombre" class="form-label" th:text="${msg.aeropuerto.name}"></label>
+            <input type="text" th:field="*{nombre}" id="nombre" class="form-control" />
+            <div th:if="${#fields.hasErrors('code')}" class="text-danger"
+                 th:errors="*{nombre}"></div>
+        </div>
+        <div class="mb-3">
+            <label for="ciudad" class="form-label" th:text="${msg.aeropuerto.ciudad}"></label>
+            <input type="text" th:field="*{ciudad}" id="ciudad" class="form-control" />
+            <div th:if="${#fields.hasErrors('ciudad')}" class="text-danger"
+                 th:errors="*{ciudad}"></div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" th:text="${aeropuerto.id == null ? ${msg.aeropuerto.crear} : ${msg.aeropuerto.actualizar}}"></button>
+    </form>
+
+    <!-- Volver a la lista de aeropuertos -->
+    <a href="#" th:href="@{/aeropuertos}" class="btn btn-secondary mt-3" th:text="${msg.aeropuerto.back}"></a>
+</main>
+
+<!-- Incluir el fragmento del footer -->
+<footer th:replace="fragments/footer :: footer"></footer>
+
+</body>
+</html>
