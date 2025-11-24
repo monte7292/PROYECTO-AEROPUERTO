@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Entity // Marca esta clase como una entidad JPA.
 @Table(name = "ruta") // Especifica el nombre de la tabla asociada a esta entidad.
 @Data
@@ -37,6 +39,11 @@ public class Ruta {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idAeropuertoDestino", nullable = false)
     private Aeropuerto aeropuertoDestino;
+
+    //Está será ña relación manytomany con Avion
+    // Es la lista de objetos de rutan que se crean en Avion - linea 55
+    @ManyToMany(mappedBy = "rutas")
+    private List<Avion> aviones;
 
     public Ruta(int duracion, int distancia) {
         this.duracion = duracion;

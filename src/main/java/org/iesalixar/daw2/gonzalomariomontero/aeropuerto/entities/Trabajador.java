@@ -48,6 +48,7 @@ public class Trabajador {
 
     // Relación con la entidad `Avion`, representando el avión en el que trabaja el trabajador.
     @ManyToOne(fetch = FetchType.LAZY) // Relación de muchos trabajadores a un avión.
+    //Este es el nombre que le estamos poniendo a la columna
     @JoinColumn(name = "id_avion", nullable = false)
     // Clave foránea en la tabla provinces que referencia a la tabla avion.
     private Avion avion;
