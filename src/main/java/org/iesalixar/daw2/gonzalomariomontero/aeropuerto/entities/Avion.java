@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.List;
 
+import java.util.List;
+
 @Entity // Marca esta clase como una entidad JPA.
 @Table(name = "avion") // Especifica el nombre de la tabla asociada a esta entidad.
 @Data
