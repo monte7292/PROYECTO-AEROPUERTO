@@ -6,6 +6,22 @@
     .mt-10 {
         margin-top: 4.5rem; /* Ajusta el valor si quieres más o menos */
     }
+
+    /* Grid de 3 columnas para el formulario */
+    .grid-form {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem; /* espacio entre celdas */
+    }
+
+    /* Hacer que los botones estén juntos en una fila */
+    .grid-form .buttons {
+        grid-column: 1 / -1; /* ocupa las 3 columnas */
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-start; /* puedes poner center si quieres centrado */
+        margin-top: 1rem;
+    }
 </style>
 <body>
 
@@ -13,50 +29,54 @@
 <header th:replace="fragments/header :: header"></header>
 
 <main class="container mt-10">
+    <!-- Banner principal con imagen de fondo -->
+    <div class="p-5 mb-5 text-white rounded-3 shadow" style="background: url('https://www.avionrevue.com/wp-content/uploads/2024/01/mexico-aerop.jpg') no-repeat center center; background-size: cover;">
+        <div class="container py-4 px-4" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 15px;">
+            <h1 class="display-4 fw-bold">Gestión de Aeropuertos</h1>
+            <p class="col-md-8 fs-5">
+                Administra de forma eficiente toda la información relacionada con los aeropuertos de la empresa. Consulta detalles operativos, agrega nuevos aeropuertos al sistema, actualiza datos de infraestructura y controla la disponibilidad de servicios clave.
+            </p>
+        </div>
+    </div>
     <h1 th:text="${aeropuerto.id} == null ? #{msg.aeropuerto.anadir} : #{msg.aeropuerto.editar}"></h1>
 
-    <!-- Muestra un mensaje de error si hay algún problema -->
-    <div th:if="${errorMessage}" class="alert alert-danger">
-        <p th:text="${errorMessage}"></p>
-    </div>
-
-    <!-- Mostrar un mensaje de error si existe -->
-    <div th:if="${errorMessage}" class="alert alert-danger"
-         th:text="${errorMessage}"></div>
+    <!-- Mensaje de error -->
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
 
     <form th:action="${aeropuerto.id} == null ? @{/aeropuertos/insert} : @{/aeropuertos/update}"
-          th:object="${aeropuerto}" method="post" class="mt-4">
+          th:object="${aeropuerto}" method="post" class="mt-4 grid-form">
         <input type="hidden" th:field="*{id}" />
 
-        <div class="mb-3">
+        <!-- Nombre -->
+        <div>
             <label for="nombre" class="form-label" th:text="#{msg.aeropuerto.name}"></label>
             <input type="text" th:field="*{nombre}" id="nombre" class="form-control" />
-            <div th:if="${#fields.hasErrors('nombre')}" class="text-danger"
-                 th:errors="*{nombre}"></div>
+            <div th:if="${#fields.hasErrors('nombre')}" class="text-danger" th:errors="*{nombre}"></div>
         </div>
-        <div class="mb-3">
+
+        <!-- Ciudad -->
+        <div>
             <label for="ciudad" class="form-label" th:text="#{msg.aeropuerto.ciudad}"></label>
             <input type="text" th:field="*{ciudad}" id="ciudad" class="form-control" />
-            <div th:if="${#fields.hasErrors('ciudad')}" class="text-danger"
-                 th:errors="*{ciudad}"></div>
+            <div th:if="${#fields.hasErrors('ciudad')}" class="text-danger" th:errors="*{ciudad}"></div>
         </div>
 
-        <div class="mb-3">
+        <!-- País -->
+        <div>
             <label for="pais" class="form-label" th:text="#{msg.aeropuerto.pais}"></label>
             <input type="text" th:field="*{pais}" id="pais" class="form-control" />
-            <div th:if="${#fields.hasErrors('pais')}" class="text-danger"
-                 th:errors="*{pais}"></div>
+            <div th:if="${#fields.hasErrors('pais')}" class="text-danger" th:errors="*{pais}"></div>
         </div>
 
-        <div class="mb-3">
+        <!-- Código IATA -->
+        <div>
             <label for="codIata" class="form-label" th:text="#{msg.aeropuerto.codIata}"></label>
             <input type="text" th:field="*{codIata}" id="codIata" class="form-control" />
-            <div th:if="${#fields.hasErrors('codIata')}" class="text-danger"
-                 th:errors="*{codIata}"></div>
+            <div th:if="${#fields.hasErrors('codIata')}" class="text-danger" th:errors="*{codIata}"></div>
         </div>
 
-        <!-- Selección de Región -->
-        <div class="mb-3">
+        <!-- Director -->
+        <div>
             <label for="director" class="form-label" th:text="#{msg.aeropuerto.director}"></label>
             <select th:field="*{director}" id="director" class="form-select">
                 <option th:each="dir : ${directores}"
@@ -65,18 +85,16 @@
                         th:selected="${aeropuerto.director != null} ? ${dir.id} == ${aeropuerto.director.id} : false">
                 </option>
             </select>
-            <div th:if="${#fields.hasErrors('director')}" class="text-danger"
-                 th:errors="*{director}"></div>
+            <div th:if="${#fields.hasErrors('director')}" class="text-danger" th:errors="*{director}"></div>
         </div>
 
-
-        <button type="submit" class="btn btn-primary" th:text="${aeropuerto.id} == null ? #{msg.aeropuerto.crear} : #{msg.aeropuerto.actualizar}"></button>
+        <!-- Botones -->
+        <div class="buttons">
+            <button type="submit" class="btn btn-primary" th:text="${aeropuerto.id} == null ? #{msg.aeropuerto.crear} : #{msg.aeropuerto.actualizar}"></button>
+            <a href="#" th:href="@{/aeropuertos}" class="btn btn-secondary" th:text="#{msg.aeropuerto.back}"></a>
+        </div>
     </form>
-
-    <!-- Volver a la lista de aeropuertos -->
-    <a href="#" th:href="@{/aeropuertos}" class="btn btn-secondary mt-3" th:text="#{msg.aeropuerto.back}"></a>
 </main>
-
 <!-- Incluir el fragmento del footer -->
 
 
