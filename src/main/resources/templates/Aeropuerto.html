@@ -1,13 +1,30 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head :: head ('Listado de aeropuertos')"></head>
+<style>
+    /* Margen superior personalizado */
+    .mt-10 {
+        margin-top: 4.5rem; /* Ajusta el valor si quieres más o menos */
+    }
+</style>
 <body>
 
 <!-- Incluir el fragmento del header -->
 <header th:replace="fragments/header :: header"></header>
 
-<main class="container mt-5">
-    <h1 th:text="${msg.aeropuerto.title}"></h1>
+<main class="container mt-10">
+    <!-- Banner principal -->
+    <!-- Banner principal con imagen de fondo -->
+    <div class="p-5 mb-5 text-white rounded-3 shadow" style="background: url('https://www.avionrevue.com/wp-content/uploads/2024/01/mexico-aerop.jpg') no-repeat center center; background-size: cover;">
+        <div class="container py-4 px-4" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 15px;">
+            <h1 class="display-4 fw-bold">Gestión de Aeropuertos</h1>
+            <p class="col-md-8 fs-5">
+                Administra de forma eficiente toda la información relacionada con los aeropuertos de la empresa. Consulta detalles operativos, agrega nuevos aeropuertos al sistema, actualiza datos de infraestructura y controla la disponibilidad de servicios clave.
+            </p>
+        </div>
+    </div>
+
+    <h1 th:text="#{msg.aeropuerto.title}"></h1>
 
     <!-- Muestra un mensaje de error si hay algún problema -->
     <div th:if="${errorMessage}" class="alert alert-danger">
@@ -15,7 +32,7 @@
     </div>
 
     <!-- Muestra la lista de aeropuertos en una tabla -->
-    <table class="table table-bordered mt-3">
+    <table class="table mt-3">
         <thead>
         <tr>
             <th>ID</th>
@@ -27,11 +44,11 @@
         </thead>
         <tbody>
         <tr th:each="aeropuerto : ${listAeropuertos}">
-            <td th:text="${aeropuerto.id}"></td>
-            <td th:text="${aeropuerto.nombre}"></td>
-            <td th:text="${aeropuerto.ciudad}"></td>
-            <td th:text="${aeropuerto.pais}"></td>
-            <td th:text="${aeropuerto.codIata}"></td>
+            <td th:text="${msg.aeropuerto.id}"></td>
+            <td th:text="${msg.aeropuerto.nombre}"></td>
+            <td th:text="${msg.aeropuerto.ciudad}"></td>
+            <td th:text="${msg.aeropuerto.pais}"></td>
+            <td th:text="${msg.aeropuerto.codIata}"></td>
             <td>
                 <!-- Botón para editar -->
 
@@ -43,7 +60,7 @@
 
                     <input type="hidden" name="id" th:value="${aeropuerto.id}"/>
                     <button type="submit" class="btn btn-danger btn-sm"
-                            th:onclick="|return confirm(${aeropuerto.eliminar});|">
+                            th:onclick="|return confirm('#{aeropuerto.eliminar}');|">
                         Delete
                     </button>
                 </form>
@@ -54,14 +71,14 @@
     </table>
 
     <!-- Botón para añadir una nueva región -->
-    <a th:href="@{/aeropuertos/new}" class="btn btn-success mt-3">${aeropuerto.add}</a>
+    <a th:href="@{/aeropuertos/new}" class="btn btn-success mt-3" th:text="#{msg.aeropuerto.add}"></a>
 
     <!-- Volver a la página principal -->
-    <a href="#" th:href="@{/}" class="btn btn-secondary mt-3">${aeropuerto.back}</a>
+    <a href="#" th:href="@{/}" class="btn btn-secondary mt-3" th:text="#{msg.aeropuerto.back}"></a>
 </main>
 
 <!-- Incluir el fragmento del footer -->
-<footer th:replace="fragments/footer :: footer"></footer>
+
 
 </body>
 </html>

@@ -49,7 +49,7 @@ public class Aeropuerto {
     // Relación con la entidad `Director`, representando el director del Aeropuerto. NO SÉ SI ESTÁ BIEN!!!
     @NotNull(message = "{msg.province.region.notNull}")
     @ManyToOne(fetch = FetchType.LAZY) // Relación de muchos aeropuertos a un director.
-    @JoinColumn(name = "idDirector", nullable = false) // Clave foránea en la tabla Aeropuerto que referencia a la tabla Director.
+    @JoinColumn(name = "id_director", nullable = false) // Clave foránea en la tabla Aeropuerto que referencia a la tabla Director.
     private Director director;
 
     @OneToMany(mappedBy = "aeropuerto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

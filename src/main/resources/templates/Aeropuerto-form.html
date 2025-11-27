@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head :: head ('Insertar/Actualizar Aeropuerto')"></head>
+<style>
+    /* Margen superior personalizado */
+    .mt-10 {
+        margin-top: 4.5rem; /* Ajusta el valor si quieres más o menos */
+    }
+</style>
 <body>
 
 <!-- Incluir el fragmento del header -->
 <header th:replace="fragments/header :: header"></header>
 
-<main class="container mt-5">
-    <h1 th:text="${aeropuerto.id == null ? ${msg.aeropuerto.anadir} : ${msg.aeropuerto.editar}}"></h1>
+<main class="container mt-10">
+    <h1 th:text="${aeropuerto.id} == null ? #{msg.aeropuerto.anadir} : #{msg.aeropuerto.editar}"></h1>
 
     <!-- Muestra un mensaje de error si hay algún problema -->
     <div th:if="${errorMessage}" class="alert alert-danger">
@@ -18,32 +24,62 @@
     <div th:if="${errorMessage}" class="alert alert-danger"
          th:text="${errorMessage}"></div>
 
-    <form th:action="${aeropuerto.id == null} ? 'Añadir aeropuerto' : 'Editar aeropuerto'"
+    <form th:action="${aeropuerto.id} == null ? @{/aeropuertos/insert} : @{/aeropuertos/update}"
           th:object="${aeropuerto}" method="post" class="mt-4">
         <input type="hidden" th:field="*{id}" />
 
         <div class="mb-3">
-            <label for="nombre" class="form-label" th:text="${msg.aeropuerto.name}"></label>
+            <label for="nombre" class="form-label" th:text="#{msg.aeropuerto.name}"></label>
             <input type="text" th:field="*{nombre}" id="nombre" class="form-control" />
-            <div th:if="${#fields.hasErrors('code')}" class="text-danger"
+            <div th:if="${#fields.hasErrors('nombre')}" class="text-danger"
                  th:errors="*{nombre}"></div>
         </div>
         <div class="mb-3">
-            <label for="ciudad" class="form-label" th:text="${msg.aeropuerto.ciudad}"></label>
+            <label for="ciudad" class="form-label" th:text="#{msg.aeropuerto.ciudad}"></label>
             <input type="text" th:field="*{ciudad}" id="ciudad" class="form-control" />
             <div th:if="${#fields.hasErrors('ciudad')}" class="text-danger"
                  th:errors="*{ciudad}"></div>
         </div>
 
-        <button type="submit" class="btn btn-primary" th:text="${aeropuerto.id == null ? ${msg.aeropuerto.crear} : ${msg.aeropuerto.actualizar}}"></button>
+        <div class="mb-3">
+            <label for="pais" class="form-label" th:text="#{msg.aeropuerto.pais}"></label>
+            <input type="text" th:field="*{pais}" id="pais" class="form-control" />
+            <div th:if="${#fields.hasErrors('pais')}" class="text-danger"
+                 th:errors="*{pais}"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="codIata" class="form-label" th:text="#{msg.aeropuerto.codIata}"></label>
+            <input type="text" th:field="*{codIata}" id="codIata" class="form-control" />
+            <div th:if="${#fields.hasErrors('codIata')}" class="text-danger"
+                 th:errors="*{codIata}"></div>
+        </div>
+
+        <!-- Selección de Región -->
+        <div class="mb-3">
+            <label for="id_director" class="form-label">Director:</label>
+            <select th:field="*{id_director}" id="id_director" class="form-control" required>
+                <!-- Opción por defecto para creación -->
+                <option th:if="${aeropuerto.id_director == null}" value="" disabled selected>-- Selecciona un director --</option>
+
+                <!-- Opciones de regiones -->
+                <option th:each="director : ${listDirectores}"
+                        th:value="${director.id}"
+                        th:text="${director.nombre} + ${director.apellidos}"
+                        th:selected="${aeropuerto.id_director != null} ? ${director.id} == ${aeropuerto.id_director} : false">
+                </option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary" th:text="${aeropuerto.id} == null ? #{msg.aeropuerto.crear} : #{msg.aeropuerto.actualizar}"></button>
     </form>
 
     <!-- Volver a la lista de aeropuertos -->
-    <a href="#" th:href="@{/aeropuertos}" class="btn btn-secondary mt-3" th:text="${msg.aeropuerto.back}"></a>
+    <a href="#" th:href="@{/aeropuertos}" class="btn btn-secondary mt-3" th:text="#{msg.aeropuerto.back}"></a>
 </main>
 
 <!-- Incluir el fragmento del footer -->
-<footer th:replace="fragments/footer :: footer"></footer>
+
 
 </body>
 </html>

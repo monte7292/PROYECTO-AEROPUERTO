@@ -51,7 +51,7 @@ public class AeropuertoController {
         model.addAttribute("currentPage", page);
         model.addAttribute("search", search);
         model.addAttribute("sort", sort);
-        return "province"; // Nombre de la plantilla Thymeleaf a renderizar
+        return "aeropuerto"; // Nombre de la plantilla Thymeleaf a renderizar
     }
 
     @GetMapping("/new")
@@ -65,13 +65,11 @@ public class AeropuertoController {
     @GetMapping("/edit")
     public String showEditForm(@RequestParam("id") Long id, Model model) {
         logger.info("Mostrando formulario de edición para el aeropuerto con ID {}", id);
-        Aeropuerto aeropuerto = null;
-        Optional<Aeropuerto> aeropuertoOpt = aeropuertoRepository.findById(id);
+        Aeropuerto aeropuerto = aeropuertoRepository.findById(id).orElse(null);
         if (aeropuerto == null) {
             logger.warn("No se encontró el aeropuerto con ID {}", id);
         }
-        // Cambiado a 'province' para coincidir con la plantilla Thymeleaf
-        model.addAttribute("aeropuerto", aeropuertoOpt);
+        model.addAttribute("aeropuerto", aeropuerto);
 
         return "aeropuerto-form"; // Nombre de la plantilla Thymeleaf para el formulario
     }
