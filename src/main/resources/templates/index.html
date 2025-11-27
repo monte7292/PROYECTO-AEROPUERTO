@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/head :: head ('Ticket Logger - Home')"></head>
+<style>
+.feature-card{border:0;border-radius:1rem;overflow:hidden;position:relative;transition:transform .3s ease,box-shadow .3s ease}
+.feature-card:hover{transform:translateY(-4px);box-shadow:0 .75rem 1.5rem rgba(0,0,0,.15)}
+.feature-img{height:220px;width:100%;object-fit:cover;filter:brightness(65%);transition:transform .5s ease,filter .3s ease}
+.feature-card:hover .feature-img{transform:scale(1.05);filter:brightness(55%)}
+.feature-overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:1rem;background:linear-gradient(180deg,rgba(0,0,0,0) 40%,rgba(0,0,0,) 100%);color:#fff}
+.feature-overlay .card-title{font-weight:700}
+.feature-overlay .card-text{font-size:.95rem;opacity:.95}
+.feature-btn{background:#fff;color:#0d6efd;border:0}
+.feature-btn:hover{background:#e9ecef;color:#0b5ed7}
+</style>
 <body class="d-flex flex-column h-100">
 <!-- Insertar el fragmento del header -->
 <header th:replace="fragments/header :: header"></header>
@@ -23,43 +34,55 @@
         <!-- Secciones rápidas -->
         <div class="row text-center g-4">
             <div class="col-md-6">
-                <div class="card shadow h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">Gestión de Aeropuertos</h5>
-                        <p class="card-text">Administra de forma eficiente toda la información relacionada con los aeropuertos de la empresa. Consulta detalles operativos, agrega nuevos aeropuertos al sistema, actualiza datos de infraestructura y controla la disponibilidad de servicios clave.</p>
-                        <a href="/aeropuertos" class="btn btn-outline-primary">Ir a Aeropuertos</a>
+                <a href="/aeropuertos" class="text-decoration-none">
+                    <div class="card feature-card h-100">
+                        <img src="https://www.avionrevue.com/wp-content/uploads/2024/01/mexico-aerop.jpg" alt="Aeropuertos" class="feature-img">
+                        <div class="feature-overlay">
+                            <h5 class="card-title">Gestión de Aeropuertos</h5>
+                            <p class="card-text">Administra información operativa, añade nuevos aeropuertos y controla servicios clave.</p>
+                            <span class="btn btn-primary btn-sm w-100 text-center">Ir a Aeropuertos</span>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
 
             <div class="col-md-6">
-                <div class="card shadow h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">Gestión de Vuelos</h5>
-                        <p class="card-text">Organiza y supervisa vuelos nacionales e internacionales. Registra nuevos vuelos, actualiza horarios, gestiona rutas, controla asignaciones de aeronaves y accede al historial completo de operaciones de cada vuelo.</p>
-                        <a href="/vuelos" class="btn btn-outline-primary">Ir a vuelos</a>
+                <a href="/vuelos" class="text-decoration-none">
+                    <div class="card feature-card h-100">
+                        <img src="https://static0.simpleflyingimages.com/wordpress/wp-content/uploads/2025/01/ryanair-boeing-737-700-sp-rum.jpg?w=1200&h=675&fit=crop" alt="Vuelos" class="feature-img">
+                        <div class="feature-overlay">
+                            <h5 class="card-title">Gestión de Vuelos</h5>
+                            <p class="card-text">Organiza horarios, rutas y aeronaves. Consulta el historial completo de cada vuelo.</p>
+                            <span class="btn btn-primary btn-sm w-100 text-center">Ir a Vuelos</span>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
 
             <div class="col-md-6">
-                <div class="card shadow h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">Pasajeros</h5>
-                        <p class="card-text">Accede al registro completo de pasajeros, consulta información personal, historial de vuelos y gestiona nuevos registros. Facilita el seguimiento, control y actualización de datos para mejorar la experiencia del usuario.</p>
-                        <a href="/pasajeros" class="btn btn-outline-primary">Ver pasajeros</a>
+                <a href="/pasajeros" class="text-decoration-none">
+                    <div class="card feature-card h-100">
+                        <img src="https://static.hosteltur.com/app/public/uploads/img/articles/2024/03/15/M_092054_huelga-en-aeropuertos-en-alemania-90000-pasajeros-y-580-vuelos-afectados.jpg" alt="Pasajeros" class="feature-img">
+                        <div class="feature-overlay">
+                            <h5 class="card-title">Pasajeros</h5>
+                            <p class="card-text">Consulta registros, historial de vuelos y actualiza datos para mejor experiencia.</p>
+                            <span class="btn btn-primary btn-sm w-100 text-center">Ver Pasajeros</span>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
 
             <div class="col-md-6">
-                <div class="card shadow h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">Puertas y Operaciones</h5>
-                        <p class="card-text">Supervisa la asignación de puertas de embarque, controla horarios y coordina el personal involucrado en las operaciones. Mantén un flujo ordenado en la logística del aeropuerto con herramientas de gestión en tiempo real.</p>
-                        <a href="/operaciones" class="btn btn-outline-primary">Ver operaciones</a>
+                <a href="/operaciones" class="text-decoration-none">
+                    <div class="card feature-card h-100">
+                        <img src="https://actualidadaeroespacial.com/wp-content/uploads/2022/11/El-aeropuerto-de-Tenerife-Norte-estrena-sistemas-de-control-de-acceso-automatizados-231122.jpg" alt="Operaciones" class="feature-img">
+                        <div class="feature-overlay">
+                            <h5 class="card-title">Puertas y Operaciones</h5>
+                            <p class="card-text">Supervisa asignaciones, controla horarios y coordina al personal de operaciones.</p>
+                            <span class="btn btn-primary btn-sm w-100 text-center">Ver Operaciones</span>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
 

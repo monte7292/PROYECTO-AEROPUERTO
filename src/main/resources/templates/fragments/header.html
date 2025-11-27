@@ -1,7 +1,7 @@
 <!-- header.html -->
 <header th:fragment="header" xmlns:th="http://www.w3.org/1999/xhtml">
 
-    <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm fixed-top">
+    <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm fixed-top top-0 z-3">
         <div class="container-fluid">
 
             <!-- Logo -->
@@ -17,10 +17,10 @@
             </button>
 
             <!-- Contenido -->
-            <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="collapse navbar-collapse justify-content-center" id="navbarCollapse">
 
                 <!-- Navegación -->
-                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                <ul class="navbar-nav mx-auto mb-2 mb-md-0">
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/aeropuertos}">Aeropuertos</a>
                     </li>
@@ -36,7 +36,7 @@
                 </ul>
 
                 <!-- Idioma -->
-                <form th:action="@{/}" method="get" class="d-flex">
+                <form th:action="@{/}" method="get" class="d-none d-md-flex position-absolute end-0 me-3">
                     <select name="lang" onchange="this.form.submit()" class="form-select">
                         <option value="es" th:selected="${#locale.language == 'es'}">Español</option>
                         <option value="en" th:selected="${#locale.language == 'en'}">English</option>
