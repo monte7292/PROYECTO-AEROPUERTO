@@ -57,19 +57,18 @@
 
         <!-- Selección de Región -->
         <div class="mb-3">
-            <label for="id_director" class="form-label">Director:</label>
-            <select th:field="*{id_director}" id="id_director" class="form-control" required>
-                <!-- Opción por defecto para creación -->
-                <option th:if="${aeropuerto.id_director == null}" value="" disabled selected>-- Selecciona un director --</option>
-
-                <!-- Opciones de regiones -->
-                <option th:each="director : ${listDirectores}"
-                        th:value="${director.id}"
-                        th:text="${director.nombre} + ${director.apellidos}"
-                        th:selected="${aeropuerto.id_director != null} ? ${director.id} == ${aeropuerto.id_director} : false">
+            <label for="director" class="form-label" th:text="#{msg.aeropuerto.director}"></label>
+            <select th:field="*{director}" id="director" class="form-select">
+                <option th:each="dir : ${directores}"
+                        th:value="${dir.id}"
+                        th:text="${dir.nombre} + ' ' + ${dir.apellidos}"
+                        th:selected="${aeropuerto.director != null} ? ${dir.id} == ${aeropuerto.director.id} : false">
                 </option>
             </select>
+            <div th:if="${#fields.hasErrors('director')}" class="text-danger"
+                 th:errors="*{director}"></div>
         </div>
+
 
         <button type="submit" class="btn btn-primary" th:text="${aeropuerto.id} == null ? #{msg.aeropuerto.crear} : #{msg.aeropuerto.actualizar}"></button>
     </form>
