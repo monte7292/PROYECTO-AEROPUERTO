@@ -78,14 +78,13 @@
         <!-- Director -->
         <div>
             <label for="director" class="form-label" th:text="#{msg.aeropuerto.director}"></label>
-            <select th:field="*{director}" id="director" class="form-select">
+            <select th:field="*{director.id}" id="director" class="form-select">
                 <option th:each="dir : ${directores}"
                         th:value="${dir.id}"
-                        th:text="${dir.nombre} + ' ' + ${dir.apellidos}"
-                        th:selected="${aeropuerto.director != null} ? ${dir.id} == ${aeropuerto.director.id} : false">
+                        th:text="${dir.nombre} + ' ' + ${dir.apellidos}">
                 </option>
             </select>
-            <div th:if="${#fields.hasErrors('director')}" class="text-danger" th:errors="*{director}"></div>
+            <div th:if="${#fields.hasErrors('director.id')}" class="text-danger" th:errors="*{director.id}"></div>
         </div>
 
         <!-- Botones -->

@@ -35,20 +35,19 @@
     <table class="table mt-3">
         <thead>
         <tr>
-            <th>ID</th>
+            <th>CodIata</th>
             <th>Nombre</th>
             <th>Ciudad</th>
             <th>País</th>
-            <th>codIata</th>
+            <th>Acciones</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="aeropuerto : ${listAeropuertos}">
-            <td th:text="${msg.aeropuerto.id}"></td>
-            <td th:text="${msg.aeropuerto.nombre}"></td>
-            <td th:text="${msg.aeropuerto.ciudad}"></td>
-            <td th:text="${msg.aeropuerto.pais}"></td>
-            <td th:text="${msg.aeropuerto.codIata}"></td>
+            <td th:text="${aeropuerto.codIata}"></td>
+            <td th:text="${aeropuerto.nombre}"></td>
+            <td th:text="${aeropuerto.ciudad}"></td>
+            <td th:text="${aeropuerto.pais}"></td>
             <td>
                 <!-- Botón para editar -->
 
