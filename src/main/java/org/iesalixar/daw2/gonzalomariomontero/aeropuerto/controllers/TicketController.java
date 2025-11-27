@@ -72,8 +72,8 @@ public class TicketController {
     public String showNewForm(Model model) {
         logger.info("Mostrando formulario para nuevo ticket.");
         model.addAttribute("ticket", new Ticket());
-        model.addAttribute("ruta", rutaRepository.findAll()); // Agregar lista de rutas para elegir
-        model.addAttribute("pasajero", pasajeroRepository.findAll()); // Agregar lista de rutas para elegir
+        model.addAttribute("rutas", rutaRepository.findAll()); // Agregar lista de rutas para elegir
+        model.addAttribute("pasajeros", pasajeroRepository.findAll()); // Agregar lista de rutas para elegir
         return "ticket-form";
     }
 
@@ -88,7 +88,7 @@ public class TicketController {
             model.addAttribute("ticket", ticketOpt);
         }
         model.addAttribute("rutas", rutaRepository.findAll()); // Agregar lista de rutas para elegir
-        model.addAttribute("rutas", rutaRepository.findAll()); // Agregar lista de rutas para elegir
+        model.addAttribute("pasajeros", pasajeroRepository.findAll()); // Agregar lista de pasajeros para elegir
         return "ticket-form";
     }
 
