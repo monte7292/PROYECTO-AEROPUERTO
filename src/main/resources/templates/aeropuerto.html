@@ -37,6 +37,7 @@
         <tr>
             <th>CodIata</th>
             <th>Nombre</th>
+            <th>Director</th>
             <th>Ciudad</th>
             <th>País</th>
             <th>Acciones</th>
@@ -46,6 +47,7 @@
         <tr th:each="aeropuerto : ${listAeropuertos}">
             <td th:text="${aeropuerto.codIata}"></td>
             <td th:text="${aeropuerto.nombre}"></td>
+            <td th:text="${aeropuerto.director != null ? aeropuerto.director.nombre + ' ' + aeropuerto.director.apellidos : ''}"></td>
             <td th:text="${aeropuerto.ciudad}"></td>
             <td th:text="${aeropuerto.pais}"></td>
             <td>
