@@ -26,6 +26,8 @@
 
     <h1 th:text="#{msg.aeropuerto.title}"></h1>
 
+    <div th:replace="pages/aeropuerto/aeropuerto-filter :: aeropuertoFilter(${search}, ${sort}, ${currentPage})"></div>
+
     <!-- Mensaje de error -->
     <div th:if="${errorMessage}" class="alert alert-danger">
         <p th:text="${errorMessage}"></p>
@@ -76,11 +78,38 @@
         </tbody>
     </table>
 
-    <!-- Botón para añadir un nuevo ticket -->
-    <a class="btn btn-success mt-3" th:href="@{/aeropuertos/new}" th:text="#{msg.aeropuerto.add}"></a>
+    <!-- Sección de paginación -->
+    <nav aria-label="Page navigation" class="mt-4" th:if="${totalPages > 1}">
+        <ul class="pagination justify-content-center">
 
-    <!-- Volver a la página principal -->
-    <a class="btn btn-secondary mt-3" th:href="@{/}" th:text="#{msg.aeropuerto.returnback}"></a>
+            <!-- Botón "Anterior" -->
+            <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                <a aria-label="Previous"
+                   class="page-link"
+                   th:href="@{/aeropuertos(page=${currentPage - 1})}">&laquo;</a>
+            </li>
+
+            <!-- Números de página -->
+            <li class="page-item" th:classappend="${i == currentPage} ? 'active'"
+                th:each="i : ${#numbers.sequence(1, totalPages)}">
+                <a class="page-link" th:href="@{/aeropuertos(page=${i})}" th:text="${i}"></a>
+            </li>
+
+            <!-- Botón "Siguiente" -->
+            <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                <a aria-label="Next" class="page-link" th:href="@{/aeropuertos(page=${currentPage + 1})}">&raquo;</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="mb-5">
+        <!-- Botón para añadir un nuevo ticket -->
+        <a class="btn btn-success mt-3" th:href="@{/aeropuertos/new}" th:text="#{msg.aeropuerto.add}"></a>
+
+        <!-- Volver a la página principal -->
+        <a class="btn btn-secondary mt-3" th:href="@{/}" th:text="#{msg.aeropuerto.returnback}"></a>
+    </div>
+    
 </main>
 
 <!-- Incluir el fragmento del footer -->
