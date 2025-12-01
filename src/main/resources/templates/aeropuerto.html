@@ -61,7 +61,7 @@
 
                     <input type="hidden" name="id" th:value="${aeropuerto.id}"/>
                     <button type="submit" class="btn btn-danger btn-sm"
-                            th:onclick="|return confirm('#{aeropuerto.eliminar}');|">
+                            th:onclick="|return confirm('#{msg.aeropuerto.delete}');|">
                         Delete
                     </button>
                 </form>
@@ -71,11 +71,11 @@
         </tbody>
     </table>
 
-    <!-- Botón para añadir una nueva región -->
-    <a th:href="@{/aeropuertos/new}" class="btn btn-success mt-3" th:text="#{msg.aeropuerto.add}"></a>
+    <!-- Botón para añadir un nuevo ticket -->
+    <a class="btn btn-success mt-3" th:href="@{/aeropuertos/new}" th:text="#{msg.aeropuerto.add}"></a>
 
     <!-- Volver a la página principal -->
-    <a href="#" th:href="@{/}" class="btn btn-secondary mt-3" th:text="#{msg.aeropuerto.back}"></a>
+    <a class="btn btn-secondary mt-3" th:href="@{/}" th:text="#{msg.aeropuerto.returnback}"></a>
 </main>
 
 <!-- Incluir el fragmento del footer -->

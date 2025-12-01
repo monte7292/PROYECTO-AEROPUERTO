@@ -38,7 +38,7 @@
             </p>
         </div>
     </div>
-    <h1 th:text="${aeropuerto.id} == null ? #{msg.aeropuerto.anadir} : #{msg.aeropuerto.editar}"></h1>
+    <h1 th:text="${aeropuerto.id} == null ? #{msg.aeropuerto.add} : #{msg.aeropuerto.edit}"></h1>
 
     <!-- Mensaje de error -->
     <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
