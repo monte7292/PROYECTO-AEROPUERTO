@@ -61,7 +61,7 @@ public class AeropuertoController {
         model.addAttribute("currentPage", page);
         model.addAttribute("search", search);
         model.addAttribute("sort", sort);
-        return "aeropuerto"; // Nombre de la plantilla Thymeleaf a renderizar
+        return "pages/aeropuerto/aeropuerto"; // Nombre de la plantilla Thymeleaf a renderizar
     }
 
     @GetMapping("/new")
@@ -70,7 +70,7 @@ public class AeropuertoController {
         // Cambiado a 'province' para coincidir con la plantilla Thymeleaf
         model.addAttribute("aeropuerto", new Aeropuerto());
         model.addAttribute("directores", directorRepository.findAll());
-        return "aeropuerto-form"; // Nombre de la plantilla Thymeleaf para el formulario
+        return "pages/aeropuerto/aeropuerto-form"; // Nombre de la plantilla Thymeleaf para el formulario
     }
 
     @GetMapping("/edit")
@@ -83,13 +83,13 @@ public class AeropuertoController {
         model.addAttribute("aeropuerto", aeropuerto);
         model.addAttribute("directores", directorRepository.findAll());
 
-        return "aeropuerto-form"; // Nombre de la plantilla Thymeleaf para el formulario
+        return "pages/aeropuerto/aeropuerto-form"; // Nombre de la plantilla Thymeleaf para el formulario
     }
 
     @PostMapping("/insert")
     public String insertAeropuerto(@ModelAttribute("aeropuerto") Aeropuerto aeropuerto, BindingResult result, RedirectAttributes redirectAttributes, Locale locale) {
         if (result.hasErrors()) {
-            return "aeropuerto-form";  // Devuelve el formulario para mostrar los errores de validación
+            return "pages/aeropuerto/aeropuerto-form";  // Devuelve el formulario para mostrar los errores de validación
         }
         logger.info("Insertando nuevo aeropuerto con código {}", aeropuerto.getCodIata());
         /*if (provinciaRepository.existsProvinceByCode(provincia.getCode())) {
@@ -108,7 +108,7 @@ public class AeropuertoController {
     @PostMapping("/update")
     public String updateAeropuerto(@ModelAttribute("aeropuerto") Aeropuerto aeropuerto,BindingResult result, RedirectAttributes redirectAttributes, Locale locale) {
         if (result.hasErrors()) {
-            return "aeropuerto-form";  // Devuelve el formulario para mostrar los errores de validación
+            return "pages/aeropuerto/aeropuerto-form";  // Devuelve el formulario para mostrar los errores de validación
         }
         logger.info("Actualizando aeropuerto con ID {}", aeropuerto.getId());
         /*if (provinciaRepository.existsProvinceByCodeAndNotId(provincia.getCode())) {

@@ -7,6 +7,6 @@ import java.util.Locale;
 public class HomeController {
     @GetMapping("/")
     public String home(Model model, Locale locale) {
-        return "index";
+        return "pages/index";
     }
 }

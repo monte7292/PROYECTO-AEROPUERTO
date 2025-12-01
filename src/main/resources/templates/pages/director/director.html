@@ -15,7 +15,7 @@
 <main class="container mt-10">
     <!-- Banner principal -->
     <!-- Banner principal con imagen de fondo -->
-    <div class="p-5 mb-5 text-white rounded-3 shadow" style="background: url('https://www.avionrevue.com/wp-content/uploads/2024/01/mexico-aerop.jpg') no-repeat center center; background-size: cover;">
+    <div class="p-5 mb-5 text-white rounded-3 shadow" style="background: url('https://images.pexels.com/photos/3184306/pexels-photo-3184306.jpeg') no-repeat center center; background-size: cover;">
         <div class="container py-4 px-4" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 15px;">
             <h1 class="display-4 fw-bold">Gestión de Directores</h1>
             <p class="col-md-8 fs-5">
@@ -33,7 +33,7 @@
     </div>
     <h1 th:text="#{msg.director.title}"></h1>
 
-    <div th:replace="director-filter :: directorFilter(${search}, ${sort}, ${currentPage})"></div>
+    <div th:replace="pages/director/director-filter :: directorFilter(${search}, ${sort}, ${currentPage})"></div>
 
     <!-- Muestra un mensaje de error si hay algún problema -->
     <div th:if="${errorMessage}" class="alert alert-danger">
@@ -45,32 +45,25 @@
         <thead>
         <tr>
             <th th:text="#{msg.director.nombre}"></th>
-            <th th:text="#{msg.director.apellidos}"></th>
-            <th th:text="#{msg.actions}"></th>
-
-
+            <th class="text-center" th:text="#{msg.director.apellidos}"></th>
+            <th class="text-center" th:text="#{msg.actions}"></th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="director : ${listDirectores}">
             <td th:text="${director.nombre}"></td>
-            <td th:text="${director.apellidos}"></td>
-            <td>
-                <!-- Botón para editar -->
-
-                <a th:href="@{/directores/edit(id=${director.id})}" class="btn btn-primary btn-sm">Edit</a>
-
-                <!-- Botón para eliminar -->
-
-                <form th:action="@{/directores/delete}" method="post" class="d-inline">
-
-                    <input type="hidden" name="id" th:value="${director.id}"/>
-                    <button type="submit" class="btn btn-danger btn-sm"
-                            th:onclick="|return confirm('#{msg.director.delete}');|">
-                        Delete
-                    </button>
-                </form>
-
+            <td class="text-center" th:text="${director.apellidos}"></td>
+            <td class="text-center">
+                <div class="gap-2">
+                    <a th:href="@{/directores/edit(id=${director.id})}" class="btn btn-primary w-50">Edit</a>
+                    <form th:action="@{/directores/delete}" method="post">
+                        <input type="hidden" name="id" th:value="${director.id}"/>
+                        <button type="submit" class="btn btn-danger w-50"
+                                th:onclick="|return confirm('#{msg.director.delete}');|">
+                            Delete
+                        </button>
+                    </form>
+                </div>
             </td>
         </tr>
         </tbody>

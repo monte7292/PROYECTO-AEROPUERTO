@@ -62,7 +62,7 @@ public class DirectorController {
         model.addAttribute("currentPage", page);
         model.addAttribute("search", search);
         model.addAttribute("sort", sort);
-        return "director"; // Nombre de la plantilla Thymeleaf a renderizar
+        return "pages/director/director"; // Nombre de la plantilla Thymeleaf a renderizar
     }
 
     /**
@@ -76,7 +76,7 @@ public class DirectorController {
         logger.info("Mostrando formulario para nuevo director.");
         model.addAttribute("director", new Director());
         model.addAttribute("aeropuertos", aeropuertoRepository.findAll());
-        return "director-form";
+        return "pages/director/director-form";
     }
 
     @GetMapping("/edit")
@@ -90,7 +90,7 @@ public class DirectorController {
             model.addAttribute("director", directorOpt.get());
         }
         model.addAttribute("aeropuertos", aeropuertoRepository.findAll());
-        return "director-form";
+        return "pages/director/director-form";
     }
 
     /**
@@ -110,7 +110,7 @@ public class DirectorController {
 
         if (result.hasErrors()) {
             model.addAttribute("aeropuertos", aeropuertoRepository.findAll());
-            return "director-form";
+            return "pages/director/director-form";
         }
 
         directorRepository.save(director);
@@ -137,7 +137,7 @@ public class DirectorController {
 
         if (result.hasErrors()) {
             model.addAttribute("aeropuertos", aeropuertoRepository.findAll());
-            return "director-form";
+            return "pages/director/director-form";
         }
 
         directorRepository.save(director);
