@@ -1,8 +1,11 @@
 package org.iesalixar.daw2.gonzalomariomontero.aeropuerto.controllers;
 
 import jakarta.validation.Valid;
-import org.iesalixar.daw2.gonzalomariomontero.aeropuerto.entities.*;
-import org.iesalixar.daw2.gonzalomariomontero.aeropuerto.repositories.*;
+import org.iesalixar.daw2.gonzalomariomontero.aeropuerto.entities.Aeropuerto;
+import org.iesalixar.daw2.gonzalomariomontero.aeropuerto.entities.Avion;
+import org.iesalixar.daw2.gonzalomariomontero.aeropuerto.entities.Ruta;
+import org.iesalixar.daw2.gonzalomariomontero.aeropuerto.repositories.AvionRepository;
+import org.iesalixar.daw2.gonzalomariomontero.aeropuerto.repositories.RutaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,23 +17,22 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
 @Controller
 @RequestMapping("/aviones")
-public class AvionPasajeroController {
+public class AvionRutaController {
 
     private static final Logger logger =
-            LoggerFactory.getLogger(AvionPasajeroController.class);
+            LoggerFactory.getLogger(AvionRutaController.class);
 
     @Autowired
     private AvionRepository avionRepository;
 
     @Autowired
-    private PasajeroRepository pasajeroRepository;
+    private RutaRepository rutaRepository;
 
     @Autowired
     private MessageSource messageSource;
@@ -57,23 +59,23 @@ public class AvionPasajeroController {
     }
 
     /**
-     * Muestra el formulario para crear un nuevo avion.
+     * Muestra el formulario para crear un nuevo avión.
      *
      * @param model Modelo para pasar datos a la vista.
      * @return El nombre de la plantilla Thymeleaf para el formulario de avión.
      */
     @GetMapping("/new")
     public String showNewForm(Model model) {
-        logger.info("Mostrando formulario para nuevo avión.");
-        List<Pasajero> listPasajeros = pasajeroRepository.findAll();
+        logger.info("Mostrando formulario para nuevo avion.");
+        List<Ruta> listRutas = rutaRepository.findAll();
         model.addAttribute("avion", new Avion());
-        model.addAttribute("listPasajeros", listPasajeros);
+        model.addAttribute("listRutas", listRutas);
         // model.addAttribute("listLocations", listLocations);
         return "avion-form.html";
     }
 
     /**
-     * Inserta un nuevo avion en la base de datos.
+     * Inserta un nuevo avión en la base de datos.
      *
      * @param avion              Avión a insertar.
      * @param result             Resultado de la validación del avión.
@@ -88,11 +90,11 @@ public class AvionPasajeroController {
                                BindingResult result,
                                RedirectAttributes redirectAttributes, Locale
                                        locale, Model model) {
-        logger.info("Insertando nuevo avion con id {}", avion.getId());
+        logger.info("Insertando nuevo avión con id {}", avion.getId());
         try {
             if (result.hasErrors()) {
-                List<Pasajero> listPasajeros = pasajeroRepository.findAll();
-                model.addAttribute("listPasajeros", listPasajeros);
+                List<Ruta> listRutas = rutaRepository.findAll();
+                model.addAttribute("listRutas", listRutas);
                 return "avion-form.html";
             }
             avionRepository.save(avion);
@@ -114,16 +116,15 @@ public class AvionPasajeroController {
      */
     @GetMapping("/edit")
     public String showEditForm(@RequestParam("id") Long id, Model model) {
-        logger.info("Mostrando formulario de edición para el avión con ID {}",
-                id);
+        logger.info("Mostrando formulario de edición para el avión con ID {}", id);
         Optional<Avion> avion = avionRepository.findById(id);
         if (avion.isEmpty()) {
             logger.warn("No se encontró el avión con ID {}", id);
             return "redirect:/aviones";
         }
-        List<Pasajero> listPasajeros = pasajeroRepository.findAll();
+        List<Ruta> listRutas = rutaRepository.findAll();
         model.addAttribute("avion", avion.get());
-        model.addAttribute("listPasajeros", listPasajeros);
+        model.addAttribute("listRutas", listRutas);
         return "avion-form.html";
     }
 
@@ -146,16 +147,14 @@ public class AvionPasajeroController {
         logger.info("Actualizando avión con ID {}", avion.getId());
         try {
             if (result.hasErrors()) {
-                List<Pasajero> listPasajeros = pasajeroRepository.findAll();
-                model.addAttribute("listPasajeros", listPasajeros);
+                List<Ruta> listRutas = rutaRepository.findAll();
+                model.addAttribute("listRutas", listRutas);
                 return "avion-form.html";
             }
             avionRepository.save(avion);
-            logger.info("Avión con ID {} actualizado con éxito.",
-                    avion.getId());
+            logger.info("Avión con ID {} actualizado con éxito.", avion.getId());
         } catch (Exception e) {
-            logger.error("Error al actualizar el avión con ID {}: {}",
-                    avion.getId(), e.getMessage());
+            logger.error("Error al actualizar el avión con ID {}: {}", avion.getId(), e.getMessage());
             String errorMessage = messageSource.getMessage("msg.avion-controller.update.error", null, locale);
             redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
         }
@@ -170,8 +169,7 @@ public class AvionPasajeroController {
      * @return Redirección a la lista de aviones.
      */
     @PostMapping("/delete")
-    public String deleteAvion(@RequestParam("id") Long id, RedirectAttributes
-            redirectAttributes) {
+    public String deleteAvion(@RequestParam("id") Long id, RedirectAttributes redirectAttributes) {
         logger.info("Eliminando avión con ID {}", id);
         try {
             avionRepository.deleteById(id);
@@ -203,7 +201,7 @@ public class AvionPasajeroController {
 
         Avion avion = avionOptional.get();
         model.addAttribute("avion", avion);
-        model.addAttribute("pasajeros", avion.getPasajeros());
+        model.addAttribute("rutas", avion.getRutas());
 
         return "avion-detail.html";
     }
@@ -213,21 +211,22 @@ public class AvionPasajeroController {
      * Busca productos que coincidan con el término ingresado y los muestra para
      añadir al avión.
      *
-     * @param pasajeroSearch Nombre o parte del nombre del pasajero.
+     * @param rutaSearch1 Aeropuerto origen de la ruta.
+     * @param rutaSearch2 Aeropuerto destino de la ruta.
      * @param avionId        ID del avión.
      * @param model          Modelo para pasar datos a la vista.
      * @return El nombre de la plantilla Thymeleaf para mostrar los resultados
     de la búsqueda.
      */
-    @PostMapping("/addExistingPasajero")
-    public String searchPasajero(@RequestParam("pasajeroSearch") String pasajeroSearch, @RequestParam("avionId") Long avionId, Model model) {
-        logger.info("Buscando pasajeros que coincidan con '{}'", pasajeroSearch);
-        List<Pasajero> searchResults = pasajeroRepository.findPasajeroByDocumento(pasajeroSearch);
+    @PostMapping("/addExistingRuta")
+    public String searchRuta(@RequestParam("rutaSearch") Aeropuerto rutaSearch1, @RequestParam("rutaSearch") Aeropuerto rutaSearch2, @RequestParam("avionId") Long avionId, Model model) {
+        logger.info("Buscando rutas que coincidan con '{}' '{}'", rutaSearch1, rutaSearch2);
+        List<Ruta> searchResults = rutaRepository.findRutaByAeropuertoOrigenAndAeropuertoDestino(rutaSearch1, rutaSearch2);
         Optional<Avion> avionOpt = avionRepository.findById(avionId);
 
         if (avionOpt.isPresent()) {
             model.addAttribute("avion", avionOpt.get());
-            model.addAttribute("pasajeros", avionOpt.get().getPasajeros());
+            model.addAttribute("rutas", avionOpt.get().getRutas());
         } else {
             model.addAttribute("errorMessage", "No se encontró el avión.");
             return "redirect:/aviones";
@@ -238,137 +237,135 @@ public class AvionPasajeroController {
     }
 
     /**
-     * Añade un pasajero existente al avión.
+     * Añade una ruta existente al avión.
      *
      * @param avionId         ID del avión.
-     * @param pasajeroId        ID del pasajero.
+     * @param rutaId        ID de la ruta.
      * @param redirectAttributes Atributos para mensajes flash.
      * @return Redirección a la página de detalles del avión.
      */
-    @PostMapping("/addPasajero")
-    public String addPasajeroToAvion(@RequestParam("avionId") Long avionId,
-                                     @RequestParam("pasajeroId") Long pasajeroId, RedirectAttributes
+    @PostMapping("/addRuta")
+    public String addRutaToAvion(@RequestParam("aviontId") Long avionId,
+                                     @RequestParam("rutaId") Long rutaId, RedirectAttributes
                                              redirectAttributes, Locale locale) {
-        logger.info("Añadiendo pasajero con ID {} al avión con ID {}", pasajeroId, avionId);
+        logger.info("Añadiendo ruta con ID {} al avion con ID {}", rutaId, avionId);
         try {
             Optional<Avion> avionOpt = avionRepository.findById(avionId);
-            Optional<Pasajero> pasajeroOpt = pasajeroRepository.findById(pasajeroId);
+            Optional<Ruta> rutaOpt = rutaRepository.findById(rutaId);
 
-            if (avionOpt.isPresent() && pasajeroOpt.isPresent()) {
+            if (avionOpt.isPresent() && rutaOpt.isPresent()) {
                 Avion avion = avionOpt.get();
-                Pasajero pasajero = pasajeroOpt.get();
-                avion.getPasajeros().add(pasajero);
+                Ruta ruta = rutaOpt.get();
+                avion.getRutas().add(ruta);
                 avionRepository.save(avion);
-                logger.info("Pasajero añadido con éxito.");
+                logger.info("Ruta añadida con éxito.");
             } else {
-                logger.warn("No se encontró el pasajero o el avión");
-                redirectAttributes.addFlashAttribute("errorMessage", "No se pudo añadir el pasajero al avión.");
+                logger.warn("No se encontró la ruta o el avión");
+                redirectAttributes.addFlashAttribute("errorMessage", "No se pudo añadir la ruta al avión.");
             }
         } catch (DataIntegrityViolationException e) {
-            logger.error("Violación de integridad de datos al insertar el pasajero: {}", e.getMessage());
+            logger.error("Violación de integridad de datos al insertar la ruta: {}", e.getMessage());
             String errorMessage = messageSource.getMessage("msg.avion-controller.insert.integrity-violation", null, locale);
             redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
             return "redirect:/aviones/detail?id=" + avionId;
         } catch (Exception e) {
-            logger.error("Error al añadir el pasajero al avión: {}",
+            logger.error("Error al añadir la ruta al avión: {}",
                     e.getMessage());
-            redirectAttributes.addFlashAttribute("errorMessage", "Error al añadir el pasajero.");
+            redirectAttributes.addFlashAttribute("errorMessage", "Error al añadir la ruta.");
         }
         return "redirect:/aviones/detail?id=" + avionId;
     }
 
 
     /**
-     * Añade un nuevo pasajero al avión.
+     * Añade un nueva ruta al avión.
      *
      * @param avionId          ID del avión.
-     * @param pasajeroNombre       Nombre del pasajero.
-     * @param pasajeroApellidos     Apellidos del pasajero.
-     * @param pasajeroDocumento Documento del pasajero.
-     * @param pasajeroEmail Email del pasajero.
+     * @param rutaAeropuertoOrigen     Aeropuerto origen de la ruta.
+     * @param rutaAeropuertoDestino     Aeropuerto destino de la ruta.
+     * @param rutaDuracion Duración de la ruta.
+     * @param rutaDistancia Distancia de la ruta.
      * @param redirectAttributes Atributos para mensajes flash.
-     * @return Redirección a la página de detalles del ticket.
+     * @return Redirección a la página de detalles de la ruta.
      */
-    @PostMapping("/addNewPasajero")
-    public String addNewPasajeroToAvion(@RequestParam("avionId") Long
-                                                avionId, @RequestParam("pasajeroNombre") String pasajeroNombre,
-                                        @RequestParam("pasajeroApellidos")
-                                        String pasajeroApellidos, @RequestParam("pasajeroDocumento") String pasajeroDocumento,
-                                        @RequestParam("pasajeroEmail") String pasajeroEmail, RedirectAttributes redirectAttributes) {
-        logger.info("Añadiendo nuevo pasajero '{}' con nombre {}, apellidos {}, documento {}, email {} al avion con ID {}", pasajeroNombre, pasajeroApellidos, pasajeroDocumento, pasajeroEmail, avionId);
+    @PostMapping("/addNewRuta")
+    public String addNewRutaToAvion(@RequestParam("avionId") Long avionId, @RequestParam("rutaAeropuertoOrigen") Aeropuerto rutaAeropuertoOrigen,
+                                        @RequestParam("rutaAeropuertoDestino") Aeropuerto rutaAeropuertoDestino,
+                                        @RequestParam("rutaDuracion") int rutaDuracion,
+                                        @RequestParam("rutaDistancia") int rutaDistancia, RedirectAttributes redirectAttributes) {
+        logger.info("Añadiendo nueva ruta '{}' con origen {}, destino {}, duración {}, distancia {} al avion con ID {}", rutaAeropuertoOrigen, rutaAeropuertoDestino, rutaDuracion, rutaDistancia, avionId);
         try {
             Optional<Avion> avionOpt = avionRepository.findById(avionId);
 
             if (avionOpt.isPresent()) {
                 Avion avion = avionOpt.get();
 
-                // Verificar si ya existe un pasajero con el mismo nombre en el avión
-                boolean pasajeroExists = avion.getPasajeros().stream().anyMatch(pasajero -> pasajero.getNombre().equalsIgnoreCase(pasajeroNombre));
-                boolean pasajeroExists2 = avion.getPasajeros().stream().anyMatch(pasajero -> pasajero.getApellidos().equalsIgnoreCase(pasajeroApellidos));
+                // Verificar si ya existe una ruta con el mismo trayecto en el avión
+                boolean rutaExists = avion.getRutas().stream().anyMatch(ruta -> ruta.getAeropuertoOrigen().equals(rutaAeropuertoOrigen));
+                boolean rutaExists2 = avion.getRutas().stream().anyMatch(ruta -> ruta.getAeropuertoDestino().equals(rutaAeropuertoDestino));
 
-                // Podría mejorarse la lógica
-                if (pasajeroExists && pasajeroExists2) {
-                    logger.warn("El pasajero con nombre '{}' y apellidos '{}' ya existe en el avión con ID {}", pasajeroNombre, pasajeroApellidos, avionId);
-                    redirectAttributes.addFlashAttribute("errorMessage", "El pasajero con el nombre especificado ya está asociado al avión.");
+                if (rutaExists && rutaExists2) {
+                    logger.warn("La ruta con origen '{}' y destino '{}' ya existe en el avión con ID {}", rutaAeropuertoOrigen, rutaAeropuertoDestino, avionId);
+                    redirectAttributes.addFlashAttribute("errorMessage", "La ruta con el origen especificado ya está asociado al avión.");
                 } else {
-                    Pasajero newPasajero = new Pasajero();
-                    newPasajero.setNombre(pasajeroNombre);
-                    newPasajero.setApellidos(pasajeroApellidos);
-                    newPasajero.setDocumento(pasajeroDocumento);
-                    newPasajero.setEmail(pasajeroEmail);
-                    pasajeroRepository.save(newPasajero);
+                    Ruta newRuta = new Ruta();
+                    newRuta.setAeropuertoOrigen(rutaAeropuertoOrigen);
+                    newRuta.setAeropuertoDestino(rutaAeropuertoDestino);
+                    newRuta.setDuracion(rutaDuracion);
+                    newRuta.setDistancia(rutaDistancia);
+                    rutaRepository.save(newRuta);
 
-                    avion.getPasajeros().add(newPasajero);
+                    avion.getRutas().add(newRuta);
                     avionRepository.save(avion);
 
-                    logger.info("Nuevo pasajero añadido con éxito.");
+                    logger.info("Nueva ruta añadida con éxito.");
                 }
             } else {
                 logger.warn("No se encontró el avión.");
-                redirectAttributes.addFlashAttribute("errorMessage", "No se pudo añadir el pasajero al avión.");
+                redirectAttributes.addFlashAttribute("errorMessage", "No se pudo añadir la ruta al avión.");
             }
         } catch (Exception e) {
-            logger.error("Error al añadir el nuevo pasajero al avión: {}",
+            logger.error("Error al añadir la nueva ruta al avión: {}",
                     e.getMessage());
-            redirectAttributes.addFlashAttribute("errorMessage", "Error al añadir en el avión el nuevo pasajero.");
+            redirectAttributes.addFlashAttribute("errorMessage", "Error al añadir en el avión la nueva ruta.");
         }
         return "redirect:/aviones/detail?id=" + avionId;
     }
 
 
     /**
-     * Elimina un pasajero asociado al avión.
+     * Elimina una ruta asociada al avión.
      *
      * @param avionId         ID del avión.
-     * @param pasajeroId        ID del pasajero.
+     * @param rutaId        ID de la ruta.
      * @param redirectAttributes Atributos para mensajes flash.
      * @return Redirección a la página de detalles del avión.
      */
-    @PostMapping("/removeProduct")
-    public String removeProductFromTicket(@RequestParam("avionId") Long
-                                                  avionId, @RequestParam("pasajeroId") Long pasajeroId, RedirectAttributes
+    @PostMapping("/removeRuta")
+    public String removeRutaFromAvion(@RequestParam("avionId") Long
+                                                  avionId, @RequestParam("rutaId") Long rutaId, RedirectAttributes
                                                   redirectAttributes) {
-        logger.info("Eliminando pasajero con ID {} del avión con ID {}",
-                pasajeroId, avionId);
+        logger.info("Eliminando ruta con ID {} del avión con ID {}",
+                rutaId, avionId);
         try {
             Optional<Avion> avionOpt = avionRepository.findById(avionId);
-            Optional<Pasajero> pasajeroOpt =
-                    pasajeroRepository.findById(pasajeroId);
+            Optional<Ruta> rutaOpt =
+                    rutaRepository.findById(rutaId);
 
-            if (avionOpt.isPresent() && pasajeroOpt.isPresent()) {
+            if (avionOpt.isPresent() && rutaOpt.isPresent()) {
                 Avion avion = avionOpt.get();
-                Pasajero pasajero = pasajeroOpt.get();
-                avion.getPasajeros().remove(pasajero);
+                Ruta ruta = rutaOpt.get();
+                avion.getRutas().remove(ruta);
                 avionRepository.save(avion);
-                logger.info("Pasajero eliminado con éxito.");
+                logger.info("Ruta eliminada con éxito.");
             } else {
-                logger.warn("No se encontró el avión o el pasajero.");
-                redirectAttributes.addFlashAttribute("errorMessage", "No se pudo eliminar el pasajero del avión.");
+                logger.warn("No se encontró el avión o la ruta.");
+                redirectAttributes.addFlashAttribute("errorMessage", "No se pudo eliminar la ruta del avión.");
             }
         } catch (Exception e) {
-            logger.error("Error al eliminar el pasajero del avión: {}",
+            logger.error("Error al eliminar la ruta del avión: {}",
                     e.getMessage());
-            redirectAttributes.addFlashAttribute("errorMessage"," Error al eliminar el pasajero.");
+            redirectAttributes.addFlashAttribute("errorMessage"," Error al eliminar la ruta.");
         }
         return "redirect:/aviones/detail?id=" + avionId;
     }
