@@ -23,20 +23,15 @@
         <!-- Banner principal con imagen de fondo -->
         <div class="p-5 mb-5 text-white rounded-3 shadow" style="background: url('https://www.itcsa.es/wp-content/uploads/Terminal-aeropuerto-1-850x491.jpg') no-repeat center center; background-size: cover;">
             <div class="container py-4 px-4" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 15px;">
-                <h1 class="display-4 fw-bold">Bienvenido a Aerolíneas Montero</h1>
-                <p class="col-md-8 fs-5">
-                    Gestiona vuelos, pasajeros y operaciones aeroportuarias desde una plataforma rápida y moderna. ¡Aeropuertos montero! De aquí al mundo entero
-                </p>
-                <a href="/vuelos" class="btn btn-primary btn-lg">Ver vuelos</a>
+                <h1 class="display-4 fw-bold" th:text="#{msg.index.bienvenida}"></h1>
+                <p class="col-md-8 fs-5" th:text="#{msg.index.mensajeDebajoBienvenida}"></p>
+                <a href="/vuelos" class="btn btn-primary btn-lg" th:text="#{msg.index.botonVerVuelos}"></a>
             </div>
         </div>
 
         <section class="py-3 d-flex">
             <div class="container">
-                <p class="fs-5 text-left">
-                    En Aerolíneas Montero nos apasiona ofrecer una gestión aeroportuaria completa y eficiente. Desde la planificación de vuelos hasta el seguimiento de pasajeros y la coordinación de operaciones, nuestra plataforma está diseñada para simplificar cada aspecto de la administración aérea. Con información actualizada en tiempo real, controles intuitivos y un diseño moderno, podrás optimizar recursos, mejorar la experiencia de los pasajeros y garantizar que cada vuelo llegue a su destino con precisión.
-                    Descubre cómo AerolineaMontero transforma la gestión de aeropuertos y vuelos en una experiencia ágil, segura y confiable, conectando personas y destinos alrededor del mundo.
-                </p>
+                <p class="fs-5 text-left" th:text="#{msg.index.textoLargo}"></p>
             </div>
         </section>
 
@@ -49,9 +44,9 @@
                     <div class="card feature-card h-100">
                         <img src="https://www.avionrevue.com/wp-content/uploads/2024/01/mexico-aerop.jpg" alt="Aeropuertos" class="feature-img">
                         <div class="feature-overlay">
-                            <h5 class="card-title">Gestión de Aeropuertos</h5>
-                            <p class="card-text">Administra información operativa, añade nuevos aeropuertos y controla servicios clave.</p>
-                            <span class="btn btn-primary btn-sm w-100 text-center">Ir a Aeropuertos</span>
+                            <h5 class="card-title" th:text="#{msg.index.seccion1}"></h5>
+                            <p class="card-text" th:text="#{msg.index.seccion1.texto}"></p>
+                            <span class="btn btn-primary btn-sm w-100 text-center" th:text="#{msg.index.seccion1.boton}"></span>
                         </div>
                     </div>
                 </a>
@@ -62,9 +57,9 @@
                     <div class="card feature-card h-100">
                         <img src="https://images.pexels.com/photos/3184306/pexels-photo-3184306.jpeg" alt="Directores" class="feature-img">
                         <div class="feature-overlay">
-                            <h5 class="card-title">Directores</h5>
-                            <p class="card-text">Consulta la lista completa de directores, su información y roles dentro del sistema.</p>
-                            <span class="btn btn-primary btn-sm w-100 text-center">Ver Directores</span>
+                            <h5 class="card-title" th:text="#{msg.index.seccion2}"></h5>
+                            <p class="card-text" th:text="#{msg.index.seccion2.texto}"></p>
+                            <span class="btn btn-primary btn-sm w-100 text-center" th:text="#{msg.index.seccion2.boton}"></span>
                         </div>
                     </div>
                 </a>

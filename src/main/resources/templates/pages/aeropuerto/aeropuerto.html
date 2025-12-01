@@ -17,10 +17,8 @@
     <!-- Banner principal con imagen de fondo -->
     <div class="p-5 mb-5 text-white rounded-3 shadow" style="background: url('https://www.avionrevue.com/wp-content/uploads/2024/01/mexico-aerop.jpg') no-repeat center center; background-size: cover;">
         <div class="container py-4 px-4" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 15px;">
-            <h1 class="display-4 fw-bold">Gestión de Aeropuertos</h1>
-            <p class="col-md-8 fs-5">
-                Administra de forma eficiente toda la información relacionada con los aeropuertos de la empresa. Consulta detalles operativos, agrega nuevos aeropuertos al sistema, actualiza datos de infraestructura y controla la disponibilidad de servicios clave.
-            </p>
+            <h1 class="display-4 fw-bold" th:text="#{msg.aeropuerto.titleSegundo}"></h1>
+            <p class="col-md-8 fs-5" th:text="#{msg.aeropuerto.descripcion}"></p>
         </div>
     </div>
 
@@ -42,12 +40,12 @@
     <table class="table mt-3">
         <thead>
         <tr>
-            <th>CodIata</th>
-            <th>Nombre</th>
-            <th>Director</th>
-            <th>Ciudad</th>
-            <th>País</th>
-            <th>Acciones</th>
+            <th th:text="#{msg.aeropuerto.codIata}"></th>
+            <th th:text="#{msg.aeropuerto.name}"></th>
+            <th th:text="#{msg.aeropuerto.director}"></th>
+            <th th:text="#{msg.aeropuerto.ciudad}"></th>
+            <th th:text="#{msg.aeropuerto.pais}"></th>
+            <th th:text="#{msg.actions}"></th>
         </tr>
         </thead>
         <tbody>

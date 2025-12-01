@@ -22,15 +22,16 @@
                 <!-- Navegación -->
                 <ul class="navbar-nav mx-auto mb-2 mb-md-0">
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/aeropuertos}">Aeropuertos</a>
+                        <a class="nav-link" th:href="@{/aeropuertos}" th:text="#{msg.navbar.aeropuertos}"></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:href="@{/directores}">Directores</a>
+                        <a class="nav-link" th:href="@{/directores}" th:text="#{msg.navbar.directores}"></a>
                     </li>
                 </ul>
 
                 <!-- Idioma -->
-                <form th:action="@{/}" method="get" class="d-none d-md-flex position-absolute end-0 me-3">
+                <form th:action="@{/}" method="get" class="d-none d-md-flex position-absolute end-0 me-3 align-items-center gap-2">
+                    <img th:src="${#locale.language == 'es'} ? 'https://flagcdn.com/w20/es.png' : 'https://flagcdn.com/w20/gb.png'" width="20" height="15" alt="Lang">
                     <select name="lang" onchange="this.form.submit()" class="form-select">
                         <option value="es" th:selected="${#locale.language == 'es'}">Español</option>
                         <option value="en" th:selected="${#locale.language == 'en'}">English</option>
