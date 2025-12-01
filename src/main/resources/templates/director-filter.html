@@ -1,0 +1,39 @@
+<!-- Sección de filtrado -->
+<div th:fragment="directorFilter(search, sort, currentPage)">
+    <form class="row g-3 mt-3 mb-3" method="get" th:action="@{/directores}">
+
+        <!-- Campo búsqueda -->
+        <div class="col-md-5">
+            <input class="form-control" name="search"
+                   placeholder="Filtrar por nombre"
+                   th:value="${search}"
+                   type="text">
+        </div>
+
+        <!-- Selector ordenación -->
+        <div class="col-md-4">
+            <select class="form-select" name="sort" th:value="${sort}">
+                <option disabled th:selected="${sort == null}" value="">
+                    Ordenar por...
+                </option>
+                <option th:selected="${sort == 'nombreAsc'}" value="nombreAsc">Nombre (A-Z)</option>
+                <option th:selected="${sort == 'nombreDesc'}" value="nombreDesc">Nombre (Z-A)</option>
+                <option th:selected="${sort == 'apellidosAsc'}" value="apellidosAsc">Apellidos (A-Z)</option>
+                <option th:selected="${sort == 'apellidosDesc'}" value="apellidosDesc">Apellidos (Z-A)</option>
+                <option th:selected="${sort == 'idAsc'}" value="idAsc">ID (ascendente)</option>
+                <option th:selected="${sort == 'idDesc'}" value="idDesc">ID (descendente)</option>
+            </select>
+        </div>
+
+        <!-- Botón Filtrar -->
+        <div class="col-md-2">
+            <button class="btn btn-primary w-100" type="submit" th:text="#{msg.filter}"></button>
+        </div>
+
+        <!-- Botón Limpiar -->
+        <div class="col-md-1 d-flex justify-content-end">
+            <a class="btn btn-secondary w-100" th:href="@{/directores}" th:text="#{msg.clear}"></a>
+        </div>
+
+    </form>
+</div>

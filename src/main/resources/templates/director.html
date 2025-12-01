@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head ('Listado de directores')"></head>
+<style>
+    /* Margen superior personalizado */
+    .mt-10 {
+        margin-top: 4.5rem; /* Ajusta el valor si quieres más o menos */
+    }
+</style>
+<body>
+
+<!-- Incluir el fragmento del header -->
+<header th:replace="fragments/header :: header"></header>
+
+<main class="container mt-10">
+    <!-- Banner principal -->
+    <!-- Banner principal con imagen de fondo -->
+    <div class="p-5 mb-5 text-white rounded-3 shadow" style="background: url('https://www.avionrevue.com/wp-content/uploads/2024/01/mexico-aerop.jpg') no-repeat center center; background-size: cover;">
+        <div class="container py-4 px-4" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 15px;">
+            <h1 class="display-4 fw-bold">Gestión de Directores</h1>
+            <p class="col-md-8 fs-5">
+                Administra de forma eficiente toda la información relacionada con los directores de la empresa. Consulta detalles operativos, agrega nuevos directores al sistema, actualiza datos de infraestructura y controla la disponibilidad de servicios clave.
+            </p>
+        </div>
+    </div>
+
+    <h1 th:text="#{msg.director.title}"></h1>
+
+    <div th:replace="director-filter :: directorFilter(${search}, ${sort}, ${currentPage})"></div>
+
+    <!-- Muestra un mensaje de error si hay algún problema -->
+    <div th:if="${errorMessage}" class="alert alert-danger">
+        <p th:text="${errorMessage}"></p>
+    </div>
+
+    <!-- Muestra la lista de aeropuertos en una tabla -->
+    <table class="table mt-3">
+        <thead>
+        <tr>
+            <th th:text="#{msg.director.nombre}"></th>
+            <th th:text="#{msg.director.apellidos}"></th>
+            <th th:text="#{msg.actions}"></th>
+
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="director : ${listDirectores}">
+            <td th:text="${director.nombre}"></td>
+            <td th:text="${director.apellidos}"></td>
+            <td>
+                <!-- Botón para editar -->
+
+                <a th:href="@{/directores/edit(id=${director.id})}" class="btn btn-primary btn-sm">Edit</a>
+
+                <!-- Botón para eliminar -->
+
+                <form th:action="@{/directores/delete}" method="post" class="d-inline">
+
+                    <input type="hidden" name="id" th:value="${director.id}"/>
+                    <button type="submit" class="btn btn-danger btn-sm"
+                            th:onclick="|return confirm('#{msg.director.delete}');|">
+                        Delete
+                    </button>
+                </form>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Sección de paginación -->
+    <!-- Sección de paginación -->
+    <nav aria-label="Page navigation" class="mt-4" th:if="${totalPages > 1}">
+        <ul class="pagination justify-content-center">
+
+            <!-- Botón "Anterior" -->
+            <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                <a aria-label="Previous"
+                   class="page-link"
+                   th:href="@{/directores(page=${currentPage - 1})}">&laquo;</a>
+            </li>
+
+            <!-- Números de página -->
+            <li class="page-item" th:classappend="${i == currentPage} ? 'active'"
+                th:each="i : ${#numbers.sequence(1, totalPages)}">
+                <a class="page-link" th:href="@{/directores(page=${i})}" th:text="${i}"></a>
+            </li>
+
+            <!-- Botón "Siguiente" -->
+            <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                <a aria-label="Next" class="page-link" th:href="@{/directores(page=${currentPage + 1})}">&raquo;</a>
+            </li>
+        </ul>
+    </nav>
+
+
+
+    <div class="mb-5">
+        <!-- Botón para añadir un nuevo ticket -->
+        <a class="btn btn-success mt-3" th:href="@{/directores/new}" th:text="#{msg.director.add}"></a>
+
+        <!-- Volver a la página principal -->
+        <a class="btn btn-secondary mt-3" th:href="@{/}" th:text="#{msg.director.returnback}"></a>
+    </div>
+
+
+
+</main>
+
+<!-- Incluir el fragmento del footer -->
+
+
+</body>
+</html>

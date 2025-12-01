@@ -43,7 +43,7 @@ public class DirectorController {
      */
     @GetMapping()
     public String listDirectores(@RequestParam(defaultValue = "1") int page, @RequestParam(required = false) String search, @RequestParam(required = false) String sort, Model model) {
-        logger.info("Solicitando la lista de todos los tickets..." + search);
+        logger.info("Solicitando la lista de todos los directores..." + search);
         Pageable pageable = PageRequest.of(page - 1, 5, getSort(sort));
         Page<Director> directores;
         int totalPages = 0;
@@ -74,14 +74,15 @@ public class DirectorController {
 
     @GetMapping("/edit")
     public String showEditForm(@RequestParam("id") Long id, Model model) {
-        logger.info("Mostrando formulario de edición para el ticket con ID {}", id);
+        logger.info("Mostrando formulario de edición para el director con ID {}", id);
         Optional<Director> directorOpt = directorRepository.findById(id);
-        if (directorOpt.isPresent()) {
+        if (!directorOpt.isPresent()) {
             logger.warn("No se encontró el director con ID {}", id);
             model.addAttribute("errorMessage", "No se encontró el director.");
         } else {
             model.addAttribute("director", directorOpt);
         }
+        model.addAttribute("director", directorOpt.get());
         model.addAttribute("aeropuertos", aeropuertoRepository.findAll()); // Agregar lista de aeropuertos para elegir
         return "director-form";
     }
