@@ -13,9 +13,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.naming.Binding;
 import java.util.List;
 import java.util.Optional;
 
@@ -80,7 +82,10 @@ public class AeropuertoController {
     }
 
     @PostMapping("/insert")
-    public String insertAeropuerto(@ModelAttribute("aeropuerto") Aeropuerto aeropuerto, RedirectAttributes redirectAttributes) {
+    public String insertAeropuerto(@ModelAttribute("aeropuerto") Aeropuerto aeropuerto, BindingResult result, RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            return "aeropuerto-form";  // Devuelve el formulario para mostrar los errores de validación
+        }
         logger.info("Insertando nuevo aeropuerto con código {}", aeropuerto.getCodIata());
         /*if (provinciaRepository.existsProvinceByCode(provincia.getCode())) {
             logger.warn("El código de la región {} ya existe.", provincia.getCode());
@@ -95,7 +100,10 @@ public class AeropuertoController {
     }
 
     @PostMapping("/update")
-    public String updateAeropuerto(@ModelAttribute("aeropuerto") Aeropuerto aeropuerto, RedirectAttributes redirectAttributes) {
+    public String updateAeropuerto(@ModelAttribute("aeropuerto") Aeropuerto aeropuerto,BindingResult result, RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            return "aeropuerto-form";  // Devuelve el formulario para mostrar los errores de validación
+        }
         logger.info("Actualizando aeropuerto con ID {}", aeropuerto.getId());
         /*if (provinciaRepository.existsProvinceByCodeAndNotId(provincia.getCode())) {
             logger.warn("El código de la región {} ya existe para otra región.", provincia.getCode());
