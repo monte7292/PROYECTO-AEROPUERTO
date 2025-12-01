@@ -16,10 +16,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.context.MessageSource;
 
 import javax.naming.Binding;
 import java.util.List;
 import java.util.Optional;
+import java.util.Locale;
 
 @Controller
 @RequestMapping("/aeropuertos")
@@ -33,11 +35,14 @@ public class AeropuertoController {
     @Autowired
     private DirectorRepository directorRepository;
 
+    @Autowired
+    private MessageSource messageSource;
+
     @GetMapping
     public String listAeropuertos(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(required = false) String search,
-            @RequestParam(required = false) String sort, Model model)
+            @RequestParam(required = false) String sort, Model model, Locale locale)
     {
         logger.info("Solicitando la lista de todos los aeropuertos..." + search);
         Pageable pageable = PageRequest.of(page - 1, 5, getSort(sort));
@@ -60,7 +65,7 @@ public class AeropuertoController {
     }
 
     @GetMapping("/new")
-    public String showNewForm(Model model) {
+    public String showNewForm(Model model, Locale locale) {
         logger.info("Mostrando formulario para nuevo aeropuerto...");
         // Cambiado a 'province' para coincidir con la plantilla Thymeleaf
         model.addAttribute("aeropuerto", new Aeropuerto());
@@ -69,7 +74,7 @@ public class AeropuertoController {
     }
 
     @GetMapping("/edit")
-    public String showEditForm(@RequestParam("id") Long id, Model model) {
+    public String showEditForm(@RequestParam("id") Long id, Model model, Locale locale) {
         logger.info("Mostrando formulario de edición para el aeropuerto con ID {}", id);
         Aeropuerto aeropuerto = aeropuertoRepository.findById(id).orElse(null);
         if (aeropuerto == null) {
@@ -82,7 +87,7 @@ public class AeropuertoController {
     }
 
     @PostMapping("/insert")
-    public String insertAeropuerto(@ModelAttribute("aeropuerto") Aeropuerto aeropuerto, BindingResult result, RedirectAttributes redirectAttributes) {
+    public String insertAeropuerto(@ModelAttribute("aeropuerto") Aeropuerto aeropuerto, BindingResult result, RedirectAttributes redirectAttributes, Locale locale) {
         if (result.hasErrors()) {
             return "aeropuerto-form";  // Devuelve el formulario para mostrar los errores de validación
         }
@@ -95,12 +100,13 @@ public class AeropuertoController {
         }*/
         aeropuertoRepository.save(aeropuerto);
         logger.info("Aeropuerto {} insertado con éxito.", aeropuerto.getCodIata());
-
+        redirectAttributes.addFlashAttribute("successMessage",
+                messageSource.getMessage("msg.aeropuerto.insert.success", null, locale));
         return "redirect:/aeropuertos"; // Redirigir a la lista de regiones
     }
 
     @PostMapping("/update")
-    public String updateAeropuerto(@ModelAttribute("aeropuerto") Aeropuerto aeropuerto,BindingResult result, RedirectAttributes redirectAttributes) {
+    public String updateAeropuerto(@ModelAttribute("aeropuerto") Aeropuerto aeropuerto,BindingResult result, RedirectAttributes redirectAttributes, Locale locale) {
         if (result.hasErrors()) {
             return "aeropuerto-form";  // Devuelve el formulario para mostrar los errores de validación
         }
@@ -112,15 +118,19 @@ public class AeropuertoController {
         }*/
         aeropuertoRepository.save(aeropuerto);
         logger.info("Aeropuerto con ID {} actualizada con éxito.", aeropuerto.getId());
-        return "redirect:/aeropuertos"; // Redirigir a la lista de regiones
+        redirectAttributes.addFlashAttribute("successMessage",
+                messageSource.getMessage("msg.aeropuerto.update.success", null, locale));
+        return "redirect:/aeropuertos";
     }
 
     @PostMapping("/delete")
-    public String deleteAeropuerto(@RequestParam("id") Long id, RedirectAttributes redirectAttributes) {
+    public String deleteAeropuerto(@RequestParam("id") Long id, RedirectAttributes redirectAttributes, Locale locale) {
         logger.info("Eliminando aeropuerto con ID {}", id);
         aeropuertoRepository.deleteById(id);
         logger.info("Aeropuerto con ID {} eliminada con éxito.", id);
-        return "redirect:/aeropuertos"; // Redirigir a la lista de regiones
+        redirectAttributes.addFlashAttribute("successMessage",
+                messageSource.getMessage("msg.aeropuerto.delete.success", null, locale));
+        return "redirect:/aeropuertos";
     }
 
     private Sort getSort(String sort) {

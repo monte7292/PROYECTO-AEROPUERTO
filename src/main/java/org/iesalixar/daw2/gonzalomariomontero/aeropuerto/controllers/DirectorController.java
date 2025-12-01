@@ -1,5 +1,6 @@
 package org.iesalixar.daw2.gonzalomariomontero.aeropuerto.controllers;
 
+import jakarta.validation.Valid;
 import org.iesalixar.daw2.gonzalomariomontero.aeropuerto.entities.Director;
 import org.iesalixar.daw2.gonzalomariomontero.aeropuerto.repositories.AeropuertoRepository;
 import org.iesalixar.daw2.gonzalomariomontero.aeropuerto.repositories.DirectorRepository;
@@ -12,8 +13,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.context.MessageSource;
+import java.util.Locale;
 
 import java.util.Optional;
 
@@ -33,6 +37,9 @@ public class DirectorController {
     @Autowired
     private AeropuertoRepository aeropuertoRepository;
 
+    @Autowired
+    private MessageSource messageSource;
+
     /**
      * Lista todos los directores y los pasa como atributo al modelo para que sean
      * accesibles en la vista `director.html`.
@@ -42,7 +49,7 @@ public class DirectorController {
      * @return El nombre de la plantilla Thymeleaf para renderizar la lista de directores.
      */
     @GetMapping()
-    public String listDirectores(@RequestParam(defaultValue = "1") int page, @RequestParam(required = false) String search, @RequestParam(required = false) String sort, Model model) {
+    public String listDirectores(@RequestParam(defaultValue = "1") int page, @RequestParam(required = false) String search, @RequestParam(required = false) String sort, Model model, Locale locale) {
         logger.info("Solicitando la lista de todos los directores..." + search);
         Pageable pageable = PageRequest.of(page - 1, 5, getSort(sort));
         Page<Director> directores;
@@ -65,25 +72,24 @@ public class DirectorController {
      * @return El nombre de la plantilla Thymeleaf para el formulario.
      */
     @GetMapping("/new")
-    public String showNewForm(Model model) {
+    public String showNewForm(Model model, Locale locale) {
         logger.info("Mostrando formulario para nuevo director.");
         model.addAttribute("director", new Director());
-        model.addAttribute("aeropuerto", aeropuertoRepository.findAll()); // Agregar lista de aeropuertos para elegir
+        model.addAttribute("aeropuertos", aeropuertoRepository.findAll());
         return "director-form";
     }
 
     @GetMapping("/edit")
-    public String showEditForm(@RequestParam("id") Long id, Model model) {
+    public String showEditForm(@RequestParam("id") Long id, Model model, Locale locale) {
         logger.info("Mostrando formulario de edición para el director con ID {}", id);
         Optional<Director> directorOpt = directorRepository.findById(id);
         if (!directorOpt.isPresent()) {
             logger.warn("No se encontró el director con ID {}", id);
             model.addAttribute("errorMessage", "No se encontró el director.");
         } else {
-            model.addAttribute("director", directorOpt);
+            model.addAttribute("director", directorOpt.get());
         }
-        model.addAttribute("director", directorOpt.get());
-        model.addAttribute("aeropuertos", aeropuertoRepository.findAll()); // Agregar lista de aeropuertos para elegir
+        model.addAttribute("aeropuertos", aeropuertoRepository.findAll());
         return "director-form";
     }
 
@@ -95,12 +101,23 @@ public class DirectorController {
      * @return Redirección a la lista de directores.
      */
     @PostMapping("/insert")
-    public String insertDirector(@ModelAttribute("director") Director director, RedirectAttributes redirectAttributes) {
+    public String insertDirector(@Valid @ModelAttribute("director") Director director,
+                                 BindingResult result,
+                                 RedirectAttributes redirectAttributes,
+                                 Model model,
+                                 Locale locale) {
         logger.info("Insertando nuevo director con nombre {}", director.getNombre());
+
+        if (result.hasErrors()) {
+            model.addAttribute("aeropuertos", aeropuertoRepository.findAll());
+            return "director-form";
+        }
 
         directorRepository.save(director);
         logger.info("Director {} insertado con éxito.", director.getNombre());
-        return "redirect:/directores"; // Redirigir a la lista de directores
+        redirectAttributes.addFlashAttribute("successMessage",
+                messageSource.getMessage("msg.director.insert.success", null, locale));
+        return "redirect:/directores";
     }
 
     /**
@@ -111,12 +128,23 @@ public class DirectorController {
      * @return Redirección a la lista de directores.
      */
     @PostMapping("/update")
-    public String updateDirector(@ModelAttribute("director") Director director, RedirectAttributes redirectAttributes) {
+    public String updateDirector(@Valid @ModelAttribute("director") Director director,
+                                 BindingResult result,
+                                 RedirectAttributes redirectAttributes,
+                                 Model model,
+                                 Locale locale) {
         logger.info("Actualizando director con ID {}", director.getId());
+
+        if (result.hasErrors()) {
+            model.addAttribute("aeropuertos", aeropuertoRepository.findAll());
+            return "director-form";
+        }
 
         directorRepository.save(director);
         logger.info("Director con ID {} actualizado con éxito.", director.getId());
-        return "redirect:/directores"; // Redirigir a la lista de directores
+        redirectAttributes.addFlashAttribute("successMessage",
+                messageSource.getMessage("msg.director.update.success", null, locale));
+        return "redirect:/directores";
     }
 
     /**
@@ -127,10 +155,12 @@ public class DirectorController {
      * @return Redirección a la lista de directores.
      */
     @PostMapping("/delete")
-    public String deleteDirector(@RequestParam("id") Long id, RedirectAttributes redirectAttributes) {
+    public String deleteDirector(@RequestParam("id") Long id, RedirectAttributes redirectAttributes, Locale locale) {
         logger.info("Eliminando director con ID {}", id);
         directorRepository.deleteById(id);
         logger.info("Director con ID {} eliminado con éxito.", id);
+        redirectAttributes.addFlashAttribute("successMessage",
+                messageSource.getMessage("msg.director.delete.success", null, locale));
         return "redirect:/directores"; // Redirigir a la lista de directores
     }
 

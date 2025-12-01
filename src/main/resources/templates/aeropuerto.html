@@ -26,9 +26,14 @@
 
     <h1 th:text="#{msg.aeropuerto.title}"></h1>
 
-    <!-- Muestra un mensaje de error si hay algún problema -->
+    <!-- Mensaje de error -->
     <div th:if="${errorMessage}" class="alert alert-danger">
         <p th:text="${errorMessage}"></p>
+    </div>
+
+    <!-- Mensaje de éxito -->
+    <div th:if="${successMessage}" class="alert alert-success">
+        <p th:text="${successMessage}"></p>
     </div>
 
     <!-- Muestra la lista de aeropuertos en una tabla -->

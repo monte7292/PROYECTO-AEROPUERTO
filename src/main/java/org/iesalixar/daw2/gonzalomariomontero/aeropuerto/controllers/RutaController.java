@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Locale;
 
 @Controller
 @RequestMapping("/rutas")
@@ -33,7 +34,7 @@ public class RutaController {
     public String listRutas(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(required = false) String search,
-            @RequestParam(required = false) String sort, Model model)
+            @RequestParam(required = false) String sort, Model model, Locale locale)
     {
         logger.info("Solicitando la lista de todos las rutas..." + search);
         Pageable pageable = PageRequest.of(page - 1, 5, getSort(sort));
@@ -51,7 +52,7 @@ public class RutaController {
     }
 
     @GetMapping("/new")
-    public String showNewForm(Model model) {
+    public String showNewForm(Model model, Locale locale) {
         logger.info("Mostrando formulario para nueva ruta...");
         // Cambiado a 'province' para coincidir con la plantilla Thymeleaf
         model.addAttribute("ruta", new Ruta());
@@ -59,7 +60,7 @@ public class RutaController {
     }
 
     @GetMapping("/edit")
-    public String showEditForm(@RequestParam("id") Long id, Model model) {
+    public String showEditForm(@RequestParam("id") Long id, Model model, Locale locale) {
         logger.info("Mostrando formulario de edición para la ruta con ID {}", id);
         Ruta ruta = null;
         Optional<Ruta> rutaOpt = rutaRepository.findById(id);
@@ -73,7 +74,7 @@ public class RutaController {
     }
 
     @PostMapping("/insert")
-    public String insertRuta(@ModelAttribute("ruta") Ruta ruta, RedirectAttributes redirectAttributes) {
+    public String insertRuta(@ModelAttribute("ruta") Ruta ruta, RedirectAttributes redirectAttributes, Locale locale) {
         logger.info("Insertando nueva ruta con código {}", ruta.getId());
         /*if (provinciaRepository.existsProvinceByCode(provincia.getCode())) {
             logger.warn("El código de la región {} ya existe.", provincia.getCode());
@@ -88,7 +89,7 @@ public class RutaController {
     }
 
     @PostMapping("/update")
-    public String updateRuta(@ModelAttribute("ruta") Ruta ruta, RedirectAttributes redirectAttributes) {
+    public String updateRuta(@ModelAttribute("ruta") Ruta ruta, RedirectAttributes redirectAttributes, Locale locale) {
         logger.info("Actualizando ruta con ID {}", ruta.getId());
         /*if (provinciaRepository.existsProvinceByCodeAndNotId(provincia.getCode())) {
             logger.warn("El código de la región {} ya existe para otra región.", provincia.getCode());
@@ -101,7 +102,7 @@ public class RutaController {
     }
 
     @PostMapping("/delete")
-    public String deleteRuta(@RequestParam("id") Long id, RedirectAttributes redirectAttributes) {
+    public String deleteRuta(@RequestParam("id") Long id, RedirectAttributes redirectAttributes, Locale locale) {
         logger.info("Eliminando ruta con ID {}", id);
         rutaRepository.deleteById(id);
         logger.info("Ruta con ID {} eliminada con éxito.", id);

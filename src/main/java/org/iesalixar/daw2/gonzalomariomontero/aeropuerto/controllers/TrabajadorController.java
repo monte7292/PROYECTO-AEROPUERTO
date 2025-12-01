@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
+import java.util.Locale;
 
 /**
  * Controlador que maneja las operaciones CRUD para la entidad `Trabajador`.
@@ -42,7 +43,7 @@ public class TrabajadorController {
      * @return El nombre de la plantilla Thymeleaf para renderizar la lista de trabajadores.
      */
     @GetMapping()
-    public String listTrabajadores(@RequestParam(defaultValue = "1") int page, @RequestParam(required = false) String search, @RequestParam(required = false) String sort, Model model) {
+    public String listTrabajadores(@RequestParam(defaultValue = "1") int page, @RequestParam(required = false) String search, @RequestParam(required = false) String sort, Model model, Locale locale) {
         logger.info("Solicitando la lista de todos los trabajadores..." + search);
         Pageable pageable = PageRequest.of(page - 1, 5, getSort(sort));
         Page<Trabajador> trabajador;
@@ -65,7 +66,7 @@ public class TrabajadorController {
      * @return El nombre de la plantilla Thymeleaf para el formulario.
      */
     @GetMapping("/new")
-    public String showNewForm(Model model) {
+    public String showNewForm(Model model, Locale locale) {
         logger.info("Mostrando formulario para nuevo trabajador.");
         model.addAttribute("trabajador", new Trabajador());
         model.addAttribute("aviones", avionRepository.findAll()); // Agregar lista de aviones para elegir
@@ -73,7 +74,7 @@ public class TrabajadorController {
     }
 
     @GetMapping("/edit")
-    public String showEditForm(@RequestParam("id") Long id, Model model) {
+    public String showEditForm(@RequestParam("id") Long id, Model model, Locale locale) {
         logger.info("Mostrando formulario de edición para el trabajador con ID {}", id);
         Optional<Trabajador> trabajadorOpt = trabajadorRepository.findById(id);
         if (trabajadorOpt.isPresent()) {
@@ -94,7 +95,7 @@ public class TrabajadorController {
      * @return Redirección a la lista de trabajadores.
      */
     @PostMapping("/insert")
-    public String insertTrabajador(@ModelAttribute("trabajador") Trabajador trabajador, RedirectAttributes redirectAttributes) {
+    public String insertTrabajador(@ModelAttribute("trabajador") Trabajador trabajador, RedirectAttributes redirectAttributes, Locale locale) {
         logger.info("Insertando nuevo trabajador con nombre y apellido {}", trabajador.getNombre(), trabajador.getApellidos());
 
         trabajadorRepository.save(trabajador);
@@ -110,7 +111,7 @@ public class TrabajadorController {
      * @return Redirección a la lista de trabajadores.
      */
     @PostMapping("/update")
-    public String updateTrabajador(@ModelAttribute("trabajador") Trabajador trabajador, RedirectAttributes redirectAttributes) {
+    public String updateTrabajador(@ModelAttribute("trabajador") Trabajador trabajador, RedirectAttributes redirectAttributes, Locale locale) {
         logger.info("Actualizando trabajador con ID {}", trabajador.getNombre(), trabajador.getApellidos());
 
         trabajadorRepository.save(trabajador);
@@ -126,7 +127,7 @@ public class TrabajadorController {
      * @return Redirección a la lista de trabajadores.
      */
     @PostMapping("/delete")
-    public String deleteTrabajador(@RequestParam("id") Long id, RedirectAttributes redirectAttributes) {
+    public String deleteTrabajador(@RequestParam("id") Long id, RedirectAttributes redirectAttributes, Locale locale) {
         logger.info("Eliminando trabajador con ID {}", id);
         trabajadorRepository.deleteById(id);
         logger.info("Trabajador con ID {} eliminado con éxito.", id);

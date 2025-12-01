@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Locale;
 
 /**
  * Controlador que maneja las operaciones CRUD para la entidad `Ticket`.
@@ -46,7 +47,7 @@ public class TicketController {
      * @return El nombre de la plantilla Thymeleaf para renderizar la lista de tickets.
      */
     @GetMapping()
-    public String listTickets(@RequestParam(defaultValue = "1") int page, @RequestParam(required = false) String search, @RequestParam(required = false) String sort, Model model) {
+    public String listTickets(@RequestParam(defaultValue = "1") int page, @RequestParam(required = false) String search, @RequestParam(required = false) String sort, Model model, Locale locale) {
         logger.info("Solicitando la lista de todos los tickets..." + search);
         Pageable pageable = PageRequest.of(page - 1, 5, getSort(sort));
         Page<Ticket> tickets;
@@ -69,7 +70,7 @@ public class TicketController {
      * @return El nombre de la plantilla Thymeleaf para el formulario.
      */
     @GetMapping("/new")
-    public String showNewForm(Model model) {
+    public String showNewForm(Model model, Locale locale) {
         logger.info("Mostrando formulario para nuevo ticket.");
         model.addAttribute("ticket", new Ticket());
         model.addAttribute("rutas", rutaRepository.findAll()); // Agregar lista de rutas para elegir
@@ -78,7 +79,7 @@ public class TicketController {
     }
 
     @GetMapping("/edit")
-    public String showEditForm(@RequestParam("id") Long id, Model model) {
+    public String showEditForm(@RequestParam("id") Long id, Model model, Locale locale) {
         logger.info("Mostrando formulario de edición para el ticket con ID {}", id);
         Optional<Ticket> ticketOpt = ticketRepository.findById(id);
         if (ticketOpt.isPresent()) {
@@ -100,7 +101,7 @@ public class TicketController {
      * @return Redirección a la lista de tickets.
      */
     @PostMapping("/insert")
-    public String insertTicket(@ModelAttribute("ticket") Ticket ticket, RedirectAttributes redirectAttributes) {
+    public String insertTicket(@ModelAttribute("ticket") Ticket ticket, RedirectAttributes redirectAttributes, Locale locale) {
         logger.info("Insertando nuevo ticket con asiento {}", ticket.getAsiento());
        /* if (ticketRepository.existsTicketByCode(ticket.getAsiento())) {
             logger.warn("El código de la provincia {} ya existe.", province.getCode());
@@ -123,7 +124,7 @@ public class TicketController {
      * @return Redirección a la lista de tickets.
      */
     @PostMapping("/update")
-    public String updateTicket(@ModelAttribute("ticket") Ticket ticket, RedirectAttributes redirectAttributes) {
+    public String updateTicket(@ModelAttribute("ticket") Ticket ticket, RedirectAttributes redirectAttributes, Locale locale) {
         logger.info("Actualizando ticket con ID {}", ticket.getId());
         /*
        if (provinceRepository.existsProvinceByCodeAndNotId(province.getCode(), province.getId())) {
@@ -147,7 +148,7 @@ public class TicketController {
      * @return Redirección a la lista de tickets.
      */
     @PostMapping("/delete")
-    public String deleteTicket(@RequestParam("id") Long id, RedirectAttributes redirectAttributes) {
+    public String deleteTicket(@RequestParam("id") Long id, RedirectAttributes redirectAttributes, Locale locale) {
         logger.info("Eliminando ticket con ID {}", id);
         ticketRepository.deleteById(id);
         logger.info("Ticket con ID {} eliminado con éxito.", id);

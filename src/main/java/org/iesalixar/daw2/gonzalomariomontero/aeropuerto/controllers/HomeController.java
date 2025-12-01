@@ -2,10 +2,11 @@ package org.iesalixar.daw2.gonzalomariomontero.aeropuerto.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import java.util.Locale;
 @Controller
 public class HomeController {
     @GetMapping("/")
-    public String home(Model model) {
+    public String home(Model model, Locale locale) {
         return "index";
     }
 }

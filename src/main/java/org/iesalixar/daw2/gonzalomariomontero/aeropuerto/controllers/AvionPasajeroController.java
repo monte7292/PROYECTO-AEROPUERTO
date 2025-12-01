@@ -42,7 +42,7 @@ public class AvionPasajeroController {
      * @return El nombre de la plantilla Thymeleaf que muestra los aviones.
      */
     @GetMapping
-    public String listAviones(Model model) {
+    public String listAviones(Model model, Locale locale) {
         logger.info("Solicitando la lista de todos los aviones...");
         List<Avion> listAviones = null;
         try {
@@ -63,7 +63,7 @@ public class AvionPasajeroController {
      * @return El nombre de la plantilla Thymeleaf para el formulario de avión.
      */
     @GetMapping("/new")
-    public String showNewForm(Model model) {
+    public String showNewForm(Model model, Locale locale) {
         logger.info("Mostrando formulario para nuevo avión.");
         List<Pasajero> listPasajeros = pasajeroRepository.findAll();
         model.addAttribute("avion", new Avion());
@@ -113,7 +113,7 @@ public class AvionPasajeroController {
      * @return El nombre de la plantilla Thymeleaf para el formulario de avión.
      */
     @GetMapping("/edit")
-    public String showEditForm(@RequestParam("id") Long id, Model model) {
+    public String showEditForm(@RequestParam("id") Long id, Model model, Locale locale) {
         logger.info("Mostrando formulario de edición para el avión con ID {}",
                 id);
         Optional<Avion> avion = avionRepository.findById(id);
@@ -171,7 +171,7 @@ public class AvionPasajeroController {
      */
     @PostMapping("/delete")
     public String deleteAvion(@RequestParam("id") Long id, RedirectAttributes
-            redirectAttributes) {
+            redirectAttributes, Locale locale) {
         logger.info("Eliminando avión con ID {}", id);
         try {
             avionRepository.deleteById(id);
@@ -192,7 +192,7 @@ public class AvionPasajeroController {
      * @return El nombre de la plantilla Thymeleaf para los detalles del avión.
      */
     @GetMapping("/detail")
-    public String showAvionDetail(@RequestParam("id") Long id, Model model) {
+    public String showAvionDetail(@RequestParam("id") Long id, Model model, Locale locale) {
         logger.info("Mostrando detalles para el avión con ID {}", id);
         Optional<Avion> avionOptional = avionRepository.findById(id);
 
@@ -220,7 +220,7 @@ public class AvionPasajeroController {
     de la búsqueda.
      */
     @PostMapping("/addExistingPasajero")
-    public String searchPasajero(@RequestParam("pasajeroSearch") String pasajeroSearch, @RequestParam("avionId") Long avionId, Model model) {
+    public String searchPasajero(@RequestParam("pasajeroSearch") String pasajeroSearch, @RequestParam("avionId") Long avionId, Model model, Locale locale) {
         logger.info("Buscando pasajeros que coincidan con '{}'", pasajeroSearch);
         List<Pasajero> searchResults = pasajeroRepository.findPasajeroByDocumento(pasajeroSearch);
         Optional<Avion> avionOpt = avionRepository.findById(avionId);
@@ -347,7 +347,7 @@ public class AvionPasajeroController {
     @PostMapping("/removeProduct")
     public String removeProductFromTicket(@RequestParam("avionId") Long
                                                   avionId, @RequestParam("pasajeroId") Long pasajeroId, RedirectAttributes
-                                                  redirectAttributes) {
+                                                  redirectAttributes, Locale locale) {
         logger.info("Eliminando pasajero con ID {} del avión con ID {}",
                 pasajeroId, avionId);
         try {

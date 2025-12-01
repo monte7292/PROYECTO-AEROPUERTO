@@ -50,14 +50,14 @@
         <!-- Nombre -->
         <div>
             <label for="nombre" class="form-label" th:text="#{msg.director.nombre}"></label>
-            <input type="text" th:field="*{nombre}" id="nombre" class="form-control" />
+            <input type="text" th:field="*{nombre}" id="nombre" class="form-control" required maxlength="100" />
             <div th:if="${#fields.hasErrors('nombre')}" class="text-danger" th:errors="*{nombre}"></div>
         </div>
 
         <!-- Apellidos -->
         <div>
             <label for="apellidos" class="form-label" th:text="#{msg.director.apellidos}"></label>
-            <input type="text" th:field="*{apellidos}" id="apellidos" class="form-control" />
+            <input type="text" th:field="*{apellidos}" id="apellidos" class="form-control" required maxlength="100" />
             <div th:if="${#fields.hasErrors('apellidos')}" class="text-danger" th:errors="*{apellidos}"></div>
         </div>
 

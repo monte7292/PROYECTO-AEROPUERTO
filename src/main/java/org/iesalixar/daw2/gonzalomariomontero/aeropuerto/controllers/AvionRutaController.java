@@ -22,7 +22,8 @@ import java.util.Locale;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/aviones")
+//AL SER MUHCOS A MUCHOS AL GENERAR LA ENTIDAD MUCHOS A MUCHOS LA RUTA SERÍA TAL QUE ASI:
+@RequestMapping("/aviones/rutas")
 public class AvionRutaController {
 
     private static final Logger logger =
@@ -44,7 +45,7 @@ public class AvionRutaController {
      * @return El nombre de la plantilla Thymeleaf que muestra los aviones.
      */
     @GetMapping
-    public String listAviones(Model model) {
+    public String listAviones(Model model, Locale locale) {
         logger.info("Solicitando la lista de todos los aviones...");
         List<Avion> listAviones = null;
         try {
@@ -65,7 +66,7 @@ public class AvionRutaController {
      * @return El nombre de la plantilla Thymeleaf para el formulario de avión.
      */
     @GetMapping("/new")
-    public String showNewForm(Model model) {
+    public String showNewForm(Model model, Locale locale) {
         logger.info("Mostrando formulario para nuevo avion.");
         List<Ruta> listRutas = rutaRepository.findAll();
         model.addAttribute("avion", new Avion());
@@ -104,7 +105,7 @@ public class AvionRutaController {
             String errorMessage = messageSource.getMessage("msg.avion-controller.insert.error", null, locale);
             redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
         }
-        return "redirect:/aviones";
+        return "redirect:/aviones/rutas";
     }
 
     /**
@@ -115,12 +116,12 @@ public class AvionRutaController {
      * @return El nombre de la plantilla Thymeleaf para el formulario de avión.
      */
     @GetMapping("/edit")
-    public String showEditForm(@RequestParam("id") Long id, Model model) {
+    public String showEditForm(@RequestParam("id") Long id, Model model, Locale locale) {
         logger.info("Mostrando formulario de edición para el avión con ID {}", id);
         Optional<Avion> avion = avionRepository.findById(id);
         if (avion.isEmpty()) {
             logger.warn("No se encontró el avión con ID {}", id);
-            return "redirect:/aviones";
+            return "redirect:/aviones/rutas";
         }
         List<Ruta> listRutas = rutaRepository.findAll();
         model.addAttribute("avion", avion.get());
@@ -158,7 +159,7 @@ public class AvionRutaController {
             String errorMessage = messageSource.getMessage("msg.avion-controller.update.error", null, locale);
             redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
         }
-        return "redirect:/aviones";
+        return "redirect:/aviones/rutas";
     }
 
     /**
@@ -169,7 +170,7 @@ public class AvionRutaController {
      * @return Redirección a la lista de aviones.
      */
     @PostMapping("/delete")
-    public String deleteAvion(@RequestParam("id") Long id, RedirectAttributes redirectAttributes) {
+    public String deleteAvion(@RequestParam("id") Long id, RedirectAttributes redirectAttributes, Locale locale) {
         logger.info("Eliminando avión con ID {}", id);
         try {
             avionRepository.deleteById(id);
@@ -179,7 +180,7 @@ public class AvionRutaController {
                     e.getMessage());
             redirectAttributes.addFlashAttribute("errorMessage", "Error al eliminar el avión.");
         }
-        return "redirect:/aviones";
+        return "redirect:/aviones/rutas";
     }
 
     /**
@@ -190,13 +191,13 @@ public class AvionRutaController {
      * @return El nombre de la plantilla Thymeleaf para los detalles del avión.
      */
     @GetMapping("/detail")
-    public String showAvionDetail(@RequestParam("id") Long id, Model model) {
+    public String showAvionDetail(@RequestParam("id") Long id, Model model, Locale locale) {
         logger.info("Mostrando detalles para el avión con ID {}", id);
         Optional<Avion> avionOptional = avionRepository.findById(id);
 
         if (avionOptional.isEmpty()) {
             logger.warn("No se encontró el avión con ID {}", id);
-            return "redirect:/aviones";
+            return "redirect:/aviones/rutas";
         }
 
         Avion avion = avionOptional.get();
@@ -219,7 +220,7 @@ public class AvionRutaController {
     de la búsqueda.
      */
     @PostMapping("/addExistingRuta")
-    public String searchRuta(@RequestParam("rutaSearch") Aeropuerto rutaSearch1, @RequestParam("rutaSearch") Aeropuerto rutaSearch2, @RequestParam("avionId") Long avionId, Model model) {
+    public String searchRuta(@RequestParam("rutaSearch") Aeropuerto rutaSearch1, @RequestParam("rutaSearch") Aeropuerto rutaSearch2, @RequestParam("avionId") Long avionId, Model model, Locale locale) {
         logger.info("Buscando rutas que coincidan con '{}' '{}'", rutaSearch1, rutaSearch2);
         List<Ruta> searchResults = rutaRepository.findRutaByAeropuertoOrigenAndAeropuertoDestino(rutaSearch1, rutaSearch2);
         Optional<Avion> avionOpt = avionRepository.findById(avionId);
@@ -229,7 +230,7 @@ public class AvionRutaController {
             model.addAttribute("rutas", avionOpt.get().getRutas());
         } else {
             model.addAttribute("errorMessage", "No se encontró el avión.");
-            return "redirect:/aviones";
+            return "redirect:/aviones/rutas";
         }
 
         model.addAttribute("searchResults", searchResults);
@@ -267,13 +268,13 @@ public class AvionRutaController {
             logger.error("Violación de integridad de datos al insertar la ruta: {}", e.getMessage());
             String errorMessage = messageSource.getMessage("msg.avion-controller.insert.integrity-violation", null, locale);
             redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
-            return "redirect:/aviones/detail?id=" + avionId;
+            return "redirect:/aviones/rutas/detail?id=" + avionId;
         } catch (Exception e) {
             logger.error("Error al añadir la ruta al avión: {}",
                     e.getMessage());
             redirectAttributes.addFlashAttribute("errorMessage", "Error al añadir la ruta.");
         }
-        return "redirect:/aviones/detail?id=" + avionId;
+        return "redirect:/aviones/rutas/detail?id=" + avionId;
     }
 
 
@@ -292,7 +293,7 @@ public class AvionRutaController {
     public String addNewRutaToAvion(@RequestParam("avionId") Long avionId, @RequestParam("rutaAeropuertoOrigen") Aeropuerto rutaAeropuertoOrigen,
                                         @RequestParam("rutaAeropuertoDestino") Aeropuerto rutaAeropuertoDestino,
                                         @RequestParam("rutaDuracion") int rutaDuracion,
-                                        @RequestParam("rutaDistancia") int rutaDistancia, RedirectAttributes redirectAttributes) {
+                                        @RequestParam("rutaDistancia") int rutaDistancia, RedirectAttributes redirectAttributes, Locale locale) {
         logger.info("Añadiendo nueva ruta '{}' con origen {}, destino {}, duración {}, distancia {} al avion con ID {}", rutaAeropuertoOrigen, rutaAeropuertoDestino, rutaDuracion, rutaDistancia, avionId);
         try {
             Optional<Avion> avionOpt = avionRepository.findById(avionId);
@@ -329,7 +330,7 @@ public class AvionRutaController {
                     e.getMessage());
             redirectAttributes.addFlashAttribute("errorMessage", "Error al añadir en el avión la nueva ruta.");
         }
-        return "redirect:/aviones/detail?id=" + avionId;
+        return "redirect:/aviones/rutas/detail?id=" + avionId;
     }
 
 
@@ -344,7 +345,7 @@ public class AvionRutaController {
     @PostMapping("/removeRuta")
     public String removeRutaFromAvion(@RequestParam("avionId") Long
                                                   avionId, @RequestParam("rutaId") Long rutaId, RedirectAttributes
-                                                  redirectAttributes) {
+                                                  redirectAttributes, Locale locale) {
         logger.info("Eliminando ruta con ID {} del avión con ID {}",
                 rutaId, avionId);
         try {
@@ -367,6 +368,6 @@ public class AvionRutaController {
                     e.getMessage());
             redirectAttributes.addFlashAttribute("errorMessage"," Error al eliminar la ruta.");
         }
-        return "redirect:/aviones/detail?id=" + avionId;
+        return "redirect:/aviones/rutas/detail?id=" + avionId;
     }
 }
