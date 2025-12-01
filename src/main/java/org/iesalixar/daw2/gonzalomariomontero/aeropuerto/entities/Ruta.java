@@ -45,7 +45,9 @@ public class Ruta {
     @ManyToMany(mappedBy = "rutas")
     private List<Avion> aviones;
 
-    public Ruta(int duracion, int distancia) {
+    public Ruta(Aeropuerto aeropuertoOrigen, Aeropuerto aeropuertoDestino, int duracion, int distancia) {
+        this.aeropuertoOrigen = aeropuertoOrigen;
+        this.aeropuertoDestino = aeropuertoDestino;
         this.duracion = duracion;
         this.distancia = distancia;
     }
