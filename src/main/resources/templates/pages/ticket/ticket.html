@@ -54,7 +54,7 @@
         <tr th:each="ticket : ${listTickets}">
             <td th:text="${ticket.asiento}"></td>
             <td class="text-center" th:text="${ticket.precio} + ' €'"></td>
-            <td class="text-center" th:text="${ticket.fechaCompra}"></td>
+            <td class="text-center" th:text="${#dates.format(ticket.fechaCompra, 'yyyy-MM-dd')}"></td>
             <td class="text-center" th:text="${ticket.ruta.aeropuertoDestino.nombre} + ' - ' + ${ticket.ruta.aeropuertoOrigen.nombre}"></td>
             <td class="text-center" th:text="${ticket.pasajero.nombre} + ' ' + ${ticket.pasajero.apellidos}"></td>
             <td class="text-center">
