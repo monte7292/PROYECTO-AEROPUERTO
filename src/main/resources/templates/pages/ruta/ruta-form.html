@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head ('Insertar/Actualizar Ruta')"></head>
+<body>
+<header th:replace="fragments/header :: header"></header>
+
+<main class="container mt-5">
+    <h1 th:text="${ruta.id} == null ? 'Nueva ruta' : 'Editar ruta'"></h1>
+
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+    <form th:action="${ruta.id} == null ? @{/rutas/insert} : @{/rutas/update}"
+          th:object="${ruta}" method="post" class="mt-4">
+        <input type="hidden" th:field="*{id}" />
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="origen" class="form-label">Aeropuerto origen</label>
+                <select th:field="*{aeropuertoOrigen.id}" id="origen" class="form-select">
+                    <option th:each="a : ${listAeropuertos}" th:value="${a.id}" th:text="${a.nombre}"></option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="destino" class="form-label">Aeropuerto destino</label>
+                <select th:field="*{aeropuertoDestino.id}" id="destino" class="form-select">
+                    <option th:each="a : ${listAeropuertos}" th:value="${a.id}" th:text="${a.nombre}"></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="duracion" class="form-label">Duración</label>
+                <input type="number" th:field="*{duracion}" id="duracion" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label for="distancia" class="form-label">Distancia</label>
+                <input type="number" th:field="*{distancia}" id="distancia" class="form-control" />
+            </div>
+        </div>
+
+        <div>
+            <button type="submit" class="btn btn-primary" th:text="${ruta.id} == null ? 'Crear' : 'Actualizar'"></button>
+            <a th:href="@{/rutas}" class="btn btn-secondary">Volver</a>
+        </div>
+    </form>
+</main>
+
+</body>
+</html>

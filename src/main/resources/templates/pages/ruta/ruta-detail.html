@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head ('Detalles de la Ruta')}"></head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main class="container mt-5">
+    <h1 th:text="'Ruta - ' + ${ruta.id}"></h1>
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label class="form-label">Origen</label>
+            <p th:text="${ruta.aeropuertoOrigen.nombre}"></p>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Destino</label>
+            <p th:text="${ruta.aeropuertoDestino.nombre}"></p>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label class="form-label">Duración</label>
+            <p th:text="${ruta.duracion}"></p>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label">Distancia</label>
+            <p th:text="${ruta.distancia}"></p>
+        </div>
+    </div>
+
+    <h3>Aviones asociados</h3>
+    <table class="table table-bordered mt-3">
+        <thead>
+        <tr>
+            <th>Modelo</th>
+            <th>Fabricante</th>
+            <th>Capacidad</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="avion : ${aviones}">
+            <td th:text="${avion.modelo}"></td>
+            <td th:text="${avion.fabricante}"></td>
+            <td th:text="${avion.capacidad}"></td>
+            <td th:text="${avion.estado}"></td>
+            <td>
+                <form class="d-inline" method="post" th:action="@{/rutas/removeAvion}">
+                    <input name="rutaId" th:value="${ruta.id}" type="hidden"/>
+                    <input name="avionId" th:value="${avion.id}" type="hidden"/>
+                    <button class="btn btn-danger btn-sm" type="submit">Quitar</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h3>Añadir avión existente</h3>
+    <form class="mb-3" method="post" th:action="@{/rutas/addExistingAvion}">
+        <input name="rutaId" th:value="${ruta.id}" type="hidden"/>
+        <div class="mb-3">
+            <label class="form-label" for="avionSearch">Buscar por modelo</label>
+            <input class="form-control" id="avionSearch" name="avionSearch" placeholder="Modelo" type="text">
+        </div>
+        <button class="btn btn-primary" type="submit">Buscar</button>
+    </form>
+
+    <div th:if="${searchResults != null}">
+        <h4>Resultados</h4>
+        <ul>
+            <li th:each="avion : ${searchResults}">
+                <span th:text="${avion.modelo}"></span>
+                <form class="d-inline" method="post" th:action="@{/rutas/addAvion}">
+                    <input name="rutaId" th:value="${ruta.id}" type="hidden"/>
+                    <input name="avionId" th:value="${avion.id}" type="hidden"/>
+                    <button class="btn btn-success btn-sm" type="submit">Añadir</button>
+                </form>
+            </li>
+        </ul>
+    </div>
+
+    <h3>Añadir nuevo avión</h3>
+    <form class="mb-3" method="post" th:action="@{/rutas/addNewAvion}">
+        <input name="rutaId" th:value="${ruta.id}" type="hidden"/>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label class="form-label" for="avionModelo">Modelo</label>
+                <input class="form-control" id="avionModelo" name="avionModelo" required type="text">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label class="form-label" for="avionFabricante">Fabricante</label>
+                <input class="form-control" id="avionFabricante" name="avionFabricante" required type="text">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label class="form-label" for="avionCapacidad">Capacidad</label>
+                <input class="form-control" id="avionCapacidad" name="avionCapacidad" required type="number">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label class="form-label" for="avionEstado">Estado</label>
+                <input class="form-control" id="avionEstado" name="avionEstado" required type="text">
+            </div>
+            <div class="col-md-8 mb-3">
+                <label class="form-label" for="avionAeropuertoId">Aeropuerto</label>
+                <select class="form-select" id="avionAeropuertoId" name="avionAeropuertoId">
+                    <option th:each="a : ${listAeropuertos}" th:value="${a.id}" th:text="${a.nombre}"></option>
+                </select>
+            </div>
+        </div>
+        <button class="btn btn-success" type="submit">Crear y añadir</button>
+    </form>
+
+    <a class="btn btn-secondary mt-3" th:href="@{/rutas}">Volver</a>
+</main>
+
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+</body>
+</html>

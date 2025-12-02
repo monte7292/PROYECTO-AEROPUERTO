@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head ('Listado de rutas')"></head>
+<style>
+    /* Margen superior personalizado */
+    .mt-10 {
+        margin-top: 4.5rem; /* Ajusta el valor si quieres más o menos */
+    }
+</style>
+<body>
+<header th:replace="fragments/header :: header"></header>
+
+<main class="container mt-10">
+    <!-- Banner principal con imagen de fondo -->
+    <div class="p-5 mb-5 text-white rounded-3 shadow" style="background: url('https://images.pexels.com/photos/3184306/pexels-photo-3184306.jpeg') no-repeat center center; background-size: cover;">
+        <div class="container py-4 px-4" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 15px;">
+            <h1 class="display-4 fw-bold" th:text="#{msg.pasajero.title}"></h1>
+            <p class="col-md-8 fs-5" th:text="#{msg.pasajero.descripcion}"></p>
+        </div>
+    </div>
+    <h1>Gestión de Rutas</h1>
+
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+
+    <div th:replace="pages/ruta/ruta-filter :: rutaFilter(${search}, ${sort}, ${currentPage})"></div>
+
+    <table class="table mt-3">
+        <thead>
+        <tr>
+            <th>Origen</th>
+            <th>Destino</th>
+            <th>Duración</th>
+            <th>Distancia</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="ruta : ${listRutas}">
+            <td th:text="${ruta.aeropuertoOrigen.nombre}"></td>
+            <td th:text="${ruta.aeropuertoDestino.nombre}"></td>
+            <td th:text="${ruta.duracion}"></td>
+            <td th:text="${ruta.distancia}"></td>
+            <td>
+                <a th:href="@{/rutas/edit(id=${ruta.id})}" class="btn btn-primary btn-sm">Editar</a>
+                <a th:href="@{/rutas/detail(id=${ruta.id})}" class="btn btn-info btn-sm">Detalle</a>
+                <form th:action="@{/rutas/delete}" method="post" class="d-inline">
+                    <input type="hidden" name="id" th:value="${ruta.id}" />
+                    <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <nav aria-label="Page navigation" class="mt-4" th:if="${totalPages > 1}">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                <a aria-label="Previous" class="page-link" th:href="@{/rutas(page=${currentPage - 1})}">&laquo;</a>
+            </li>
+            <li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}" th:classappend="${i == currentPage} ? 'active'">
+                <a class="page-link" th:href="@{/rutas(page=${i})}" th:text="${i}"></a>
+            </li>
+            <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                <a aria-label="Next" class="page-link" th:href="@{/rutas(page=${currentPage + 1})}">&raquo;</a>
+            </li>
+        </ul>
+    </nav>
+
+    <a class="btn btn-success mt-3" th:href="@{/rutas/new}">Nueva ruta</a>
+    <a class="btn btn-secondary mt-3" th:href="@{/}">Volver</a>
+</main>
+
+</body>
+</html>
