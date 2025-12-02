@@ -1,4 +1,5 @@
 package org.iesalixar.daw2.gonzalomariomontero.aeropuerto.controllers;
+import jakarta.validation.Valid;
 import org.iesalixar.daw2.gonzalomariomontero.aeropuerto.entities.Ticket;
 import org.iesalixar.daw2.gonzalomariomontero.aeropuerto.repositories.TicketRepository;
 import org.iesalixar.daw2.gonzalomariomontero.aeropuerto.repositories.RutaRepository;
@@ -11,7 +12,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
+import org.springframework.context.MessageSource;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -38,6 +41,9 @@ public class TicketController {
     @Autowired
     private PasajeroRepository pasajeroRepository;
 
+    @Autowired
+    private MessageSource messageSource;
+
     /**
      * Lista todos los tickets y las pasa como atributo al modelo para que sean
      * accesibles en la vista `ticket.html`.
@@ -60,7 +66,7 @@ public class TicketController {
         model.addAttribute("currentPage", page);
         model.addAttribute("search", search);
         model.addAttribute("sort", sort);
-        return "ticket"; // Nombre de la plantilla Thymeleaf a renderizar
+        return "pages/ticket/ticket"; // Nombre de la plantilla Thymeleaf a renderizar
     }
 
     /**
@@ -75,22 +81,22 @@ public class TicketController {
         model.addAttribute("ticket", new Ticket());
         model.addAttribute("rutas", rutaRepository.findAll()); // Agregar lista de rutas para elegir
         model.addAttribute("pasajeros", pasajeroRepository.findAll()); // Agregar lista de rutas para elegir
-        return "ticket-form";
+        return "pages/ticket/ticket-form";
     }
 
     @GetMapping("/edit")
     public String showEditForm(@RequestParam("id") Long id, Model model, Locale locale) {
         logger.info("Mostrando formulario de edición para el ticket con ID {}", id);
         Optional<Ticket> ticketOpt = ticketRepository.findById(id);
-        if (ticketOpt.isPresent()) {
+        if (!ticketOpt.isPresent()) {
             logger.warn("No se encontró el ticket con ID {}", id);
             model.addAttribute("errorMessage", "No se encontró el ticket.");
         } else {
-            model.addAttribute("ticket", ticketOpt);
+            model.addAttribute("ticket", ticketOpt.get());
         }
         model.addAttribute("rutas", rutaRepository.findAll()); // Agregar lista de rutas para elegir
         model.addAttribute("pasajeros", pasajeroRepository.findAll()); // Agregar lista de pasajeros para elegir
-        return "ticket-form";
+        return "pages/ticket/ticket-form";
     }
 
     /**
@@ -101,18 +107,15 @@ public class TicketController {
      * @return Redirección a la lista de tickets.
      */
     @PostMapping("/insert")
-    public String insertTicket(@ModelAttribute("ticket") Ticket ticket, RedirectAttributes redirectAttributes, Locale locale) {
+    public String insertTicket(@Valid @ModelAttribute("ticket") Ticket ticket, Model model, BindingResult result, RedirectAttributes redirectAttributes, Locale locale) {
         logger.info("Insertando nuevo ticket con asiento {}", ticket.getAsiento());
-       /* if (ticketRepository.existsTicketByCode(ticket.getAsiento())) {
-            logger.warn("El código de la provincia {} ya existe.", province.getCode());
-            redirectAttributes.addFlashAttribute("errorMessage", "El código de la provincia ya existe.");
-            return "redirect:/provinces/new";
-        }*/
-
-        //Esta comprobación no tiene mucho sentido con Ticket
+        if(result.hasErrors()){
+            return "pages/ticket/ticket-form";
+        }
 
         ticketRepository.save(ticket);
         logger.info("Ticket {} insertada con éxito.", ticket.getAsiento());
+        redirectAttributes.addFlashAttribute("successMessage", messageSource.getMessage("msg.ticket.insert.success", null, locale));
         return "redirect:/tickets"; // Redirigir a la lista de tickets
     }
 
@@ -124,19 +127,15 @@ public class TicketController {
      * @return Redirección a la lista de tickets.
      */
     @PostMapping("/update")
-    public String updateTicket(@ModelAttribute("ticket") Ticket ticket, RedirectAttributes redirectAttributes, Locale locale) {
+    public String updateTicket(@Valid Model model, @ModelAttribute("ticket") Ticket ticket, BindingResult result, RedirectAttributes redirectAttributes, Locale locale) {
         logger.info("Actualizando ticket con ID {}", ticket.getId());
-        /*
-       if (provinceRepository.existsProvinceByCodeAndNotId(province.getCode(), province.getId())) {
-            logger.warn("El código de la provincia {} ya existe para otra provincia.", province.getCode());
-            redirectAttributes.addFlashAttribute("errorMessage", "El código de la provincia ya existe para otra provincia.");
-            return "redirect:/provinces/edit?id=" + province.getId();
-        }*/
-
-        // Comprobación con poco sentido. Podríamos comprobar si el asiento está ocupado o algo similar
-
+        if (result.hasErrors()) {
+            model.addAttribute("rutas", rutaRepository.findAll());
+            return "pages/ticket/ticket-form";
+        }
         ticketRepository.save(ticket);
-        logger.info("Ticket con ID {} actualizado con éxito.", ticket.getId());
+        logger.info("Ticket {} insertada con éxito.", ticket.getAsiento());
+        redirectAttributes.addFlashAttribute("successMessage", messageSource.getMessage("msg.ticket.update.success", null, locale));
         return "redirect:/tickets"; // Redirigir a la lista de provincias
     }
 
@@ -152,6 +151,7 @@ public class TicketController {
         logger.info("Eliminando ticket con ID {}", id);
         ticketRepository.deleteById(id);
         logger.info("Ticket con ID {} eliminado con éxito.", id);
+        redirectAttributes.addFlashAttribute("successMessage", messageSource.getMessage("msg.ticket.delete.success", null, locale));
         return "redirect:/tickets"; // Redirigir a la lista de tickets
     }
 
@@ -164,6 +164,12 @@ public class TicketController {
             case "asientoDesc" -> Sort.by("asiento").descending();
             case "precioAsc" -> Sort.by("precio").ascending();
             case "precioDesc" -> Sort.by("precio").descending();
+            case "fechaCompraAsc" -> Sort.by("fechaCompra").ascending();
+            case "fechaCompraDesc" -> Sort.by("fechaCompra").descending();
+            case "rutaAsc" -> Sort.by("ruta").ascending();
+            case "rutaDesc" -> Sort.by("ruta").descending();
+            case "pasajeroAsc" -> Sort.by("pasajero").ascending();
+            case "pasajeroDesc" -> Sort.by("pasajero").descending();
             case "idDesc" -> Sort.by("id").descending();
             default -> Sort.by("id").ascending();
         };
