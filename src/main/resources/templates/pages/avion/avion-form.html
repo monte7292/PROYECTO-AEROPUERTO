@@ -50,28 +50,28 @@
         <!-- Modelo -->
         <div>
             <label for="modelo" class="form-label" th:text="#{msg.avion.modelo}"></label>
-            <input type="text" th:field="*{modelo}" id="modelo" class="form-control" />
+            <input type="text" th:field="*{modelo}" id="modelo" class="form-control" required />
             <div th:if="${#fields.hasErrors('modelo')}" class="text-danger" th:errors="*{modelo}"></div>
         </div>
 
         <!-- Fabricante -->
         <div>
             <label for="fabricante" class="form-label" th:text="#{msg.avion.fabricante}"></label>
-            <input type="text" th:field="*{fabricante}" id="fabricante" class="form-control" />
+            <input type="text" th:field="*{fabricante}" id="fabricante" class="form-control" required/>
             <div th:if="${#fields.hasErrors('fabricante')}" class="text-danger" th:errors="*{fabricante}"></div>
         </div>
 
         <!-- Capacidad -->
         <div>
             <label for="capacidad" class="form-label" th:text="#{msg.avion.capacidad}"></label>
-            <input type="text" th:field="*{capacidad}" id="capacidad" class="form-control" />
+            <input type="text" th:field="*{capacidad}" id="capacidad" class="form-control" required />
             <div th:if="${#fields.hasErrors('capacidad')}" class="text-danger" th:errors="*{capacidad}"></div>
         </div>
 
         <!-- Estado -->
         <div>
             <label for="estado" class="form-label" th:text="#{msg.avion.estado}"></label>
-            <input type="text" th:field="*{estado}" id="estado" class="form-control" />
+            <input type="text" th:field="*{estado}" id="estado" class="form-control" required />
             <div th:if="${#fields.hasErrors('estado')}" class="text-danger" th:errors="*{estado}"></div>
         </div>
 
