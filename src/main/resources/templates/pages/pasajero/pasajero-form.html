@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head ('Insertar/Actualizar Pasajero')"></head>
+<style>
+    /* Margen superior personalizado */
+    .mt-10 {
+        margin-top: 4.5rem; /* Ajusta el valor si quieres más o menos */
+    }
+
+    /* Grid de 3 columnas para el formulario */
+    .grid-form {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem; /* espacio entre celdas */
+    }
+
+    /* Hacer que los botones estén juntos en una fila */
+    .grid-form .buttons {
+        grid-column: 1 / -1; /* ocupa las 3 columnas */
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-start; /* puedes poner center si quieres centrado */
+        margin-top: 1rem;
+    }
+</style>
+<body>
+
+<!-- Incluir el fragmento del header -->
+<header th:replace="fragments/header :: header"></header>
+
+<main class="container mt-10">
+    <!-- Banner principal con imagen de fondo -->
+    <div class="p-5 mb-5 text-white rounded-3 shadow" style="background: url('https://www.avionrevue.com/wp-content/uploads/2024/01/mexico-aerop.jpg') no-repeat center center; background-size: cover;">
+        <div class="container py-4 px-4" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 15px;">
+            <h1 class="display-4 fw-bold">Gestión de Pasajeros</h1>
+            <p class="col-md-8 fs-5">
+                Administra de forma eficiente toda la información relacionada con los pasajeros de la empresa. Consulta detalles operativos, agrega nuevos pasajeros al sistema, actualiza datos de infraestructura y controla la disponibilidad de servicios clave.
+            </p>
+        </div>
+    </div>
+    <h1 th:text="${pasajero.id} == null ? #{msg.pasajero.add} : #{msg.pasajero.edit}"></h1>
+
+    <!-- Mensaje de error -->
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+    <form th:action="${pasajero.id} == null ? @{/pasajeros/insert} : @{/pasajeros/update}"
+          th:object="${pasajero}" method="post" class="mt-4 grid-form">
+        <input type="hidden" th:field="*{id}" />
+
+        <!-- Nombre -->
+        <div>
+            <label for="nombre" class="form-label" th:text="#{msg.pasajero.nombre}"></label>
+            <input type="text" th:field="*{nombre}" id="nombre" class="form-control" required maxlength="100" />
+            <div th:if="${#fields.hasErrors('nombre')}" class="text-danger" th:errors="*{nombre}"></div>
+        </div>
+
+        <!-- Apellidos -->
+        <div>
+            <label for="apellidos" class="form-label" th:text="#{msg.pasajero.apellidos}"></label>
+            <input type="text" th:field="*{apellidos}" id="apellidos" class="form-control" required maxlength="100" />
+            <div th:if="${#fields.hasErrors('apellidos')}" class="text-danger" th:errors="*{apellidos}"></div>
+        </div>
+
+        <!-- Documento -->
+        <div>
+            <label for="documento" class="form-label" th:text="#{msg.pasajero.documento}"></label>
+            <input type="text" th:field="*{documento}" id="documento" class="form-control" required maxlength="9" />
+            <div th:if="${#fields.hasErrors('documento')}" class="text-danger" th:errors="*{documento}"></div>
+        </div>
+
+        <!-- Email -->
+        <div>
+            <label for="email" class="form-label" th:text="#{msg.pasajero.email}"></label>
+            <input type="email" th:field="*{email}" id="email" class="form-control" required />
+            <div th:if="${#fields.hasErrors('email')}" class="text-danger" th:errors="*{email}"></div>
+        </div>
+
+        <!-- Botones -->
+        <div class="buttons">
+            <button type="submit" class="btn btn-primary" th:text="${pasajero.id} == null ? #{msg.pasajero.add} : #{msg.pasajero.update}"></button>
+            <a href="#" th:href="@{/pasajeros}" class="btn btn-secondary" th:text="#{msg.back}"></a>
+        </div>
+    </form>
+</main>
+<!-- Incluir el fragmento del footer -->
+
+
+</body>
+</html>

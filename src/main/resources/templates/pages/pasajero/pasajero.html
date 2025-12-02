@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head ('Listado de pasajeros')"></head>
+<style>
+    /* Margen superior personalizado */
+    .mt-10 {
+        margin-top: 4.5rem; /* Ajusta el valor si quieres más o menos */
+    }
+</style>
+<body>
+
+<!-- Incluir el fragmento del header -->
+<header th:replace="fragments/header :: header"></header>
+
+<main class="container mt-10">
+    <!-- Banner principal -->
+    <!-- Banner principal con imagen de fondo -->
+    <div class="p-5 mb-5 text-white rounded-3 shadow" style="background: url('https://images.pexels.com/photos/3184306/pexels-photo-3184306.jpeg') no-repeat center center; background-size: cover;">
+        <div class="container py-4 px-4" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 15px;">
+            <h1 class="display-4 fw-bold" th:text="#{msg.pasajero.title}"></h1>
+            <p class="col-md-8 fs-5" th:text="#{msg.pasajero.descripcion}"></p>
+        </div>
+    </div>
+    <!-- Mensaje de error -->
+    <div th:if="${errorMessage}" class="alert alert-danger">
+        <p th:text="${errorMessage}"></p>
+    </div>
+
+    <div th:if="${successMessage}" class="alert alert-success">
+        <p th:text="${successMessage}"></p>
+    </div>
+    <h1 th:text="#{msg.pasajero.title}"></h1>
+
+    <div th:replace="pages/pasajero/pasajero-filter :: pasajeroFilter(${search}, ${sort}, ${currentPage})"></div>
+
+    <!-- Muestra un mensaje de error si hay algún problema -->
+    <div th:if="${errorMessage}" class="alert alert-danger">
+        <p th:text="${errorMessage}"></p>
+    </div>
+
+    <!-- Muestra la lista de pasajeros en una tabla -->
+    <table class="table mt-3">
+        <thead>
+        <tr>
+            <th th:text="#{msg.pasajero.nombre}"></th>
+            <th class="text-center" th:text="#{msg.pasajero.apellidos}"></th>
+            <th class="text-center" th:text="#{msg.pasajero.documento}"></th>
+            <th class="text-center" th:text="#{msg.pasajero.email}"></th>
+            <th class="text-center" th:text="#{msg.actions}"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="pasajero : ${listPasajeros}">
+            <td th:text="${pasajero.nombre}"></td>
+            <td class="text-center" th:text="${pasajero.apellidos}"></td>
+            <td class="text-center" th:text="${pasajero.documento}"></td>
+            <td class="text-center" th:text="${pasajero.email}"></td>
+            <td class="text-center">
+                <div class="gap-2">
+                    <a th:href="@{/pasajeros/edit(id=${pasajero.id})}" class="btn btn-primary w-50">Edit</a>
+                    <form th:action="@{/pasajeros/delete}" method="post">
+                        <input type="hidden" name="id" th:value="${pasajero.id}"/>
+                        <button type="submit" class="btn btn-danger w-50"
+                                th:onclick="|return confirm('#{msg.pasajero.delete}');|">
+                            Delete
+                        </button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Sección de paginación -->
+    <!-- Sección de paginación -->
+    <nav aria-label="Page navigation" class="mt-4" th:if="${totalPages > 1}">
+        <ul class="pagination justify-content-center">
+
+            <!-- Botón "Anterior" -->
+            <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                <a aria-label="Previous"
+                   class="page-link"
+                   th:href="@{/pasajeros(page=${currentPage - 1})}">&laquo;</a>
+            </li>
+
+            <!-- Números de página -->
+            <li class="page-item" th:classappend="${i == currentPage} ? 'active'"
+                th:each="i : ${#numbers.sequence(1, totalPages)}">
+                <a class="page-link" th:href="@{/pasajeros(page=${i})}" th:text="${i}"></a>
+            </li>
+
+            <!-- Botón "Siguiente" -->
+            <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                <a aria-label="Next" class="page-link" th:href="@{/pasajeros(page=${currentPage + 1})}">&raquo;</a>
+            </li>
+        </ul>
+    </nav>
+
+
+
+    <div class="mb-5">
+        <!-- Botón para añadir un nuevo ticket -->
+        <a class="btn btn-success mt-3" th:href="@{/pasajeros/new}" th:text="#{msg.pasajero.add}"></a>
+
+        <!-- Volver a la página principal -->
+        <a class="btn btn-secondary mt-3" th:href="@{/}" th:text="#{msg.back}"></a>
+    </div>
+
+
+
+</main>
+
+<!-- Incluir el fragmento del footer -->
+
+
+</body>
+</html>
