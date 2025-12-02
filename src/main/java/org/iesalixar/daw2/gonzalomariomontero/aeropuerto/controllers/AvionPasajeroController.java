@@ -8,13 +8,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -33,6 +36,9 @@ public class AvionPasajeroController {
     private PasajeroRepository pasajeroRepository;
 
     @Autowired
+    private AeropuertoRepository aeropuertoRepository;
+
+    @Autowired
     private MessageSource messageSource;
 
     /**
@@ -41,59 +47,57 @@ public class AvionPasajeroController {
      * @param model Modelo para pasar datos a la vista.
      * @return El nombre de la plantilla Thymeleaf que muestra los aviones.
      */
+    // LISTA DE AVIONES
     @GetMapping
-    public String listAviones(Model model, Locale locale) {
+    public String listAviones(@RequestParam(defaultValue = "1") int page, @RequestParam(required = false) String search, @RequestParam(required = false) String sort, Model model, Locale locale) {
         logger.info("Solicitando la lista de todos los aviones...");
-        List<Avion> listAviones = null;
+        Pageable pageable = PageRequest.of(page - 1, 5, getSort(sort));
+        Page<Avion> aviones;
+        int totalPages = 0;
+        aviones = avionRepository.findAll(pageable);
+        totalPages = (int) Math.ceil((double) avionRepository.count() / 5);
+        logger.info("Se han cargado {} aviones.", aviones.toList().size());
+        model.addAttribute("listAviones", aviones.toList()); // Pasar la lista de directores al modelo
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("search", search);
+        model.addAttribute("sort", sort);
+        return "pages/avion/avion"; // Nombre de la plantilla Thymeleaf a renderizar
+
+        /*
         try {
-            listAviones = avionRepository.findAll();
+            List<Avion> listAviones = avionRepository.findAll();
+            model.addAttribute("listAviones", listAviones);
             logger.info("Se han cargado {} aviones.", listAviones.size());
         } catch (Exception e) {
             logger.error("Error al listar los aviones: {}", e.getMessage());
             model.addAttribute("errorMessage", "Error al listar los aviones.");
         }
-        model.addAttribute("listAviones", listAviones);
-        return "avion";
+
+        return "pages/avion/avion";*/
     }
 
-    /**
-     * Muestra el formulario para crear un nuevo avion.
-     *
-     * @param model Modelo para pasar datos a la vista.
-     * @return El nombre de la plantilla Thymeleaf para el formulario de avión.
-     */
+    // FORMULARIO NUEVO
     @GetMapping("/new")
     public String showNewForm(Model model, Locale locale) {
         logger.info("Mostrando formulario para nuevo avión.");
-        List<Pasajero> listPasajeros = pasajeroRepository.findAll();
+        List<Aeropuerto> listAeropuertos = aeropuertoRepository.findAll();
         model.addAttribute("avion", new Avion());
-        model.addAttribute("listPasajeros", listPasajeros);
-        // model.addAttribute("listLocations", listLocations);
-        return "avion-form.html";
+        model.addAttribute("listAeropuertos", listAeropuertos);
+        return "pages/avion/avion-form";
     }
 
-    /**
-     * Inserta un nuevo avion en la base de datos.
-     *
-     * @param avion              Avión a insertar.
-     * @param result             Resultado de la validación del avión.
-     * @param redirectAttributes Atributos para mensajes flash.
-     * @param locale             Localización para mensajes de error.
-     * @param model              Modelo para pasar datos a la vista.
-     * @return Redirección a la lista de aviones si se inserta con éxito, o
-    vuelve al formulario si hay errores.
-     */
+    // INSERTAR AVION
     @PostMapping("/insert")
     public String insertAvion(@Valid @ModelAttribute("avion") Avion avion,
-                               BindingResult result,
-                               RedirectAttributes redirectAttributes, Locale
-                                       locale, Model model) {
+                              BindingResult result,
+                              RedirectAttributes redirectAttributes, Locale locale, Model model) {
         logger.info("Insertando nuevo avion con id {}", avion.getId());
         try {
             if (result.hasErrors()) {
-                List<Pasajero> listPasajeros = pasajeroRepository.findAll();
-                model.addAttribute("listPasajeros", listPasajeros);
-                return "avion-form.html";
+                List<Aeropuerto> listAerpuertos = aeropuertoRepository.findAll();
+                model.addAttribute("listAerpuertos", listAerpuertos);
+                return "pages/avion/avion-form";
             }
             avionRepository.save(avion);
             logger.info("Avión insertado con éxito.");
@@ -105,92 +109,57 @@ public class AvionPasajeroController {
         return "redirect:/aviones";
     }
 
-    /**
-     * Muestra el formulario para editar un avión existente.
-     *
-     * @param id    ID del avión a editar.
-     * @param model Modelo para pasar datos a la vista.
-     * @return El nombre de la plantilla Thymeleaf para el formulario de avión.
-     */
+    // FORMULARIO EDITAR
     @GetMapping("/edit")
     public String showEditForm(@RequestParam("id") Long id, Model model, Locale locale) {
-        logger.info("Mostrando formulario de edición para el avión con ID {}",
-                id);
+        logger.info("Mostrando formulario de edición para el avión con ID {}", id);
         Optional<Avion> avion = avionRepository.findById(id);
         if (avion.isEmpty()) {
             logger.warn("No se encontró el avión con ID {}", id);
             return "redirect:/aviones";
         }
-        List<Pasajero> listPasajeros = pasajeroRepository.findAll();
+        List<Aeropuerto> listAeropuertos = aeropuertoRepository.findAll();
         model.addAttribute("avion", avion.get());
-        model.addAttribute("listPasajeros", listPasajeros);
-        return "avion-form.html";
+        model.addAttribute("listAeropuertos", listAeropuertos);
+        return "pages/avion/avion-form";
     }
 
-    /**
-     * Actualiza un avión existente en la base de datos.
-     *
-     * @param avion             Avión a actualizar.
-     * @param result             Resultado de la validación del avión.
-     * @param redirectAttributes Atributos para mensajes flash.
-     * @param locale             Localización para mensajes de error.
-     * @param model              Modelo para pasar datos a la vista.
-     * @return Redirección a la lista de aviones si se actualiza con éxito, o
-    vuelve al formulario si hay errores.
-     */
+    // UPDATE AVION
     @PostMapping("/update")
     public String updateAvion(@Valid @ModelAttribute("avion") Avion avion,
-                               BindingResult result,
-                               RedirectAttributes redirectAttributes, Locale
-                                       locale, Model model) {
+                              BindingResult result,
+                              RedirectAttributes redirectAttributes, Locale locale, Model model) {
         logger.info("Actualizando avión con ID {}", avion.getId());
         try {
             if (result.hasErrors()) {
-                List<Pasajero> listPasajeros = pasajeroRepository.findAll();
-                model.addAttribute("listPasajeros", listPasajeros);
-                return "avion-form.html";
+                List<Aeropuerto> listAeropuertos = aeropuertoRepository.findAll();
+                model.addAttribute("listAeropuertos", listAeropuertos);
+                return "pages/avion/avion-form";
             }
             avionRepository.save(avion);
-            logger.info("Avión con ID {} actualizado con éxito.",
-                    avion.getId());
+            logger.info("Avión con ID {} actualizado con éxito.", avion.getId());
         } catch (Exception e) {
-            logger.error("Error al actualizar el avión con ID {}: {}",
-                    avion.getId(), e.getMessage());
+            logger.error("Error al actualizar el avión con ID {}: {}", avion.getId(), e.getMessage());
             String errorMessage = messageSource.getMessage("msg.avion-controller.update.error", null, locale);
             redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
         }
         return "redirect:/aviones";
     }
 
-    /**
-     * Elimina un avión de la base de datos.
-     *
-     * @param id                 ID del avión a eliminar.
-     * @param redirectAttributes Atributos para mensajes flash.
-     * @return Redirección a la lista de aviones.
-     */
     @PostMapping("/delete")
-    public String deleteAvion(@RequestParam("id") Long id, RedirectAttributes
-            redirectAttributes, Locale locale) {
-        logger.info("Eliminando avión con ID {}", id);
+    public String deleteAvion(@RequestParam("id") Long id, RedirectAttributes redirectAttributes) {
+        logger.info("Eliminando avion con ID {}", id);
         try {
             avionRepository.deleteById(id);
             logger.info("Avión con ID {} eliminado con éxito.", id);
         } catch (Exception e) {
-            logger.error("Error al eliminar el avión con ID {}: {}", id,
-                    e.getMessage());
+            logger.error("Error al eliminar el avión con ID {}: {}", id, e.getMessage());
             redirectAttributes.addFlashAttribute("errorMessage", "Error al eliminar el avión.");
         }
         return "redirect:/aviones";
     }
 
-    /**
-     * Muestra los detalles de un avión.
-     *
-     * @param id    ID del avión a mostrar.
-     * @param model Modelo para pasar datos a la vista.
-     * @return El nombre de la plantilla Thymeleaf para los detalles del avión.
-     */
+    // DETALLE AVION
     @GetMapping("/detail")
     public String showAvionDetail(@RequestParam("id") Long id, Model model, Locale locale) {
         logger.info("Mostrando detalles para el avión con ID {}", id);
@@ -205,22 +174,15 @@ public class AvionPasajeroController {
         model.addAttribute("avion", avion);
         model.addAttribute("pasajeros", avion.getPasajeros());
 
-        return "avion-detail.html";
+        return "pages/avion/avion-detail";
     }
 
-
-    /**
-     * Busca productos que coincidan con el término ingresado y los muestra para
-     añadir al avión.
-     *
-     * @param pasajeroSearch Nombre o parte del nombre del pasajero.
-     * @param avionId        ID del avión.
-     * @param model          Modelo para pasar datos a la vista.
-     * @return El nombre de la plantilla Thymeleaf para mostrar los resultados
-    de la búsqueda.
-     */
+    // BUSCAR PASAJERO PARA AÑADIRLO
     @PostMapping("/addExistingPasajero")
-    public String searchPasajero(@RequestParam("pasajeroSearch") String pasajeroSearch, @RequestParam("avionId") Long avionId, Model model, Locale locale) {
+    public String searchPasajero(@RequestParam("pasajeroSearch") String pasajeroSearch,
+                                 @RequestParam("avionId") Long avionId,
+                                 Model model, Locale locale) {
+
         logger.info("Buscando pasajeros que coincidan con '{}'", pasajeroSearch);
         List<Pasajero> searchResults = pasajeroRepository.findPasajeroByDocumento(pasajeroSearch);
         Optional<Avion> avionOpt = avionRepository.findById(avionId);
@@ -234,8 +196,9 @@ public class AvionPasajeroController {
         }
 
         model.addAttribute("searchResults", searchResults);
-        return "avion-detail";
+        return "pages/avion/avion-detail";
     }
+
 
     /**
      * Añade un pasajero existente al avión.
@@ -246,9 +209,7 @@ public class AvionPasajeroController {
      * @return Redirección a la página de detalles del avión.
      */
     @PostMapping("/addPasajero")
-    public String addPasajeroToAvion(@RequestParam("avionId") Long avionId,
-                                     @RequestParam("pasajeroId") Long pasajeroId, RedirectAttributes
-                                             redirectAttributes, Locale locale) {
+    public String addPasajeroToAvion(@RequestParam("avionId") Long avionId, @RequestParam("pasajeroId") Long pasajeroId, RedirectAttributes redirectAttributes, Locale locale) {
         logger.info("Añadiendo pasajero con ID {} al avión con ID {}", pasajeroId, avionId);
         try {
             Optional<Avion> avionOpt = avionRepository.findById(avionId);
@@ -261,17 +222,16 @@ public class AvionPasajeroController {
                 avionRepository.save(avion);
                 logger.info("Pasajero añadido con éxito.");
             } else {
-                logger.warn("No se encontró el pasajero o el avión");
+                logger.warn("No se encontró el avión o el pasajero.");
                 redirectAttributes.addFlashAttribute("errorMessage", "No se pudo añadir el pasajero al avión.");
             }
         } catch (DataIntegrityViolationException e) {
-            logger.error("Violación de integridad de datos al insertar el pasajero: {}", e.getMessage());
+            logger.error("Violación de integridad de datos al insertar el avión: {}", e.getMessage());
             String errorMessage = messageSource.getMessage("msg.avion-controller.insert.integrity-violation", null, locale);
             redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
             return "redirect:/aviones/detail?id=" + avionId;
         } catch (Exception e) {
-            logger.error("Error al añadir el pasajero al avión: {}",
-                    e.getMessage());
+            logger.error("Error al añadir el pasajero al avión: {}", e.getMessage());
             redirectAttributes.addFlashAttribute("errorMessage", "Error al añadir el pasajero.");
         }
         return "redirect:/aviones/detail?id=" + avionId;
@@ -287,7 +247,7 @@ public class AvionPasajeroController {
      * @param pasajeroDocumento Documento del pasajero.
      * @param pasajeroEmail Email del pasajero.
      * @param redirectAttributes Atributos para mensajes flash.
-     * @return Redirección a la página de detalles del ticket.
+     * @return Redirección a la página de detalles del avión.
      */
     @PostMapping("/addNewPasajero")
     public String addNewPasajeroToAvion(@RequestParam("avionId") Long
@@ -344,8 +304,8 @@ public class AvionPasajeroController {
      * @param redirectAttributes Atributos para mensajes flash.
      * @return Redirección a la página de detalles del avión.
      */
-    @PostMapping("/removeProduct")
-    public String removeProductFromTicket(@RequestParam("avionId") Long
+    @PostMapping("/removePasajero")
+    public String removePasajeroFromAvion(@RequestParam("avionId") Long
                                                   avionId, @RequestParam("pasajeroId") Long pasajeroId, RedirectAttributes
                                                   redirectAttributes, Locale locale) {
         logger.info("Eliminando pasajero con ID {} del avión con ID {}",
@@ -371,5 +331,25 @@ public class AvionPasajeroController {
             redirectAttributes.addFlashAttribute("errorMessage"," Error al eliminar el pasajero.");
         }
         return "redirect:/aviones/detail?id=" + avionId;
+    }
+
+
+    private Sort getSort(String sort) {
+        if (sort == null) {
+            return Sort.by("id").ascending();
+        }
+
+        return switch (sort) {
+            case "modeloAsc" -> Sort.by("modelo").ascending();
+            case "modeloDesc" -> Sort.by("modelo").descending();
+            case "fabricanteAsc" -> Sort.by("fabricante").ascending();
+            case "fabricanteDesc" -> Sort.by("fabricante").descending();
+            case "capacidadAsc" -> Sort.by("capacidad").ascending();
+            case "capacidadDesc" -> Sort.by("capacidad").descending();
+            case "aeropuertoAsc" -> Sort.by("aeropuerto").ascending();
+            case "aeropuertoDesc" -> Sort.by("aeropuerto").descending();
+            case "idDesc" -> Sort.by("id").descending();
+            default -> Sort.by("id").ascending();
+        };
     }
 }

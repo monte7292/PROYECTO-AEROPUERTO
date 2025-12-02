@@ -2,9 +2,7 @@ package org.iesalixar.daw2.gonzalomariomontero.aeropuerto.entities;
 import jakarta.persistence.*; // Anotaciones de JPA
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -55,7 +53,10 @@ public class Pasajero {
     private String email;
 
     @ManyToMany(mappedBy = "pasajeros")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private List<Avion> aviones;
+
     /**
      * @param nombre Nombre del pasajero.
      * @param apellidos Apellidos del pasajero.

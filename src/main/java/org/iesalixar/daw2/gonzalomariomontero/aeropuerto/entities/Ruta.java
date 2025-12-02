@@ -3,9 +3,7 @@ import jakarta.persistence.*; // Anotaciones de JPA
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -30,6 +28,7 @@ public class Ruta {
     @Column(name = "distancia", nullable = false, length = 5)
     private int distancia;
 
+    /*
     @NotNull(message = "{msg.avion.aeropuerto.notNull}")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idAeropuertoOrigen", nullable = false)
@@ -44,6 +43,25 @@ public class Ruta {
     // Es la lista de objetos de rutan que se crean en Avion - linea 55
     @ManyToMany(mappedBy = "rutas")
     private List<Avion> aviones;
+
+    */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idAeropuertoOrigen", nullable = false)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Aeropuerto aeropuertoOrigen;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idAeropuertoDestino", nullable = false)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Aeropuerto aeropuertoDestino;
+
+    @ManyToMany(mappedBy = "rutas")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private List<Avion> aviones;
+
 
     public Ruta(Aeropuerto aeropuertoOrigen, Aeropuerto aeropuertoDestino, int duracion, int distancia) {
         this.aeropuertoOrigen = aeropuertoOrigen;

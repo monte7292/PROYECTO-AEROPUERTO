@@ -3,9 +3,8 @@ import jakarta.persistence.*; // Anotaciones de JPA
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import java.util.List;
 
 import java.util.List;
@@ -36,8 +35,9 @@ public class Avion {
 
     @NotEmpty(message = "{msg.avion.estado.notEmpty}")
     @Column(name = "estado", nullable = false)
-    private int estado;
+    private String estado;
 
+    /*
     @NotNull(message = "{msg.avion.aeropuerto.notNull}")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_aeropuerto", nullable = false)
@@ -63,8 +63,40 @@ public class Avion {
             inverseJoinColumns = @JoinColumn(name = "id_avion")
     )
     private List<Pasajero> pasajeros;
+*/
 
-    public Avion(int estado, int capacidad, String fabricante, String modelo) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_aeropuerto", nullable = false)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Aeropuerto aeropuerto;
+
+    @OneToMany(mappedBy = "avion", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private List<Trabajador> trabajadores;
+
+    @ManyToMany
+    @JoinTable(
+            name = "ruta_avion", // nombre de la tabla en BD
+            joinColumns = @JoinColumn(name = "id_avion"), // columna que apunta a Avion
+            inverseJoinColumns = @JoinColumn(name = "id_ruta") // columna que apunta a Ruta
+    )
+    private List<Ruta> rutas;
+
+
+    @ManyToMany
+    @JoinTable(
+            name = "pasajero_avion",
+            joinColumns = @JoinColumn(name = "id_avion"),
+            inverseJoinColumns = @JoinColumn(name = "id_pasajero")
+    )
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private List<Pasajero> pasajeros;
+
+
+    public Avion(String estado, int capacidad, String fabricante, String modelo) {
         this.estado = estado;
         this.capacidad = capacidad;
         this.fabricante = fabricante;

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head ('Listado de aviones')"></head>
+
+<style>
+    .mt-10 {
+        margin-top: 4.5rem;
+    }
+</style>
+
+<body>
+
+<header th:replace="fragments/header :: header"></header>
+
+<main class="container mt-10">
+
+    <div class="p-5 mb-5 text-white rounded-3 shadow"
+         style="background:url('https://www.avionrevue.com/wp-content/uploads/2024/01/mexico-aerop.jpg')
+         no-repeat center center; background-size:cover;">
+        <div class="container py-4 px-4"
+             style="background-color:rgba(0,0,0,0.5);border-radius:15px;">
+            <h1 class="display-4 fw-bold">Gestión de Aviones</h1>
+            <p class="col-md-8 fs-5">
+                Administra aviones de la empresa.
+            </p>
+        </div>
+    </div>
+
+    <!-- Mensajes -->
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+
+    <h1 th:text="#{msg.avion.title}"></h1>
+
+    <!-- FILTRO -->
+    <div th:replace="pages/avion/avion-filter :: avionFilter(${search}, ${sort}, ${currentPage})"></div>
+
+    <!-- TABLA -->
+    <table class="table mt-3">
+        <thead>
+        <tr>
+            <th th:text="#{msg.avion.modelo}"></th>
+            <th th:text="#{msg.avion.fabricante}"></th>
+            <th th:text="#{msg.avion.capacidad}"></th>
+            <th th:text="#{msg.avion.estado}"></th>
+            <th th:text="#{msg.avion.aeropuerto}"></th>
+            <th th:text="#{msg.actions}"></th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="avion : ${listAviones}">
+            <td th:text="${avion.modelo}"></td>
+            <td th:text="${avion.fabricante}"></td>
+            <td th:text="${avion.capacidad}"></td>
+            <td th:text="${avion.estado}"></td>
+            <td th:text="${avion.aeropuerto.nombre}"></td>
+
+            <td>
+                <!-- Editar -->
+                <a th:href="@{/aviones/edit(id=${avion.id})}"
+                   class="btn btn-primary btn-sm">Edit</a>
+
+                <!-- Detalle -->
+                <a th:href="@{/aviones/detail(id=${avion.id})}"
+                   class="btn btn-info btn-sm"
+                   th:text="#{msg.avion.detail}"></a>
+
+                <!-- Eliminar -->
+                <form th:action="@{/aviones/delete}" method="post" class="d-inline">
+                    <input type="hidden" name="id" th:value="${avion.id}" />
+                    <button type="submit" class="btn btn-danger btn-sm"
+                            th:onclick="|return confirm('#{msg.avion.delete}');|">
+                        Delete
+                    </button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Sección de paginación -->
+    <nav aria-label="Page navigation" class="mt-4" th:if="${totalPages > 1}">
+        <ul class="pagination justify-content-center">
+
+            <!-- Botón "Anterior" -->
+            <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                <a aria-label="Previous"
+                   class="page-link"
+                   th:href="@{/aviones(page=${currentPage - 1})}">&laquo;</a>
+            </li>
+
+            <!-- Números de página -->
+            <li class="page-item" th:classappend="${i == currentPage} ? 'active'"
+                th:each="i : ${#numbers.sequence(1, totalPages)}">
+                <a class="page-link" th:href="@{/aviones(page=${i})}" th:text="${i}"></a>
+            </li>
+
+            <!-- Botón "Siguiente" -->
+            <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                <a aria-label="Next" class="page-link" th:href="@{/aviones(page=${currentPage + 1})}">&raquo;</a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Nuevo -->
+    <a class="btn btn-success mt-3"
+       th:href="@{/aviones/pasajeros/new}"
+       th:text="#{msg.avion.add}"></a>
+
+    <!-- Volver -->
+    <a class="btn btn-secondary mt-3"
+       th:href="@{/}"
+       th:text="#{msg.back}"></a>
+
+</main>
+
+</body>
+</html>
