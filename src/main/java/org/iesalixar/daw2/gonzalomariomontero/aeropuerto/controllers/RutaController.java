@@ -43,7 +43,7 @@ public class RutaController {
         rutas = rutaRepository.findAll(pageable);
         totalPages = (int) Math.ceil((double) rutaRepository.count() / 5);
         logger.info("Se han cargado {} rutas.", rutas.toList().size());
-        model.addAttribute("listRutas", rutas.toList()); // Pasar la lista de regiones al modelo
+        model.addAttribute("listRutas", rutas.toList()); // Pasar la lista de rutas al modelo
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("currentPage", page);
         model.addAttribute("search", search);
@@ -67,7 +67,7 @@ public class RutaController {
         if (ruta == null) {
             logger.warn("No se encontró la ruta con ID {}", id);
         }
-        // Cambiado a 'province' para coincidir con la plantilla Thymeleaf
+        // Cambiado a 'route' para coincidir con la plantilla Thymeleaf
         model.addAttribute("ruta", rutaOpt);
 
         return "ruta-form"; // Nombre de la plantilla Thymeleaf para el formulario
