@@ -3,9 +3,7 @@ package org.iesalixar.daw2.gonzalomariomontero.aeropuerto.entities;
 import jakarta.persistence.*; // Anotaciones de JPA
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -37,6 +35,8 @@ public class Director {
 
 
     @OneToMany(mappedBy = "director", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private List<Aeropuerto> aeropuertos;
 
 

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head ('Detalles del Avión')}"></head>
+<body>
+
+<!-- Incluir el fragmento del header -->
+<header th:replace="~{fragments/header :: header}"></header>
+
+<main class="container mt-5">
+    <h1 th:text="#{msg.avion-detail.avion.detail} + ' - ' + ${avion.id}"></h1>
+
+    <!-- Muestra un mensaje de error si hay algún problema -->
+    <div class="alert alert-danger" th:if="${errorMessage}">
+        <p th:text="${errorMessage}"></p>
+    </div>
+
+    <!-- Muestra los detalles del avión -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label class="form-label" th:text="#{msg.avion-detail.avion.modelo} + ':'"></label>
+            <p th:text="${avion.modelo}"></p>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label" th:text="#{msg.avion-fabricante.avion.fabricante} + ':'"></label>
+            <p th:text="${avion.fabricante}"></p>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label class="form-label" th:text="#{msg.avion-capacidad.avion.capacidad} + ':'"></label>
+            <p th:text="${avion.capacidad}"></p>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label" th:text="#{msg.avion-estado.avion.estado} + ':'"></label>
+            <p th:text="${avion.estado}"></p>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label class="form-label" th:text="#{msg.avion-aeropuerto.avion.aeropuerto} + ':'"></label>
+            <p th:text="${avion.aeropuerto.nombre}"></p>
+        </div>
+    </div>
+
+    <!-- Muestra la lista de productos asociados al avión en una tabla -->
+    <h3 th:text="#{msg.avion-detail.avion.pasajeros.associated}"></h3>
+    <table class="table table-bordered mt-3">
+        <thead>
+        <tr>
+            <th th:text="#{msg.avion-detail.pasajero.nombre}"></th>
+            <th th:text="#{msg.avion-detail.pasajero.apellidos}"></th>
+            <th th:text="#{msg.avion-detail.pasajero.documento}"></th>
+            <th th:text="#{msg.avion-detail.pasajero.email}"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="pasajero : ${pasajeros}">
+            <td th:text="${pasajero.nombre}"></td>
+            <td th:text="${pasajero.apellidos}"></td>
+            <td th:text="${pasajero.documento}"></td>
+            <td th:text="${pasajero.email}"></td>
+            <td>
+                <!-- Botón para eliminar el pasajero del avión -->
+                <form class="d-inline" method="post" th:action="@{/aviones/removePasajero}">
+                    <input name="avionId" th:value="${avion.id}" type="hidden"/>
+                    <input name="pasajeroId" th:value="${pasajero.id}" type="hidden"/>
+                    <button class="btn btn-danger btn-sm" th:text="#{msg.avion-detail.pasajero.remove}"
+                            type="submit"></button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Formulario para buscar un pasajero existente y añadirlo al avión -->
+    <h3 th:text="#{msg.avion-detail.avion.pasajero.addExisting}"></h3>
+    <form class="mb-3" method="post" th:action="@{/aviones/addExistingPasajero}">
+        <input name="avionId" th:value="${avion.id}" type="hidden"/>
+        <div class="mb-3">
+            <label class="form-label" for="pasajeroSearch" th:text="#{msg.avion-detail.avion.searchPasajero}"></label>
+            <input class="form-control" id="pasajeroSearch" name="pasajeroSearch" placeholder="Buscar pasajero..."
+                   type="text">
+        </div>
+        <button class="btn btn-primary" th:text="#{msg.avion-detail.pasajero.search}" type="submit"></button>
+    </form>
+
+    <!-- Mostrar resultados de la búsqueda de pasajeros -->
+    <div th:if="${searchResults != null}">
+        <h4 th:text="#{msg.avion-detail.avion.searchResults}"></h4>
+        <ul>
+            <li th:each="pasajero : ${searchResults}">
+                <span th:text="${pasajero.documento}"></span>
+                <form class="d-inline" method="post" th:action="@{/aviones/addPasajero}">
+                    <input name="avionId" th:value="${avion.id}" type="hidden"/>
+                    <input name="pasajeroId" th:value="${pasajero.id}" type="hidden"/>
+                    <button class="btn btn-success btn-sm" th:text="#{msg.avion-detail.pasajero.add}"
+                            type="submit"></button>
+                </form>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Formulario para añadir un nuevo producto al avión -->
+    <h3 th:text="#{msg.avion-detail.avion.pasajero.addNew}"></h3>
+    <form class="mb-3" method="post" th:action="@{/aviones/addNewPasajero}">
+        <input name="avionId" th:value="${avion.id}" type="hidden"/>
+        <div class="mb-3">
+            <label class="form-label" for="pasajeroNombre" th:text="#{msg.avion-detail.pasajero.nombre}"></label>
+            <input class="form-control" id="pasajeroNombre" name="pasajeroNombre" required type="text">
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="pasajeroApellidos" th:text="#{msg.avion-detail.pasajero.apellidos}"></label>
+            <input class="form-control" id="pasajeroApellidos" name="pasajeroApellidos" required type="text">
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="pasajeroDocumento" th:text="#{msg.avion-detail.pasajero.documento}"></label>
+            <input class="form-control" id="pasajeroDocumento" name="pasajeroDocumento" required type="text">
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="pasajeroEmail" th:text="#{msg.avion-detail.pasajero.email}"></label>
+            <input class="form-control" id="pasajeroEmail" name="pasajeroEmail" required type="email">
+        </div>
+        <button class="btn btn-success" th:text="#{msg.avion-detail.pasajero.create}" type="submit"></button>
+    </form>
+
+    <!-- Botón para volver a la lista de aviones -->
+    <a class="btn btn-secondary mt-3" th:href="@{/aviones}" th:text="#{msg.back}"></a>
+</main>
+
+<!-- Incluir el fragmento del footer -->
+<footer th:replace="~{fragments/footer :: footer}"></footer>
+
+</body>
+</html>
