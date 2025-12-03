@@ -93,6 +93,32 @@
             <a href="#" th:href="@{/aeropuertos}" class="btn btn-secondary" th:text="#{msg.aeropuerto.back}"></a>
         </div>
     </form>
+
+    <!--  Para mostrar en el /aeropuertos/edit?id=1 los aviones que hay -->
+    <section class="mt-4" th:if="${aeropuerto.id} != null">
+        <h2 th:text="#{msg.aeropuerto.aviones}"></h2>
+
+        <div th:if="${#lists.isEmpty(avionesEnAeropuerto)}" class="alert alert-info" th:text="#{msg.aeropuerto.aviones.empty}"></div>
+
+        <table class="table table-striped" th:if="${!#lists.isEmpty(avionesEnAeropuerto)}">
+            <thead>
+            <tr>
+                <th th:text="#{msg.avion.modelo}"></th>
+                <th th:text="#{msg.avion.fabricante}"></th>
+                <th th:text="#{msg.avion.capacidad}"></th>
+                <th th:text="#{msg.avion.estado}"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="avion : ${avionesEnAeropuerto}">
+                <td th:text="${avion.modelo}"></td>
+                <td th:text="${avion.fabricante}"></td>
+                <td th:text="${avion.capacidad}"></td>
+                <td th:text="${avion.estado}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
 </main>
 <!-- Incluir el fragmento del footer -->
 

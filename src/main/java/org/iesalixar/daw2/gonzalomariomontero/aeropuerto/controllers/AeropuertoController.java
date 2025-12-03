@@ -2,6 +2,7 @@ package org.iesalixar.daw2.gonzalomariomontero.aeropuerto.controllers;
 
 import org.iesalixar.daw2.gonzalomariomontero.aeropuerto.repositories.AeropuertoRepository;
 import org.iesalixar.daw2.gonzalomariomontero.aeropuerto.repositories.DirectorRepository;
+import org.iesalixar.daw2.gonzalomariomontero.aeropuerto.repositories.AvionRepository;
 import org.iesalixar.daw2.gonzalomariomontero.aeropuerto.entities.Aeropuerto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +35,9 @@ public class AeropuertoController {
     private AeropuertoRepository aeropuertoRepository;
     @Autowired
     private DirectorRepository directorRepository;
+
+    @Autowired
+    private AvionRepository avionRepository;
 
     @Autowired
     private MessageSource messageSource;
@@ -82,6 +86,8 @@ public class AeropuertoController {
         }
         model.addAttribute("aeropuerto", aeropuerto);
         model.addAttribute("directores", directorRepository.findAll());
+        ///* Para mostrar en el /aeropuertos/edit?id=1 los aviones que hay */
+        model.addAttribute("avionesEnAeropuerto", avionRepository.findByAeropuertoId(id));
 
         return "pages/aeropuerto/aeropuerto-form"; // Nombre de la plantilla Thymeleaf para el formulario
     }
