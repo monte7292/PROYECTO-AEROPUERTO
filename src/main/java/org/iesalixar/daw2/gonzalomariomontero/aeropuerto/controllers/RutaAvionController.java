@@ -127,6 +127,8 @@ public class RutaAvionController {
         model.addAttribute("ruta", ruta);
         model.addAttribute("aviones", ruta.getAviones());
         model.addAttribute("listAeropuertos", aeropuertoRepository.findAll());
+        model.addAttribute("allAviones",
+                avionRepository.findAll(Sort.by("modelo").ascending().and(Sort.by("fabricante").ascending())));
         return "pages/ruta/ruta-detail";
     }
 
@@ -143,6 +145,8 @@ public class RutaAvionController {
         model.addAttribute("ruta", rutaOpt.get());
         model.addAttribute("aviones", rutaOpt.get().getAviones());
         model.addAttribute("searchResults", searchResults);
+        model.addAttribute("allAviones",
+                avionRepository.findAll(Sort.by("modelo").ascending().and(Sort.by("fabricante").ascending())));
         return "pages/ruta/ruta-detail";
     }
 

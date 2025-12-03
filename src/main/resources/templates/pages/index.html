@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/head :: head ('Ticket Logger - Home')"></head>
+<head th:replace="fragments/head :: head ('Aeropuerto Montero')"></head>
 <style>
 .feature-card{border:0;border-radius:1rem;overflow:hidden;position:relative;transition:transform .3s ease,box-shadow .3s ease}
 .feature-card:hover{transform:translateY(-4px);box-shadow:0 .75rem 1.5rem rgba(0,0,0,.15)}
@@ -25,7 +25,7 @@
             <div class="container py-4 px-4" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 15px;">
                 <h1 class="display-4 fw-bold" th:text="#{msg.index.bienvenida}"></h1>
                 <p class="col-md-8 fs-5" th:text="#{msg.index.mensajeDebajoBienvenida}"></p>
-                <a href="/vuelos" class="btn btn-primary btn-lg" th:text="#{msg.index.botonVerVuelos}"></a>
+                <a href="/rutas" class="btn btn-primary btn-lg" th:text="#{msg.index.botonVerVuelos}"></a>
             </div>
         </div>
 
@@ -65,7 +65,44 @@
                 </a>
             </div>
 
+            <div class="col-md-4">
+                <a href="/aviones" class="text-decoration-none">
+                    <div class="card feature-card h-100">
+                        <img src="https://brix.afklcargo.com/otf/images/media/97085C1E-0CF3-49C2-B22461DE22C4C9C6" alt="Aviones" class="feature-img">
+                        <div class="feature-overlay">
+                            <h5 class="card-title" th:text="#{msg.index.seccion3}"></h5>
+                            <p class="card-text" th:text="#{msg.index.seccion3.texto}"></p>
+                            <span class="btn btn-primary btn-sm w-100 text-center" th:text="#{msg.index.seccion3.boton}"></span>
+                        </div>
+                    </div>
+                </a>
+            </div>
 
+            <div class="col-md-4">
+                <a href="/pasajeros" class="text-decoration-none">
+                    <div class="card feature-card h-100">
+                        <img src="https://static.nationalgeographicla.com/files/styles/image_3200/public/h_15392413.webp?w=1600&h=900" alt="Pasajeros" class="feature-img">
+                        <div class="feature-overlay">
+                            <h5 class="card-title" th:text="#{msg.index.seccion4}"></h5>
+                            <p class="card-text" th:text="#{msg.index.seccion4.texto}"></p>
+                            <span class="btn btn-primary btn-sm w-100 text-center" th:text="#{msg.index.seccion4.boton}"></span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col-md-4">
+                <a href="/rutas" class="text-decoration-none">
+                    <div class="card feature-card h-100">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhssEAWyZIzgrR8Nbfnw2-rcKioF6SkUCbsWm1zJB71QAGWp0nFMzE4mYYdrSwwoLi9G5Ok5xXKhE8rhJIsSrM-95TRJOADpS5WiXvjm7dRO6X2dz0ui0s3TH_WHlTHviCU2_RBBTHyjF4/s1600/SUP2.JPG" alt="Rutas" class="feature-img">
+                        <div class="feature-overlay">
+                            <h5 class="card-title" th:text="#{msg.index.seccion5}"></h5>
+                            <p class="card-text" th:text="#{msg.index.seccion5.texto}"></p>
+                            <span class="btn btn-primary btn-sm w-100 text-center" th:text="#{msg.index.seccion5.boton}"></span>
+                        </div>
+                    </div>
+                </a>
+            </div>
 
         </div>
 

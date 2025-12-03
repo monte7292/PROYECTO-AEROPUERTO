@@ -12,13 +12,13 @@
 
 <main class="container mt-10">
     <!-- Banner principal con imagen de fondo -->
-    <div class="p-5 mb-5 text-white rounded-3 shadow" style="background: url('https://images.pexels.com/photos/3184306/pexels-photo-3184306.jpeg') no-repeat center center; background-size: cover;">
+    <div class="p-5 mb-5 text-white rounded-3 shadow" style="background: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhssEAWyZIzgrR8Nbfnw2-rcKioF6SkUCbsWm1zJB71QAGWp0nFMzE4mYYdrSwwoLi9G5Ok5xXKhE8rhJIsSrM-95TRJOADpS5WiXvjm7dRO6X2dz0ui0s3TH_WHlTHviCU2_RBBTHyjF4/s1600/SUP2.JPG') no-repeat center center; background-size: cover;">
         <div class="container py-4 px-4" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 15px;">
-            <h1 class="display-4 fw-bold" th:text="#{msg.pasajero.title}"></h1>
-            <p class="col-md-8 fs-5" th:text="#{msg.pasajero.descripcion}"></p>
+            <h1 class="display-4 fw-bold" th:text="#{msg.ruta.title}"></h1>
+            <p class="col-md-8 fs-5" th:text="#{msg.ruta.descripcion}"></p>
         </div>
     </div>
-    <h1>Gestión de Rutas</h1>
+    <h1 th:text="#{msg.ruta.title}"></h1>
 
     <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
     <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
@@ -28,11 +28,11 @@
     <table class="table mt-3">
         <thead>
         <tr>
-            <th>Origen</th>
-            <th>Destino</th>
-            <th>Duración</th>
-            <th>Distancia</th>
-            <th>Acciones</th>
+            <th th:text="#{msg.ruta.origen}"></th>
+            <th th:text="#{msg.ruta.destino}"></th>
+            <th th:text="#{msg.ruta.duracion}"></th>
+            <th th:text="#{msg.ruta.distancia}"></th>
+            <th th:text="#{msg.ruta.acciones}"></th>
         </tr>
         </thead>
         <tbody>

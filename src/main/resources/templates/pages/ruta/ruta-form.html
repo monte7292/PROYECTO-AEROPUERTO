@@ -5,6 +5,13 @@
 <header th:replace="fragments/header :: header"></header>
 
 <main class="container mt-5">
+    <!-- Banner principal con imagen de fondo -->
+    <div class="p-5 mb-5 text-white rounded-3 shadow" style="background: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhssEAWyZIzgrR8Nbfnw2-rcKioF6SkUCbsWm1zJB71QAGWp0nFMzE4mYYdrSwwoLi9G5Ok5xXKhE8rhJIsSrM-95TRJOADpS5WiXvjm7dRO6X2dz0ui0s3TH_WHlTHviCU2_RBBTHyjF4/s1600/SUP2.JPG') no-repeat center center; background-size: cover;">
+        <div class="container py-4 px-4" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 15px;">
+            <h1 class="display-4 fw-bold" th:text="#{msg.ruta.title}"></h1>
+            <p class="col-md-8 fs-5" th:text="#{msg.ruta.descripcion}"></p>
+        </div>
+    </div>
     <h1 th:text="${ruta.id} == null ? 'Nueva ruta' : 'Editar ruta'"></h1>
 
     <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>

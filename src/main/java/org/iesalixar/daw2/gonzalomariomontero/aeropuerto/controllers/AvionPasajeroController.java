@@ -173,6 +173,8 @@ public class AvionPasajeroController {
         Avion avion = avionOptional.get();
         model.addAttribute("avion", avion);
         model.addAttribute("pasajeros", avion.getPasajeros());
+        model.addAttribute("allPasajeros",
+                pasajeroRepository.findAll(Sort.by("nombre").ascending().and(Sort.by("apellidos").ascending())));
 
         return "pages/avion/avion-detail";
     }

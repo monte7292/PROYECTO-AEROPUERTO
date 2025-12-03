@@ -21,20 +21,13 @@
             <p class="col-md-8 fs-5" th:text="#{msg.aeropuerto.descripcion}"></p>
         </div>
     </div>
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
 
     <h1 th:text="#{msg.aeropuerto.title}"></h1>
 
     <div th:replace="pages/aeropuerto/aeropuerto-filter :: aeropuertoFilter(${search}, ${sort}, ${currentPage})"></div>
 
-    <!-- Mensaje de error -->
-    <div th:if="${errorMessage}" class="alert alert-danger">
-        <p th:text="${errorMessage}"></p>
-    </div>
-
-    <!-- Mensaje de éxito -->
-    <div th:if="${successMessage}" class="alert alert-success">
-        <p th:text="${successMessage}"></p>
-    </div>
 
     <!-- Muestra la lista de aeropuertos en una tabla -->
     <table class="table mt-3">
