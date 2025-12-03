@@ -59,10 +59,11 @@
             <td class="text-center" th:text="${ticket.pasajero.nombre} + ' ' + ${ticket.pasajero.apellidos}"></td>
             <td class="text-center">
                 <div class="gap-2">
-                    <a th:href="@{/tickets/edit(id=${ticket.id})}" class="btn btn-primary w-100">Edit</a>
-                    <form th:action="@{/tickets/delete}" method="post">
+                    <a th:href="@{/tickets/edit(id=${ticket.id})}" class="btn btn-primary w-50">Edit</a>
+                    <form th:action="@{/tickets/delete}" method="post" class="d-inline">
+
                         <input type="hidden" name="id" th:value="${ticket.id}"/>
-                        <button type="submit" class="btn btn-danger w-100"
+                        <button type="submit" class="btn btn-danger btn-sm"
                                 th:onclick="|return confirm('#{msg.ticket.delete}');|">
                             Delete
                         </button>

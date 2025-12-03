@@ -1,178 +1,224 @@
--- ===========================================
--- INSERTS PARA TODAS LAS TABLAS (20 REGISTROS CADA UNA)
--- ===========================================
-
--- =========================
--- 1. DIRECTOR
--- =========================
+------------------------------------------------------------
+-- 20 DIRECTORES
+------------------------------------------------------------
 INSERT INTO director (nombre, apellidos)
 VALUES ('Carlos', 'Gómez Ruiz'),
-       ('María', 'Fernández Soto'),
-       ('Javier', 'López García'),
-       ('Ana', 'Martín Pérez'),
-       ('Luis', 'Sánchez Ortiz'),
-       ('Elena', 'Ramírez Cano'),
-       ('Pablo', 'Torres Vidal'),
-       ('Sofía', 'Hernández León'),
-       ('Miguel', 'Castro Rivas'),
-       ('Laura', 'Domínguez Vela'),
-       ('Diego', 'Prieto Núñez'),
-       ('Sara', 'Molina Casas'),
-       ('Rubén', 'Cortés Ríos'),
-       ('Lucía', 'Gallardo Díaz'),
-       ('Hugo', 'Navarro Vera'),
-       ('Nuria', 'Rey Blanco'),
-       ('Álvaro', 'Benítez Ramos'),
-       ('Irene', 'Campos Segura'),
-       ('Raúl', 'Peña Montes'),
-       ('Claudia', 'Suárez Lara');
+       ('María', 'López Díaz'),
+       ('Javier', 'Martínez Pérez'),
+       ('Laura', 'Santos Vega'),
+       ('Andrés', 'Hernández Gil'),
+       ('Sofía', 'Ortega León'),
+       ('Pedro', 'Ramírez Torres'),
+       ('Lucía', 'Navarro Ríos'),
+       ('Daniel', 'Cano Pardo'),
+       ('Elena', 'Bravo Cortés'),
+       ('Miguel', 'Iglesias Mora'),
+       ('Paula', 'Domínguez Rey'),
+       ('Hugo', 'Fernández Soto'),
+       ('Ana', 'Suárez Medina'),
+       ('Luis', 'Castro Navas'),
+       ('Carmen', 'Vega Roldán'),
+       ('Mario', 'Silva Lozano'),
+       ('Sara', 'Prieto Montes'),
+       ('Pablo', 'Rey Salas'),
+       ('Noelia', 'Benítez Lara');
 
--- =========================
--- 2. AEROPUERTO
--- =========================
+------------------------------------------------------------
+-- 20 AEROPUERTOS
+------------------------------------------------------------
 INSERT INTO aeropuerto (id_director, nombre, ciudad, pais, codIata)
-VALUES (1, 'Aeropuerto Barajas', 'Madrid', 'España', 'MAD'),
-       (2, 'Aeropuerto El Prat', 'Barcelona', 'España', 'BCN'),
-       (3, 'Aeropuerto de Sevilla', 'Sevilla', 'España', 'SVQ'),
-       (4, 'Aeropuerto de Málaga', 'Málaga', 'España', 'AGP'),
-       (5, 'Aeropuerto de Valencia', 'Valencia', 'España', 'VLC'),
-       (6, 'Charles de Gaulle', 'París', 'Francia', 'CDG'),
-       (7, 'Orly', 'París', 'Francia', 'ORY'),
-       (8, 'Heathrow', 'Londres', 'Reino Unido', 'LHR'),
-       (9, 'Gatwick', 'Londres', 'Reino Unido', 'LGW'),
-       (10, 'Frankfurt Airport', 'Frankfurt', 'Alemania', 'FRA'),
-       (11, 'Munich Airport', 'Munich', 'Alemania', 'MUC'),
-       (12, 'Roma Fiumicino', 'Roma', 'Italia', 'FCO'),
-       (13, 'Roma Ciampino', 'Roma', 'Italia', 'CIA'),
-       (14, 'Lisbon Airport', 'Lisboa', 'Portugal', 'LIS'),
-       (15, 'Porto Airport', 'Porto', 'Portugal', 'OPO'),
-       (16, 'Amsterdam Schiphol', 'Ámsterdam', 'Países Bajos', 'AMS'),
-       (17, 'Brussels Airport', 'Bruselas', 'Bélgica', 'BRU'),
-       (18, 'Zurich Airport', 'Zúrich', 'Suiza', 'ZRH'),
-       (19, 'Vienna Airport', 'Viena', 'Austria', 'VIE'),
-       (20, 'Copenhagen Airport', 'Copenhague', 'Dinamarca', 'CPH');
+VALUES (1, 'Aeropuerto Norte', 'Madrid', 'España', 'MAD'),
+       (2, 'Aeropuerto Sur', 'Barcelona', 'España', 'BCN'),
+       (3, 'Aeropuerto Costa', 'Valencia', 'España', 'VLC'),
+       (4, 'Aeropuerto Atlántico', 'Sevilla', 'España', 'SVQ'),
+       (5, 'Aeropuerto del Sol', 'Málaga', 'España', 'AGP'),
+       (6, 'Aeropuerto Montaña', 'Bilbao', 'España', 'BIO'),
+       (7, 'Aeropuerto Central', 'Zaragoza', 'España', 'ZAZ'),
+       (8, 'Aeropuerto Insular', 'Palma', 'España', 'PMI'),
+       (9, 'Aeropuerto Mediterráneo', 'Alicante', 'España', 'ALC'),
+       (10, 'Aeropuerto Vasco', 'San Sebastián', 'España', 'EAS'),
+       (11, 'Aeropuerto Galego', 'A Coruña', 'España', 'LCG'),
+       (12, 'Aeropuerto Miño', 'Vigo', 'España', 'VGO'),
+       (13, 'Aeropuerto Rioja', 'Logroño', 'España', 'RJL'),
+       (14, 'Aeropuerto Duero', 'Salamanca', 'España', 'SLM'),
+       (15, 'Aeropuerto León', 'León', 'España', 'LEN'),
+       (16, 'Aeropuerto Asturias', 'Oviedo', 'España', 'OVD'),
+       (17, 'Aeropuerto Pirineos', 'Huesca', 'España', 'HSK'),
+       (18, 'Aeropuerto Navarra', 'Pamplona', 'España', 'PNA'),
+       (19, 'Aeropuerto Manchego', 'Albacete', 'España', 'ABC'),
+       (20, 'Aeropuerto Extremeño', 'Badajoz', 'España', 'BJZ');
 
--- =========================
--- 3. AVION
--- =========================
+------------------------------------------------------------
+-- 20 AVIONES
+------------------------------------------------------------
 INSERT INTO avion (id_aeropuerto, modelo, fabricante, capacidad, estado)
 VALUES (1, 'A320', 'Airbus', 180, 'Operativo'),
-       (2, 'B737', 'Boeing', 160, 'Mantenimiento'),
-       (3, 'A330', 'Airbus', 250, 'Operativo'),
-       (4, 'B777', 'Boeing', 300, 'Operativo'),
-       (5, 'A350', 'Airbus', 300, 'Operativo'),
-       (6, 'B787', 'Boeing', 290, 'En reparación'),
-       (7, 'A319', 'Airbus', 140, 'Operativo'),
-       (8, 'B747', 'Boeing', 380, 'Operativo'),
-       (9, 'A321', 'Airbus', 200, 'Operativo'),
-       (10, 'B767', 'Boeing', 220, 'Operativo'),
-       (11, 'A340', 'Airbus', 280, 'Mantenimiento'),
-       (12, 'B737 MAX', 'Boeing', 170, 'Operativo'),
-       (13, 'A320neo', 'Airbus', 180, 'Operativo'),
-       (14, 'B757', 'Boeing', 200, 'En reparación'),
-       (15, 'A380', 'Airbus', 500, 'Operativo'),
-       (16, 'B787-9', 'Boeing', 280, 'Operativo'),
-       (17, 'A220', 'Airbus', 120, 'Operativo'),
-       (18, 'B737-900', 'Boeing', 180, 'Operativo'),
-       (19, 'A321neo', 'Airbus', 200, 'Operativo'),
-       (20, 'B777X', 'Boeing', 320, 'Operativo');
+       (2, 'B737', 'Boeing', 160, 'Operativo'),
+       (3, 'A319', 'Airbus', 150, 'Mantenimiento'),
+       (4, 'E190', 'Embraer', 100, 'Operativo'),
+       (5, 'A321', 'Airbus', 200, 'Operativo'),
+       (6, 'B787', 'Boeing', 250, 'Operativo'),
+       (7, 'B777', 'Boeing', 300, 'Operativo'),
+       (8, 'CRJ900', 'Bombardier', 90, 'Mantenimiento'),
+       (9, 'A330', 'Airbus', 260, 'Operativo'),
+       (10, 'A350', 'Airbus', 300, 'Operativo'),
+       (11, 'B747', 'Boeing', 300, 'Retirado'),
+       (12, 'B757', 'Boeing', 180, 'Operativo'),
+       (13, 'ATR72', 'ATR', 70, 'Operativo'),
+       (14, 'E175', 'Embraer', 88, 'Operativo'),
+       (15, 'B767', 'Boeing', 230, 'Mantenimiento'),
+       (16, 'A340', 'Airbus', 260, 'Operativo'),
+       (17, 'A380', 'Airbus', 300, 'Operativo'),
+       (18, 'B727', 'Boeing', 140, 'Retirado'),
+       (19, 'A318', 'Airbus', 120, 'Operativo'),
+       (20, 'B737 MAX', 'Boeing', 175, 'Operativo');
 
--- =========================
--- 4. TRABAJADOR
--- =========================
+------------------------------------------------------------
+-- 20 TRABAJADORES
+------------------------------------------------------------
 INSERT INTO trabajador (id_avion, nombre, apellidos, cargo, fechaContratacion)
-VALUES (1, 'Luis', 'García Soto', 'Piloto', '2018-05-12'),
-       (2, 'Ana', 'Pérez Ruiz', 'Azafata', '2020-03-20'),
-       (3, 'Mario', 'López Vega', 'Copiloto', '2017-11-02'),
-       (4, 'Elena', 'Torres Díaz', 'Técnico', '2019-07-14'),
-       (5, 'Carlos', 'Núñez Ramos', 'Mecánico', '2016-01-18'),
-       (6, 'Marta', 'Gómez Lara', 'Azafata', '2021-09-10'),
-       (7, 'David', 'Ramírez León', 'Piloto', '2015-06-22'),
-       (8, 'Sara', 'Herrera Cortés', 'Azafata', '2022-10-30'),
-       (9, 'Pablo', 'Reyes Blanco', 'Copiloto', '2018-08-15'),
-       (10, 'Laura', 'Benítez Castelo', 'Técnico', '2017-02-11'),
-       (11, 'Hugo', 'Navarro Sanz', 'Piloto', '2019-04-08'),
-       (12, 'Clara', 'Sáez Campos', 'Azafata', '2020-12-19'),
-       (13, 'Jorge', 'Martínez Pardo', 'Mecánico', '2016-09-25'),
-       (14, 'Lucía', 'Soria Vega', 'Piloto', '2018-03-01'),
-       (15, 'Raúl', 'Salas Torres', 'Azafata', '2023-06-05'),
-       (16, 'Nuria', 'Domínguez Ríos', 'Técnico', '2022-01-17'),
-       (17, 'Álvaro', 'Santos Vidal', 'Piloto', '2017-05-20'),
-       (18, 'Irene', 'Campos Vela', 'Copiloto', '2019-09-09'),
-       (19, 'Claudia', 'Morales Cano', 'Azafata', '2021-04-14'),
-       (20, 'Rubén', 'Rivas Peña', 'Mecánico', '2015-12-03');
+VALUES (1, 'Luis', 'Serrano López', 'Piloto', '2019-04-12'),
+       (2, 'Marta', 'Vidal Ramos', 'Copiloto', '2020-03-21'),
+       (3, 'Jorge', 'Reyes Ortiz', 'Técnico', '2018-06-15'),
+       (4, 'Beatriz', 'Rubio Sáez', 'Azafata', '2021-09-10'),
+       (5, 'Raúl', 'Muñoz Pastor', 'Piloto', '2017-01-05'),
+       (6, 'Silvia', 'Molina Cruz', 'Azafata', '2022-02-11'),
+       (7, 'Iván', 'Santos Cabrera', 'Técnico', '2016-07-18'),
+       (8, 'Clara', 'Gallego Pino', 'Copiloto', '2020-11-22'),
+       (9, 'Tomás', 'Luque Bravo', 'Piloto', '2015-12-30'),
+       (10, 'Alba', 'Esteban Lara', 'Azafata', '2019-08-14'),
+       (11, 'Nuria', 'Soria Prats', 'Técnica', '2018-03-03'),
+       (12, 'David', 'Corral Nieto', 'Piloto', '2021-05-25'),
+       (13, 'Julia', 'Román Vera', 'Azafata', '2022-10-19'),
+       (14, 'Óscar', 'Herrera Peña', 'Copiloto', '2017-04-07'),
+       (15, 'Elisa', 'Montoro Suárez', 'Técnica', '2023-01-29'),
+       (16, 'Adrián', 'Perales León', 'Piloto', '2016-09-13'),
+       (17, 'Patricia', 'Fuentes Mora', 'Azafata', '2020-12-01'),
+       (18, 'Rubén', 'Delgado Serra', 'Técnico', '2019-03-17'),
+       (19, 'Eva', 'Ríos Zamora', 'Azafata', '2021-06-02'),
+       (20, 'Sergio', 'Crespo Dávila', 'Piloto', '2018-10-08');
 
--- =========================
--- 5. RUTA
--- =========================
+------------------------------------------------------------
+-- 20 RUTAS
+------------------------------------------------------------
 INSERT INTO ruta (idAeropuertoOrigen, idAeropuertoDestino, duracion, distancia)
-VALUES (1, 2, 85, 505),
-       (3, 1, 95, 540),
-       (4, 5, 60, 430),
-       (6, 8, 80, 470),
-       (7, 6, 40, 220),
-       (9, 8, 35, 60),
-       (10, 11, 50, 300),
-       (12, 14, 120, 950),
-       (15, 14, 30, 280),
-       (16, 10, 70, 580),
-       (17, 18, 90, 760),
-       (19, 20, 45, 320),
-       (2, 6, 105, 860),
-       (3, 7, 110, 900),
-       (4, 9, 140, 1100),
-       (5, 12, 150, 1200),
-       (13, 11, 115, 930),
-       (8, 1, 130, 1260),
-       (14, 16, 160, 1390),
-       (20, 3, 170, 1500);
+VALUES (1, 2, 90, 505),
+       (2, 3, 55, 303),
+       (3, 4, 70, 350),
+       (4, 5, 60, 250),
+       (5, 6, 80, 450),
+       (6, 7, 50, 290),
+       (7, 8, 75, 390),
+       (8, 9, 45, 210),
+       (9, 10, 65, 330),
+       (10, 11, 85, 470),
+       (11, 12, 40, 180),
+       (12, 13, 95, 520),
+       (13, 14, 55, 270),
+       (14, 15, 70, 355),
+       (15, 16, 60, 260),
+       (16, 17, 50, 240),
+       (17, 18, 110, 600),
+       (18, 19, 75, 380),
+       (19, 20, 65, 340),
+       (20, 1, 120, 650);
 
--- =========================
--- 6. PASAJERO
--- =========================
+------------------------------------------------------------
+-- 20 PASAJEROS
+------------------------------------------------------------
 INSERT INTO pasajero (nombre, apellidos, documento, email)
-VALUES ('Javier', 'Soto Reyes', 'X1234567', 'javier.soto@mail.com'),
-       ('María', 'Lara Gómez', 'Y7654321', 'marialara@mail.com'),
-       ('Pedro', 'Núñez Díaz', 'A9876543', 'pedronu@mail.com'),
-       ('Lucía', 'Vera Campos', 'B1239876', 'luciavera@mail.com'),
-       ('Marta', 'Sanz Rubio', 'C6547891', 'martasanz@mail.com'),
-       ('Antonio', 'Díaz Herrera', 'D9513572', 'antoniod@mail.com'),
-       ('Raquel', 'Pardo León', 'E6543219', 'raquelp@mail.com'),
-       ('Sergio', 'Prieto Alba', 'F7539518', 'sergiopri@mail.com'),
-       ('Alba', 'Cano Torres', 'G8524569', 'albacano@mail.com'),
-       ('Héctor', 'Salas Ruiz', 'H1593578', 'hectors@mail.com'),
-       ('Laura', 'Molina Soria', 'I3571594', 'lauramolina@mail.com'),
-       ('Diego', 'Campos Vera', 'J1112223', 'diegoc@mail.com'),
-       ('Sara', 'López Mora', 'K2221114', 'saralopez@mail.com'),
-       ('Álvaro', 'Rivas Cano', 'L3334445', 'alvaror@mail.com'),
-       ('Elena', 'Gómez Vega', 'M4443336', 'elenagv@mail.com'),
-       ('Pablo', 'Rey Ramos', 'N5556667', 'pablor@mail.com'),
-       ('Claudia', 'Torres Díaz', 'O6665558', 'claudiatd@mail.com'),
-       ('Irene', 'Castro Vidal', 'P7778889', 'irenecv@mail.com'),
-       ('Rubén', 'Hernández Pino', 'Q8887770', 'rubenhp@mail.com'),
-       ('Nuria', 'Navarro Soto', 'R9990001', 'nurian@mail.com');
+VALUES ('Javier', 'López Ruiz', '12345678A', 'jlopez@mail.com'),
+       ('María', 'Díaz Soto', '98765432B', 'mdiaz@mail.com'),
+       ('Luis', 'Martín Vera', '11223344C', 'lmartin@mail.com'),
+       ('Ana', 'Santos Del Río', '55667788D', 'asantos@mail.com'),
+       ('Pedro', 'Navas Gil', '44332211E', 'pnavas@mail.com'),
+       ('Lucía', 'Peña Ramos', '77889900F', 'lpena@mail.com'),
+       ('Sergio', 'Bravo Cruz', '99887766G', 'sbravo@mail.com'),
+       ('Inés', 'Romero Sáez', '22113344H', 'iromero@mail.com'),
+       ('Hugo', 'Castro León', '33221144I', 'hcastro@mail.com'),
+       ('Alba', 'Torres Mora', '66554433J', 'atorres@mail.com'),
+       ('Raúl', 'Benito Rey', '22334455K', 'rbenito@mail.com'),
+       ('Clara', 'Soria Arias', '44556677L', 'csoria@mail.com'),
+       ('Tomás', 'Campos Pardo', '55664433M', 'tcampos@mail.com'),
+       ('Sara', 'Estévez Soto', '99880022N', 'sestevez@mail.com'),
+       ('Nuria', 'Vega Ramos', '11220033O', 'nvega@mail.com'),
+       ('Pablo', 'Rey Díaz', '33445566P', 'prey@mail.com'),
+       ('Julia', 'Prieto Salas', '66778899Q', 'jprieto@mail.com'),
+       ('Mario', 'Domínguez Vera', '88997766R', 'mdominguez@mail.com'),
+       ('Elena', 'Iglesias Cortés', '12344321S', 'eiglesias@mail.com'),
+       ('David', 'Mora Lozano', '55443322T', 'dmora@mail.com');
 
--- =========================
--- 7. TICKET
--- =========================
+------------------------------------------------------------
+-- 20 TICKETS
+------------------------------------------------------------
 INSERT INTO ticket (id_ruta, id_pasajero, asiento, precio, fechaCompra)
-VALUES (1, 1, '12A', 120.50, '2024-01-10'),
-       (2, 2, '14C', 98.00, '2024-01-12'),
-       (3, 3, '03B', 150.75, '2024-01-15'),
-       (4, 4, '20D', 200.00, '2024-01-18'),
-       (5, 5, '07A', 180.20, '2024-01-20'),
-       (6, 6, '11F', 90.99, '2024-01-22'),
-       (7, 7, '02C', 110.40, '2024-01-25'),
-       (8, 8, '16B', 250.60, '2024-01-27'),
-       (9, 9, '08E', 70.00, '2024-01-29'),
-       (10, 10, '05A', 125.45, '2024-02-01'),
-       (11, 11, '09D', 135.60, '2024-02-03'),
-       (12, 12, '10A', 145.30, '2024-02-05'),
-       (13, 13, '14F', 210.80, '2024-02-06'),
-       (14, 14, '17C', 230.90, '2024-02-07'),
-       (15, 15, '19A', 260.00, '2024-02-09'),
-       (16, 16, '21B', 175.25, '2024-02-11'),
-       (17, 17, '06D', 190.15, '2024-02-12'),
-       (18, 18, '13E', 120.80, '2024-02-13'),
-       (19, 19, '04F', 160.20, '2024-02-14'),
-       (20, 20, '22C', 300.00, '2024-02-15');
+VALUES (1, 1, '1A', 120.50, '2024-01-10'),
+       (2, 2, '3C', 89.99, '2024-02-15'),
+       (3, 3, '4B', 70.00, '2024-03-12'),
+       (4, 4, '6D', 65.25, '2024-04-01'),
+       (5, 5, '2A', 140.80, '2024-04-18'),
+       (6, 6, '7F', 95.10, '2024-05-10'),
+       (7, 7, '8A', 110.40, '2024-05-25'),
+       (8, 8, '9C', 75.30, '2024-06-02'),
+       (9, 9, '10B', 99.99, '2024-06-14'),
+       (10, 10, '12A', 130.00, '2024-06-28'),
+       (11, 11, '13F', 80.60, '2024-07-05'),
+       (12, 12, '14C', 105.20, '2024-07-15'),
+       (13, 13, '15D', 115.40, '2024-08-01'),
+       (14, 14, '16A', 125.90, '2024-08-12'),
+       (15, 15, '17B', 90.00, '2024-08-30'),
+       (16, 16, '18C', 98.75, '2024-09-10'),
+       (17, 17, '19F', 150.00, '2024-09-25'),
+       (18, 18, '20A', 85.20, '2024-10-02'),
+       (19, 19, '21C', 95.99, '2024-10-18'),
+       (20, 20, '22B', 160.00, '2024-11-01');
+
+------------------------------------------------------------
+-- 20 RUTA_AVION
+------------------------------------------------------------
+INSERT INTO ruta_avion (id_ruta, id_avion)
+VALUES (1, 1),
+       (2, 2),
+       (3, 3),
+       (4, 4),
+       (5, 5),
+       (6, 6),
+       (7, 7),
+       (8, 8),
+       (9, 9),
+       (10, 10),
+       (11, 11),
+       (12, 12),
+       (13, 13),
+       (14, 14),
+       (15, 15),
+       (16, 16),
+       (17, 17),
+       (18, 18),
+       (19, 19),
+       (20, 20);
+
+------------------------------------------------------------
+-- 20 PASAJERO_AVION
+------------------------------------------------------------
+INSERT INTO pasajero_avion (id_pasajero, id_avion)
+VALUES (1, 1),
+       (2, 2),
+       (3, 3),
+       (4, 4),
+       (5, 5),
+       (6, 6),
+       (7, 7),
+       (8, 8),
+       (9, 9),
+       (10, 10),
+       (11, 11),
+       (12, 12),
+       (13, 13),
+       (14, 14),
+       (15, 15),
+       (16, 16),
+       (17, 17),
+       (18, 18),
+       (19, 19),
+       (20, 20);

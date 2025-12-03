@@ -45,8 +45,12 @@
                 <a th:href="@{/rutas/edit(id=${ruta.id})}" class="btn btn-primary btn-sm">Editar</a>
                 <a th:href="@{/rutas/detail(id=${ruta.id})}" class="btn btn-info btn-sm">Detalle</a>
                 <form th:action="@{/rutas/delete}" method="post" class="d-inline">
-                    <input type="hidden" name="id" th:value="${ruta.id}" />
-                    <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+
+                    <input type="hidden" name="id" th:value="${ruta.id}"/>
+                    <button type="submit" class="btn btn-danger btn-sm"
+                            th:onclick="|return confirm('#{msg.ruta.delete}');|">
+                        Delete
+                    </button>
                 </form>
             </td>
         </tr>
