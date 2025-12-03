@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head ('Listado de trabajadores')"></head>
+<style>
+    /* Margen superior personalizado */
+    .mt-10 {
+        margin-top: 4.5rem; /* Ajusta el valor si quieres más o menos */
+    }
+</style>
+<body>
+
+<!-- Incluir el fragmento del header -->
+<header th:replace="fragments/header :: header"></header>
+
+<main class="container mt-10">
+    <!-- Banner principal -->
+    <!-- Banner principal con imagen de fondo -->
+    <div class="p-5 mb-5 text-white rounded-3 shadow" style="background: url('https://images.pexels.com/photos/3184306/pexels-photo-3184306.jpeg') no-repeat center center; background-size: cover;">
+        <div class="container py-4 px-4" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 15px;">
+            <h1 class="display-4 fw-bold" th:text="#{msg.trabajador.title}"></h1>
+            <p class="col-md-8 fs-5" th:text="#{msg.trabajador.descripcion}"></p>
+        </div>
+    </div>
+    <!-- Mensaje de error -->
+    <div th:if="${errorMessage}" class="alert alert-danger">
+        <p th:text="${errorMessage}"></p>
+    </div>
+
+    <div th:if="${successMessage}" class="alert alert-success">
+        <p th:text="${successMessage}"></p>
+    </div>
+    <h1 th:text="#{msg.trabajador.title}"></h1>
+
+    <div th:replace="pages/trabajador/trabajador-filter :: trabajadorFilter(${search}, ${sort}, ${currentPage})"></div>
+
+    <!-- Muestra un mensaje de error si hay algún problema -->
+    <div th:if="${errorMessage}" class="alert alert-danger">
+        <p th:text="${errorMessage}"></p>
+    </div>
+
+    <!-- Muestra la lista de trabajadores en una tabla -->
+    <table class="table mt-3">
+        <thead>
+        <tr>
+            <th th:text="#{msg.trabajador.nombre}"></th>
+            <th class="text-center" th:text="#{msg.trabajador.apellidos}"></th>
+            <th class="text-center" th:text="#{msg.trabajador.cargo}"></th>
+            <th class="text-center" th:text="#{msg.trabajador.fechaContratacion}"></th>
+            <th class="text-center" th:text="#{msg.actions}"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="trabajador : ${listTrabajadores}">
+            <td th:text="${trabajador.nombre}"></td>
+            <td class="text-center" th:text="${trabajador.apellidos}"></td>
+            <td class="text-center" th:text="${trabajador.cargo}"></td>
+            <td class="text-center" th:text="${#dates.format(trabajador.fechaContratacion, 'yyyy-MM-dd')}"></td>
+            <td class="text-center">
+                <div class="gap-2">
+                    <a th:href="@{/trabajadores/edit(id=${trabajador.id})}" class="btn btn-primary w-50">Edit</a>
+                    <form th:action="@{/trabajadores/delete}" method="post">
+                        <input type="hidden" name="id" th:value="${trabajador.id}"/>
+                        <button type="submit" class="btn btn-danger w-50"
+                                th:onclick="|return confirm('#{msg.trabajador.delete}');|">
+                            Delete
+                        </button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Sección de paginación -->
+    <!-- Sección de paginación -->
+    <nav aria-label="Page navigation" class="mt-4" th:if="${totalPages > 1}">
+        <ul class="pagination justify-content-center">
+
+            <!-- Botón "Anterior" -->
+            <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                <a aria-label="Previous"
+                   class="page-link"
+                   th:href="@{/trabajadores(page=${currentPage - 1})}">&laquo;</a>
+            </li>
+
+            <!-- Números de página -->
+            <li class="page-item" th:classappend="${i == currentPage} ? 'active'"
+                th:each="i : ${#numbers.sequence(1, totalPages)}">
+                <a class="page-link" th:href="@{/trabajadores(page=${i})}" th:text="${i}"></a>
+            </li>
+
+            <!-- Botón "Siguiente" -->
+            <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                <a aria-label="Next" class="page-link" th:href="@{/trabajadores(page=${currentPage + 1})}">&raquo;</a>
+            </li>
+        </ul>
+    </nav>
+
+
+
+    <div class="mb-5">
+        <!-- Botón para añadir un nuevo trabajador -->
+        <a class="btn btn-success mt-3" th:href="@{/trabajadores/new}" th:text="#{msg.trabajador.add}"></a>
+
+        <!-- Volver a la página principal -->
+        <a class="btn btn-secondary mt-3" th:href="@{/}" th:text="#{msg.trabajador.returnback}"></a>
+    </div>
+
+
+
+</main>
+
+<!-- Incluir el fragmento del footer -->
+
+
+</body>
+</html>

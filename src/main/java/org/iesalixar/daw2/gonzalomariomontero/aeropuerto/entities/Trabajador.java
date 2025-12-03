@@ -2,10 +2,12 @@ package org.iesalixar.daw2.gonzalomariomontero.aeropuerto.entities;
 
 import jakarta.persistence.*; // Anotaciones de JPA
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.List;
@@ -43,16 +45,18 @@ public class Trabajador {
 
     // Campo que almacena la fecha de contratación de un trabajador, como "11/11/2011"
     @NotEmpty(message = "{msg.trabajador.fechaContratacion.notEmpty}")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "fechaContratacion", nullable = false)  // Define la columna correspondiente en la tabla.
     private Date fechaContratacion;
 
+
+    @NotNull(message = "{msg.trabajador.avion.notNull}")
     // Relación con la entidad `Avion`, representando el avión en el que trabaja el trabajador.
     @ManyToOne(fetch = FetchType.LAZY) // Relación de muchos trabajadores a un avión.
     //Este es el nombre que le estamos poniendo a la columna
     @JoinColumn(name = "id_avion", nullable = false)
-    // Clave foránea en la tabla provinces que referencia a la tabla avion.
+    // Clave foránea en la tabla trabajador que referencia a la tabla avion.
     private Avion avion;
-
 
     /**
      * Este es un constructor personalizado que no incluye el campo `id`.
