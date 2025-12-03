@@ -7,6 +7,8 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -30,6 +32,7 @@ public class Ticket {
     private BigDecimal precio;
 
     @NotEmpty(message = "{msg.ticket.fechaCompra.notEmpty}")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "fechaCompra", nullable = false)
     private Date fechaCompra;
 

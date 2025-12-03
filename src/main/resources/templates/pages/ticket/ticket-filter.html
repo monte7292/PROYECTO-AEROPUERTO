@@ -1,0 +1,43 @@
+<!-- Sección de filtrado -->
+<div th:fragment="ticketFilter(search, sort, currentPage)">
+    <form class="row g-3 mt-3 mb-3" method="get" th:action="@{/tickets}">
+
+        <!-- Campo búsqueda -->
+        <div class="col-md-5">
+            <input class="form-control" name="search"
+                   placeholder="Filtrar por nombre"
+                   th:value="${search}"
+                   type="text">
+        </div>
+
+        <!-- Selector ordenación -->
+        <div class="col-md-4">
+            <select class="form-select" name="sort" th:value="${sort}">
+                <option disabled th:selected="${sort == null}" value="">
+                    Ordenar por...
+                </option>
+                <option th:selected="${sort == 'asientoAsc'}" value="asientoAsc">Asiento (ascendente)</option>
+                <option th:selected="${sort == 'asientoDesc'}" value="asientoDesc">Asiento (descendente)</option>
+                <option th:selected="${sort == 'precioAsc'}" value="precioAsc">Precio (ascendente)</option>
+                <option th:selected="${sort == 'precioDesc'}" value="precioDesc">Precio (descendente)</option>
+                <option th:selected="${sort == 'fechaCompraAsc'}" value="fechaCompraAsc">Fecha de Compra (ascendente)</option>
+                <option th:selected="${sort == 'fechaCompraDesc'}" value="fechaCompraDesc">Fecha de Compra (descendente)</option>
+                <option th:selected="${sort == 'rutaAsc'}" value="rutaAsc">Ruta (A-Z)</option>
+                <option th:selected="${sort == 'rutaDesc'}" value="rutaDesc">Ruta (Z-A)</option>
+                <option th:selected="${sort == 'idAsc'}" value="idAsc">ID (ascendente)</option>
+                <option th:selected="${sort == 'idDesc'}" value="idDesc">ID (descendente)</option>
+            </select>
+        </div>
+
+        <!-- Botón Filtrar -->
+        <div class="col-md-2">
+            <button class="btn btn-primary w-100" type="submit" th:text="#{msg.filter}"></button>
+        </div>
+
+        <!-- Botón Limpiar -->
+        <div class="col-md-1 d-flex justify-content-end">
+            <a class="btn btn-secondary w-100" th:href="@{/tickets}" th:text="#{msg.clear}"></a>
+        </div>
+
+    </form>
+</div>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head ('Insertar/Actualizar Ticket')"></head>
+<style>
+    /* Margen superior personalizado */
+    .mt-10 {
+        margin-top: 4.5rem; /* Ajusta el valor si quieres más o menos */
+    }
+
+    /* Grid de 3 columnas para el formulario */
+    .grid-form {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem; /* espacio entre celdas */
+    }
+
+    /* Hacer que los botones estén juntos en una fila */
+    .grid-form .buttons {
+        grid-column: 1 / -1; /* ocupa las 3 columnas */
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-start; /* puedes poner center si quieres centrado */
+        margin-top: 1rem;
+    }
+</style>
+<body>
+
+<!-- Incluir el fragmento del header -->
+<header th:replace="fragments/header :: header"></header>
+
+<main class="container mt-10">
+    <!-- Banner principal con imagen de fondo -->
+    <div class="p-5 mb-5 text-white rounded-3 shadow" style="background: url('https://www.avionrevue.com/wp-content/uploads/2024/01/mexico-aerop.jpg') no-repeat center center; background-size: cover;">
+        <div class="container py-4 px-4" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 15px;">
+            <h1 class="display-4 fw-bold">Gestión de Tickets</h1>
+            <p class="col-md-8 fs-5">
+                Administra de forma eficiente toda la información relacionada con los tickets de la empresa. Consulta detalles operativos, agrega nuevos tickets al sistema, actualiza datos de infraestructura y controla la disponibilidad de servicios clave.
+            </p>
+        </div>
+    </div>
+    <h1 th:text="${ticket.id} == null ? #{msg.ticket.add} : #{msg.ticket.edit}"></h1>
+
+    <!-- Mensaje de error -->
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+    <form th:action="${ticket.id} == null ? @{/tickets/insert} : @{/tickets/update}"
+          th:object="${ticket}" method="post" class="mt-4 grid-form">
+        <input type="hidden" th:field="*{id}" />
+
+        <!-- Asiento -->
+        <div>
+            <label for="asiento" class="form-label" th:text="#{msg.ticket.asiento}"></label>
+            <input type="text" th:field="*{asiento}" id="asiento" class="form-control" required maxlength="3"/>
+            <div th:if="${#fields.hasErrors('asiento')}" class="text-danger" th:errors="*{asiento}"></div>
+        </div>
+
+        <!-- Precio -->
+        <div>
+            <label for="precio" class="form-label" th:text="#{msg.ticket.precio}"></label>
+            <input type="text" th:field="*{precio}" id="precio" class="form-control" required/>
+            <div th:if="${#fields.hasErrors('precio')}" class="text-danger" th:errors="*{precio}"></div>
+        </div>
+
+        <!-- FechaCompra -->
+        <div>
+            <label for="fechaCompra" class="form-label" th:text="#{msg.ticket.fechaCompra}"></label>
+            <input type="date" th:field="*{fechaCompra}" id="fechaCompra" class="form-control" required/>
+            <div th:if="${#fields.hasErrors('fechaCompra')}" class="text-danger" th:errors="*{fechaCompra}"></div>
+        </div>
+
+        <!-- Ruta -->
+        <div>
+            <label for="ruta" class="form-label" th:text="#{msg.ticket.ruta}"></label>
+            <select th:field="*{ruta.id}" id="ruta" class="form-select" required>
+                <option th:each="ruta : ${rutas}"
+                        th:value="${ruta.id}"
+                        th:text="${ruta.aeropuertoOrigen.nombre} + ' - ' + ${ruta.aeropuertoDestino.nombre}">
+                </option>
+            </select>
+            <div th:if="${#fields.hasErrors('ruta.id')}" class="text-danger" th:errors="*{ruta.id}"></div>
+        </div>
+
+        <!-- Pasajero -->
+        <div>
+            <label for="pasajero" class="form-label" th:text="#{msg.ticket.pasajero}"></label>
+            <select th:field="*{pasajero.id}" id="pasajero" class="form-select" required>
+                <option th:each="pasajero : ${pasajeros}"
+                        th:value="${pasajero.id}"
+                        th:text="${pasajero.nombre} + ' ' + ${pasajero.apellidos}">
+                </option>
+            </select>
+            <div th:if="${#fields.hasErrors('pasajero.id')}" class="text-danger" th:errors="*{pasajero.id}"></div>
+        </div>
+
+        <!-- Botones -->
+        <div class="buttons">
+            <button type="submit" class="btn btn-primary" th:text="${ticket.id} == null ? #{msg.ticket.crear} : #{msg.ticket.actualizar}"></button>
+            <a href="#" th:href="@{/tickets}" class="btn btn-secondary" th:text="#{msg.back}"></a>
+        </div>
+    </form>
+</main>
+<!-- Incluir el fragmento del footer -->
+
+
+</body>
+</html>
