@@ -93,19 +93,15 @@ public class AvionPasajeroController {
                               BindingResult result,
                               RedirectAttributes redirectAttributes, Locale locale, Model model) {
         logger.info("Insertando nuevo avion con id {}", avion.getId());
-        try {
-            if (result.hasErrors()) {
-                List<Aeropuerto> listAerpuertos = aeropuertoRepository.findAll();
-                model.addAttribute("listAerpuertos", listAerpuertos);
-                return "pages/avion/avion-form";
-            }
-            avionRepository.save(avion);
-            logger.info("Avión insertado con éxito.");
-        } catch (Exception e) {
-            logger.error("Error al insertar el avión: {}", e.getMessage());
-            String errorMessage = messageSource.getMessage("msg.avion-controller.insert.error", null, locale);
-            redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
+        if (result.hasErrors()) {
+            List<Aeropuerto> listAerpuertos = aeropuertoRepository.findAll();
+            model.addAttribute("listAerpuertos", listAerpuertos);
+            return "pages/avion/avion-form";
         }
+        avionRepository.save(avion);
+        logger.info("Avión insertado con éxito.");
+        redirectAttributes.addFlashAttribute("successMessage",
+                messageSource.getMessage("msg.avion.insert.success", null, locale));
         return "redirect:/aviones";
     }
 
@@ -130,7 +126,6 @@ public class AvionPasajeroController {
                               BindingResult result,
                               RedirectAttributes redirectAttributes, Locale locale, Model model) {
         logger.info("Actualizando avión con ID {}", avion.getId());
-        try {
             if (result.hasErrors()) {
                 List<Aeropuerto> listAeropuertos = aeropuertoRepository.findAll();
                 model.addAttribute("listAeropuertos", listAeropuertos);
@@ -138,24 +133,20 @@ public class AvionPasajeroController {
             }
             avionRepository.save(avion);
             logger.info("Avión con ID {} actualizado con éxito.", avion.getId());
-        } catch (Exception e) {
-            logger.error("Error al actualizar el avión con ID {}: {}", avion.getId(), e.getMessage());
-            String errorMessage = messageSource.getMessage("msg.avion-controller.update.error", null, locale);
-            redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
-        }
+        redirectAttributes.addFlashAttribute("successMessage",
+                messageSource.getMessage("msg.avion.update.success", null, locale));
+
         return "redirect:/aviones";
     }
 
     @PostMapping("/delete")
-    public String deleteAvion(@RequestParam("id") Long id, RedirectAttributes redirectAttributes) {
+    public String deleteAvion(@RequestParam("id") Long id, RedirectAttributes redirectAttributes, Locale locale) {
         logger.info("Eliminando avion con ID {}", id);
-        try {
             avionRepository.deleteById(id);
             logger.info("Avión con ID {} eliminado con éxito.", id);
-        } catch (Exception e) {
-            logger.error("Error al eliminar el avión con ID {}: {}", id, e.getMessage());
-            redirectAttributes.addFlashAttribute("errorMessage", "Error al eliminar el avión.");
-        }
+        redirectAttributes.addFlashAttribute("successMessage",
+                messageSource.getMessage("msg.avion.delete.success", null, locale));
+
         return "redirect:/aviones";
     }
 
@@ -205,8 +196,8 @@ public class AvionPasajeroController {
     /**
      * Añade un pasajero existente al avión.
      *
-     * @param avionId         ID del avión.
-     * @param pasajeroId        ID del pasajero.
+     * @param avionId            ID del avión.
+     * @param pasajeroId         ID del pasajero.
      * @param redirectAttributes Atributos para mensajes flash.
      * @return Redirección a la página de detalles del avión.
      */
@@ -243,11 +234,11 @@ public class AvionPasajeroController {
     /**
      * Añade un nuevo pasajero al avión.
      *
-     * @param avionId          ID del avión.
-     * @param pasajeroNombre       Nombre del pasajero.
-     * @param pasajeroApellidos     Apellidos del pasajero.
-     * @param pasajeroDocumento Documento del pasajero.
-     * @param pasajeroEmail Email del pasajero.
+     * @param avionId            ID del avión.
+     * @param pasajeroNombre     Nombre del pasajero.
+     * @param pasajeroApellidos  Apellidos del pasajero.
+     * @param pasajeroDocumento  Documento del pasajero.
+     * @param pasajeroEmail      Email del pasajero.
      * @param redirectAttributes Atributos para mensajes flash.
      * @return Redirección a la página de detalles del avión.
      */
@@ -301,8 +292,8 @@ public class AvionPasajeroController {
     /**
      * Elimina un pasajero asociado al avión.
      *
-     * @param avionId         ID del avión.
-     * @param pasajeroId        ID del pasajero.
+     * @param avionId            ID del avión.
+     * @param pasajeroId         ID del pasajero.
      * @param redirectAttributes Atributos para mensajes flash.
      * @return Redirección a la página de detalles del avión.
      */
@@ -330,7 +321,7 @@ public class AvionPasajeroController {
         } catch (Exception e) {
             logger.error("Error al eliminar el pasajero del avión: {}",
                     e.getMessage());
-            redirectAttributes.addFlashAttribute("errorMessage"," Error al eliminar el pasajero.");
+            redirectAttributes.addFlashAttribute("errorMessage", " Error al eliminar el pasajero.");
         }
         return "redirect:/aviones/detail?id=" + avionId;
     }
