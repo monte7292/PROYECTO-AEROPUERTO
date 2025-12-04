@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.List;
+import java.util.ArrayList;
 
 @Entity // Marca esta clase como una entidad JPA.
 @Table(name = "ruta") // Especifica el nombre de la tabla asociada a esta entidad.
@@ -60,7 +61,7 @@ public class Ruta {
     @ManyToMany(mappedBy = "rutas")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private List<Avion> aviones;
+    private List<Avion> aviones = new ArrayList<>();
 
 
     public Ruta(Aeropuerto aeropuertoOrigen, Aeropuerto aeropuertoDestino, int duracion, int distancia) {

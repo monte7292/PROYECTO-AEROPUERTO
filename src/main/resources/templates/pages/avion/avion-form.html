@@ -64,7 +64,7 @@
         <!-- Capacidad -->
         <div>
             <label for="capacidad" class="form-label" th:text="#{msg.avion.capacidad}"></label>
-            <input type="text" th:field="*{capacidad}" id="capacidad" class="form-control" required />
+            <input type="number" min="1" max="999" step="1" inputmode="numeric" th:field="*{capacidad}" id="capacidad" class="form-control" required oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
             <div th:if="${#fields.hasErrors('capacidad')}" class="text-danger" th:errors="*{capacidad}"></div>
         </div>
 

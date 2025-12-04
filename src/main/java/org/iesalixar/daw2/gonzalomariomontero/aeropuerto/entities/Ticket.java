@@ -27,11 +27,11 @@ public class Ticket {
     @Column(name = "asiento", nullable = false, length = 3)
     private String asiento;
 
-    @NotEmpty(message = "{msg.ticket.precio.notEmpty}")
+    @NotNull(message = "{msg.ticket.precio.notEmpty}")
     @Column(name = "precio", nullable = false, precision = 5, scale = 2)
     private BigDecimal precio;
 
-    @NotEmpty(message = "{msg.ticket.fechaCompra.notEmpty}")
+    @NotNull(message = "{msg.ticket.fechaCompra.notEmpty}")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "fechaCompra", nullable = false)
     private Date fechaCompra;

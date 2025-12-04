@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import java.util.List;
 
@@ -27,11 +28,11 @@ public class Avion {
     @Column(name = "fabricante", nullable = false, length = 100)
     private String fabricante;
 
-    //El numero total de persona que pueden entrar, ejemplo: 1238291234
-    @NotEmpty(message = "{msg.avion.capacidad.notEmpty}")
-    @Size(max = 3, message = "{msg.avion.capacidad.size}")
+    @NotNull(message = "{msg.avion.capacidad.notEmpty}")
+    @jakarta.validation.constraints.Min(value = 1, message = "{msg.avion.capacidad.min}")
+    @jakarta.validation.constraints.Max(value = 999, message = "{msg.avion.capacidad.max}")
     @Column(name = "capacidad", nullable = false)
-    private int capacidad;
+    private Integer capacidad;
 
     @NotEmpty(message = "{msg.avion.estado.notEmpty}")
     @Column(name = "estado", nullable = false)
@@ -74,15 +75,15 @@ public class Avion {
     @OneToMany(mappedBy = "avion", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private List<Trabajador> trabajadores;
+    private List<Trabajador> trabajadores = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
-            name = "ruta_avion", // nombre de la tabla en BD
-            joinColumns = @JoinColumn(name = "id_avion"), // columna que apunta a Avion
-            inverseJoinColumns = @JoinColumn(name = "id_ruta") // columna que apunta a Ruta
+            name = "ruta_avion",
+            joinColumns = @JoinColumn(name = "id_avion"),
+            inverseJoinColumns = @JoinColumn(name = "id_ruta")
     )
-    private List<Ruta> rutas;
+    private List<Ruta> rutas = new ArrayList<>();
 
 
     @ManyToMany
@@ -93,10 +94,10 @@ public class Avion {
     )
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private List<Pasajero> pasajeros;
+    private List<Pasajero> pasajeros = new ArrayList<>();
 
 
-    public Avion(String estado, int capacidad, String fabricante, String modelo) {
+    public Avion(String estado, Integer capacidad, String fabricante, String modelo) {
         this.estado = estado;
         this.capacidad = capacidad;
         this.fabricante = fabricante;

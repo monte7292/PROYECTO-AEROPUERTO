@@ -12,5 +12,9 @@ public interface AeropuertoRepository extends JpaRepository<Aeropuerto, Long> {
 
     long countByNombreContainingIgnoreCase(String nombre);
 
+    boolean existsByCodIata(String codIata);
+
+    boolean existsByCodIataAndIdNot(String codIata, Long id);
+
     // Resto de métodos que vayamos considerando hacer
 }

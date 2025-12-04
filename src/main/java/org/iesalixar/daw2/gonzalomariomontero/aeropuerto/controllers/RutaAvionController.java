@@ -18,6 +18,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.context.MessageSource;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.List;
 import java.util.Locale;
@@ -37,6 +39,9 @@ public class RutaAvionController {
 
     @Autowired
     private AeropuertoRepository aeropuertoRepository;
+
+    @Autowired
+    private MessageSource messageSource;
 
     @GetMapping
     public String listRutas(@RequestParam(defaultValue = "1") int page,
@@ -200,18 +205,31 @@ public class RutaAvionController {
         }
         Ruta ruta = rutaOpt.get();
         Aeropuerto aeropuerto = aeropuertoOpt.get();
+        if (modelo == null || modelo.trim().isEmpty() ||
+            fabricante == null || fabricante.trim().isEmpty() ||
+            estado == null || estado.trim().isEmpty() ||
+            capacidad < 1 || capacidad > 999) {
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    messageSource.getMessage("msg.avion.create.invalid", null, locale));
+            return "redirect:/rutas/detail?id=" + rutaId;
+        }
 
-        Avion newAvion = new Avion();
-        newAvion.setModelo(modelo);
-        newAvion.setFabricante(fabricante);
-        newAvion.setCapacidad(capacidad);
-        newAvion.setEstado(estado);
-        newAvion.setAeropuerto(aeropuerto);
+        try {
+            Avion newAvion = new Avion();
+            newAvion.setModelo(modelo);
+            newAvion.setFabricante(fabricante);
+            newAvion.setCapacidad(capacidad);
+            newAvion.setEstado(estado);
+            newAvion.setAeropuerto(aeropuerto);
 
-        avionRepository.save(newAvion);
+            avionRepository.save(newAvion);
 
-        newAvion.getRutas().add(ruta);
-        avionRepository.save(newAvion);
+            newAvion.getRutas().add(ruta);
+            avionRepository.save(newAvion);
+        } catch (DataIntegrityViolationException ex) {
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    messageSource.getMessage("msg.avion.create.error", null, locale));
+        }
 
         return "redirect:/rutas/detail?id=" + rutaId;
     }

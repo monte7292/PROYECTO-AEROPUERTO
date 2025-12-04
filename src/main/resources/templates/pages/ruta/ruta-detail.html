@@ -18,43 +18,46 @@
 
     <div class="p-5 mb-5 text-white rounded-3 shadow" style="background: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhssEAWyZIzgrR8Nbfnw2-rcKioF6SkUCbsWm1zJB71QAGWp0nFMzE4mYYdrSwwoLi9G5Ok5xXKhE8rhJIsSrM-95TRJOADpS5WiXvjm7dRO6X2dz0ui0s3TH_WHlTHviCU2_RBBTHyjF4/s1600/SUP2.JPG') no-repeat center center; background-size: cover;">
         <div class="container py-4 px-4" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 15px;">
-            <h1 class="display-4 fw-bold">Detalles de la Ruta</h1>
-            <p class="col-md-8 fs-5">Información y gestión de aviones asociados</p>
+            <h1 class="display-4 fw-bold" th:text="#{msg.ruta.detail}"></h1>
+            <p class="col-md-8 fs-5" th:text="#{msg.ruta.detail.subtitulo}"></p>
         </div>
     </div>
 
     <h1 th:text="'Ruta - ' + ${ruta.id}"></h1>
 
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
     <div class="section-card mb-4">
         <div class="info-grid">
             <div>
-                <div class="section-title">Origen</div>
+                <div class="section-title" th:text="#{msg.ruta.origen}"></div>
                 <div class="value" th:text="${ruta.aeropuertoOrigen.nombre}"></div>
             </div>
             <div>
-                <div class="section-title">Destino</div>
+                <div class="section-title" th:text="#{msg.ruta.destino}"></div>
                 <div class="value" th:text="${ruta.aeropuertoDestino.nombre}"></div>
             </div>
             <div>
-                <div class="section-title">Duración</div>
+                <div class="section-title" th:text="#{msg.ruta.duracion}"></div>
                 <div class="value"><span class="badge-soft" th:text="${ruta.duracion}"></span></div>
             </div>
             <div>
-                <div class="section-title">Distancia</div>
+                <div class="section-title" th:text="#{msg.ruta.distancia}"></div>
                 <div class="value"><span class="badge-soft" th:text="${ruta.distancia}"></span></div>
             </div>
         </div>
     </div>
 
-    <h3>Aviones asociados</h3>
+    <h3 th:text="#{msg.ruta.aviones.asociados}"></h3>
     <table class="table table-striped table-hover align-middle mt-3">
         <thead>
         <tr>
-            <th>Modelo</th>
-            <th>Fabricante</th>
-            <th>Capacidad</th>
-            <th>Estado</th>
-            <th>Acciones</th>
+            <th th:text="#{msg.avion.modelo}"></th>
+            <th th:text="#{msg.avion.fabricante}"></th>
+            <th th:text="#{msg.avion.capacidad}"></th>
+            <th th:text="#{msg.avion.estado}"></th>
+            <th th:text="#{msg.actions}"></th>
         </tr>
         </thead>
         <tbody>
@@ -67,59 +70,59 @@
                 <form class="d-inline" method="post" th:action="@{/rutas/removeAvion}">
                     <input name="rutaId" th:value="${ruta.id}" type="hidden"/>
                     <input name="avionId" th:value="${avion.id}" type="hidden"/>
-                    <button class="btn btn-danger btn-sm" type="submit">Quitar</button>
+                    <button class="btn btn-danger btn-sm" type="submit" th:text="#{msg.ruta.quitar}"></button>
                 </form>
             </td>
         </tr>
         </tbody>
     </table>
 
-    <h3>Añadir avión existente</h3>
+    <h3 th:text="#{msg.ruta.addExistingAvion}"></h3>
     <form class="section-card mb-3" method="post" th:action="@{/rutas/addAvion}">
         <input name="rutaId" th:value="${ruta.id}" type="hidden"/>
         <div class="mb-3">
-            <label class="form-label" for="avionId">Seleccionar avión</label>
+            <label class="form-label" for="avionId" th:text="#{msg.ruta.seleccionarAvion}"></label>
             <select class="form-select select-wide" id="avionId" name="avionId" required>
-                <option disabled selected value="">Seleccione un avión...</option>
+                <option disabled selected value="" th:text="#{msg.ruta.seleccioneAvion}"></option>
                 <option th:each="a : ${allAviones}" th:value="${a.id}" th:text="${a.modelo} + ' - ' + ${a.fabricante}"></option>
             </select>
         </div>
-        <button class="btn btn-success" type="submit">Añadir</button>
+        <button class="btn btn-success" type="submit" th:text="#{msg.ruta.anadirAvion}"></button>
     </form>
 
     
 
-    <h3>Añadir nuevo avión</h3>
+    <h3 th:text="#{msg.ruta.addNewAvion}"></h3>
     <form class="section-card mb-3" method="post" th:action="@{/rutas/addNewAvion}">
         <input name="rutaId" th:value="${ruta.id}" type="hidden"/>
         <div class="row">
             <div class="col-md-4 mb-3">
-                <label class="form-label" for="avionModelo">Modelo</label>
+                <label class="form-label" for="avionModelo" th:text="#{msg.avion.modelo}"></label>
                 <input class="form-control" id="avionModelo" name="avionModelo" required type="text">
             </div>
             <div class="col-md-4 mb-3">
-                <label class="form-label" for="avionFabricante">Fabricante</label>
+                <label class="form-label" for="avionFabricante" th:text="#{msg.avion.fabricante}"></label>
                 <input class="form-control" id="avionFabricante" name="avionFabricante" required type="text">
             </div>
             <div class="col-md-4 mb-3">
-                <label class="form-label" for="avionCapacidad">Capacidad</label>
+                <label class="form-label" for="avionCapacidad" th:text="#{msg.avion.capacidad}"></label>
                 <input class="form-control" id="avionCapacidad" name="avionCapacidad" required type="number">
             </div>
             <div class="col-md-4 mb-3">
-                <label class="form-label" for="avionEstado">Estado</label>
+                <label class="form-label" for="avionEstado" th:text="#{msg.avion.estado}"></label>
                 <input class="form-control" id="avionEstado" name="avionEstado" required type="text">
             </div>
             <div class="col-md-8 mb-3">
-                <label class="form-label" for="avionAeropuertoId">Aeropuerto</label>
+                <label class="form-label" for="avionAeropuertoId" th:text="#{msg.avion.aeropuerto}"></label>
                 <select class="form-select" id="avionAeropuertoId" name="avionAeropuertoId">
                     <option th:each="a : ${listAeropuertos}" th:value="${a.id}" th:text="${a.nombre}"></option>
                 </select>
             </div>
         </div>
-        <button class="btn btn-success" type="submit">Crear y añadir</button>
+        <button class="btn btn-success" type="submit" th:text="#{msg.ruta.crearYAnadir}"></button>
     </form>
 
-    <a class="btn btn-secondary mt-3" th:href="@{/rutas}">Volver</a>
+    <a class="btn btn-secondary mt-3" th:href="@{/rutas}" th:text="#{msg.back}"></a>
 </main>
 
 </body>

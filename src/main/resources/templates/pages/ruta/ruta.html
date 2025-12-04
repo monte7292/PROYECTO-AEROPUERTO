@@ -42,15 +42,14 @@
             <td th:text="${ruta.duracion}"></td>
             <td th:text="${ruta.distancia}"></td>
             <td>
-                <a th:href="@{/rutas/edit(id=${ruta.id})}" class="btn btn-primary btn-sm">Editar</a>
-                <a th:href="@{/rutas/detail(id=${ruta.id})}" class="btn btn-info btn-sm">Detalle</a>
+                <a th:href="@{/rutas/edit(id=${ruta.id})}" class="btn btn-primary btn-sm" th:text="#{msg.edit}"></a>
+                <a th:href="@{/rutas/detail(id=${ruta.id})}" class="btn btn-info btn-sm" th:text="#{msg.ruta.detalle}"></a>
                 <form th:action="@{/rutas/delete}" method="post" class="d-inline">
 
                     <input type="hidden" name="id" th:value="${ruta.id}"/>
                     <button type="submit" class="btn btn-danger btn-sm"
-                            th:onclick="|return confirm('#{msg.ruta.delete}');|">
-                        Delete
-                    </button>
+                            th:onclick="|return confirm('#{msg.ruta.delete}');|" th:text="#{msg.delete}">
+                </button>
                 </form>
             </td>
         </tr>
@@ -71,8 +70,8 @@
         </ul>
     </nav>
 
-    <a class="btn btn-success mt-3" th:href="@{/rutas/new}">Nueva ruta</a>
-    <a class="btn btn-secondary mt-3" th:href="@{/}">Volver</a>
+    <a class="btn btn-success mt-3" th:href="@{/rutas/new}" th:text="#{msg.ruta.nueva}"></a>
+    <a class="btn btn-secondary mt-3" th:href="@{/}" th:text="#{msg.back}"></a>
 </main>
 
 </body>
