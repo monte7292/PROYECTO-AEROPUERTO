@@ -45,13 +45,25 @@
                 </ul>
 
                 <!-- Idioma -->
-                <form th:action="@{/}" method="get" class="d-none d-md-flex position-absolute end-0 me-3 align-items-center gap-2">
+                <div class="d-none d-md-flex position-absolute end-0 me-3 align-items-center gap-2">
                     <img th:src="${#locale.language == 'es'} ? 'https://flagcdn.com/w20/es.png' : 'https://flagcdn.com/w20/gb.png'" width="20" height="15" alt="Lang">
-                    <select name="lang" onchange="this.form.submit()" class="form-select">
+                    <select id="lang-select" class="form-select">
                         <option value="es" th:selected="${#locale.language == 'es'}">Español</option>
                         <option value="en" th:selected="${#locale.language == 'en'}">English</option>
                     </select>
-                </form>
+                </div>
+                <!-- Script generado con IA, para que podamos mantener al usuario en la misma página al cambiar el idioma -->
+                <script>
+                (function(){
+                  var sel = document.getElementById('lang-select');
+                  if(!sel) return;
+                  sel.addEventListener('change', function(){
+                    var url = new URL(window.location.href);
+                    url.searchParams.set('lang', sel.value);
+                    window.location.href = url.toString();
+                  });
+                })();
+                </script>
 
             </div>
         </div>
