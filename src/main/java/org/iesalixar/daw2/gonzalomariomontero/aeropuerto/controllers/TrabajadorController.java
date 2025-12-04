@@ -1,5 +1,6 @@
 package org.iesalixar.daw2.gonzalomariomontero.aeropuerto.controllers;
 
+import jakarta.validation.Valid;
 import org.iesalixar.daw2.gonzalomariomontero.aeropuerto.entities.Trabajador;
 import org.iesalixar.daw2.gonzalomariomontero.aeropuerto.repositories.AvionRepository;
 import org.iesalixar.daw2.gonzalomariomontero.aeropuerto.repositories.TrabajadorRepository;
@@ -12,9 +13,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+import org.springframework.context.MessageSource;
 import java.util.Optional;
 import java.util.Locale;
 
@@ -33,6 +35,9 @@ public class TrabajadorController {
 
     @Autowired
     private AvionRepository avionRepository;
+
+    @Autowired
+    private MessageSource messageSource;
 
     /**
      * Lista todos los trabajadores y los pasa como atributo al modelo para que sean
@@ -56,7 +61,7 @@ public class TrabajadorController {
         model.addAttribute("currentPage", page);
         model.addAttribute("search", search);
         model.addAttribute("sort", sort);
-        return "trabajador"; // Nombre de la plantilla Thymeleaf a renderizar
+        return "pages/trabajador/trabajador"; // Nombre de la plantilla Thymeleaf a renderizar
     }
 
     /**
@@ -70,21 +75,21 @@ public class TrabajadorController {
         logger.info("Mostrando formulario para nuevo trabajador.");
         model.addAttribute("trabajador", new Trabajador());
         model.addAttribute("aviones", avionRepository.findAll()); // Agregar lista de aviones para elegir
-        return "trabajador-form";
+        return "pages/trabajador/trabajador-form";
     }
 
     @GetMapping("/edit")
     public String showEditForm(@RequestParam("id") Long id, Model model, Locale locale) {
         logger.info("Mostrando formulario de edición para el trabajador con ID {}", id);
         Optional<Trabajador> trabajadorOpt = trabajadorRepository.findById(id);
-        if (trabajadorOpt.isPresent()) {
+        if (!trabajadorOpt.isPresent()) {
             logger.warn("No se encontró el trabajador con ID {}", id);
             model.addAttribute("errorMessage", "No se encontró el trabajador.");
         } else {
-            model.addAttribute("trabajador", trabajadorOpt);
+            model.addAttribute("trabajador", trabajadorOpt.get());
         }
         model.addAttribute("aviones", avionRepository.findAll()); // Agregar lista de aviones para elegir
-        return "trabajador-form";
+        return "pages/trabajador/trabajador-form";
     }
 
     /**
@@ -95,12 +100,23 @@ public class TrabajadorController {
      * @return Redirección a la lista de trabajadores.
      */
     @PostMapping("/insert")
-    public String insertTrabajador(@ModelAttribute("trabajador") Trabajador trabajador, RedirectAttributes redirectAttributes, Locale locale) {
-        logger.info("Insertando nuevo trabajador con nombre y apellido {}", trabajador.getNombre(), trabajador.getApellidos());
+    public String insertTrabajador(@Valid @ModelAttribute("trabajador") Trabajador trabajador,
+                                 BindingResult result,
+                                 RedirectAttributes redirectAttributes,
+                                 Model model,
+                                 Locale locale) {
+        logger.info("Insertando nuevo trabajador con nombre {}", trabajador.getNombre());
+
+        if (result.hasErrors()) {
+            model.addAttribute("aviones", avionRepository.findAll());
+            return "pages/trabajador/trabajador-form";
+        }
 
         trabajadorRepository.save(trabajador);
-        logger.info("Trabajador {} insertado con éxito.", trabajador.getNombre(), trabajador.getApellidos());
-        return "redirect:/trabajadores"; // Redirigir a la lista de trabajadores
+        logger.info("Trabajador {} insertado con éxito.", trabajador.getNombre());
+        redirectAttributes.addFlashAttribute("successMessage",
+                messageSource.getMessage("msg.trabajador.insert.success", null, locale));
+        return "redirect:/trabajadores";
     }
 
     /**
@@ -108,15 +124,26 @@ public class TrabajadorController {
      *
      * @param trabajador Objeto que contiene los datos del formulario.
      * @param redirectAttributes Atributos para mensajes flash de redirección.
-     * @return Redirección a la lista de trabajadores.
+     * @return Redirección a la lista de directores.
      */
     @PostMapping("/update")
-    public String updateTrabajador(@ModelAttribute("trabajador") Trabajador trabajador, RedirectAttributes redirectAttributes, Locale locale) {
-        logger.info("Actualizando trabajador con ID {}", trabajador.getNombre(), trabajador.getApellidos());
+    public String updateTrabajador(@Valid @ModelAttribute("trabajador") Trabajador trabajador,
+                                 BindingResult result,
+                                 RedirectAttributes redirectAttributes,
+                                 Model model,
+                                 Locale locale) {
+        logger.info("Actualizando trabajador con ID {}", trabajador.getId());
+
+        if (result.hasErrors()) {
+            model.addAttribute("aviones", avionRepository.findAll());
+            return "pages/trabajador/trabajador-form";
+        }
 
         trabajadorRepository.save(trabajador);
-        logger.info("Trabajador con ID {} actualizado con éxito.", trabajador.getNombre(), trabajador.getApellidos());
-        return "redirect:/trabajadores"; // Redirigir a la lista de trabajadores
+        logger.info("Trabajador con ID {} actualizado con éxito.", trabajador.getId());
+        redirectAttributes.addFlashAttribute("successMessage",
+                messageSource.getMessage("msg.trabajador.update.success", null, locale));
+        return "redirect:/trabajadores";
     }
 
     /**
@@ -131,6 +158,8 @@ public class TrabajadorController {
         logger.info("Eliminando trabajador con ID {}", id);
         trabajadorRepository.deleteById(id);
         logger.info("Trabajador con ID {} eliminado con éxito.", id);
+        redirectAttributes.addFlashAttribute("successMessage",
+                messageSource.getMessage("msg.trabajador.delete.success", null, locale));
         return "redirect:/trabajadores"; // Redirigir a la lista de trabajadores
     }
 

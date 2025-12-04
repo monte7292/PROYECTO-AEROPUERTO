@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head ('Insertar/Actualizar Trabajador')"></head>
+<style>
+    /* Margen superior personalizado */
+    .mt-10 {
+        margin-top: 4.5rem; /* Ajusta el valor si quieres más o menos */
+    }
+
+    /* Grid de 3 columnas para el formulario */
+    .grid-form {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem; /* espacio entre celdas */
+    }
+
+    /* Hacer que los botones estén juntos en una fila */
+    .grid-form .buttons {
+        grid-column: 1 / -1; /* ocupa las 3 columnas */
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-start; /* puedes poner center si quieres centrado */
+        margin-top: 1rem;
+    }
+</style>
+<body>
+
+<!-- Incluir el fragmento del header -->
+<header th:replace="fragments/header :: header"></header>
+
+<main class="container mt-10">
+    <!-- Banner principal con imagen de fondo -->
+    <div class="p-5 mb-5 text-white rounded-3 shadow" style="background: url('https://www.avionrevue.com/wp-content/uploads/2024/01/mexico-aerop.jpg') no-repeat center center; background-size: cover;">
+        <div class="container py-4 px-4" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 15px;">
+            <h1 class="display-4 fw-bold">Gestión de Trabajadores</h1>
+            <p class="col-md-8 fs-5">
+                Administra de forma eficiente toda la información relacionada con los trabajadores de la empresa. Consulta detalles operativos, agrega nuevos trabajadores al sistema, actualiza datos de infraestructura y controla la disponibilidad de servicios clave.
+            </p>
+        </div>
+    </div>
+    <h1 th:text="${trabajador.id} == null ? #{msg.trabajador.add} : #{msg.trabajador.edit}"></h1>
+
+    <!-- Mensaje de error -->
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+    <form th:action="${trabajador.id} == null ? @{/trabajadores/insert} : @{/trabajadores/update}"
+          th:object="${trabajador}" method="post" class="mt-4 grid-form">
+        <input type="hidden" th:field="*{id}" />
+
+        <!-- Nombre -->
+        <div>
+            <label for="nombre" class="form-label" th:text="#{msg.trabajador.nombre}"></label>
+            <input type="text" th:field="*{nombre}" id="nombre" class="form-control" required maxlength="100" />
+            <div th:if="${#fields.hasErrors('nombre')}" class="text-danger" th:errors="*{nombre}"></div>
+        </div>
+
+        <!-- Apellidos -->
+        <div>
+            <label for="apellidos" class="form-label" th:text="#{msg.trabajador.apellidos}"></label>
+            <input type="text" th:field="*{apellidos}" id="apellidos" class="form-control" required maxlength="100" />
+            <div th:if="${#fields.hasErrors('apellidos')}" class="text-danger" th:errors="*{apellidos}"></div>
+        </div>
+
+        <!-- Cargo -->
+        <div>
+            <label for="cargo" class="form-label" th:text="#{msg.trabajador.cargo}"></label>
+            <input type="text" th:field="*{cargo}" id="cargo" class="form-control" required maxlength="100" />
+            <div th:if="${#fields.hasErrors('cargo')}" class="text-danger" th:errors="*{cargo}"></div>
+        </div>
+
+        <!-- Fecha contratación -->
+        <div>
+            <label for="fechaContratacion" class="form-label" th:text="#{msg.trabajador.fechaContratacion}"></label>
+            <input type="date" th:field="*{fechaContratacion}" id="fechaContratacion" class="form-control" required maxlength="100" />
+            <div th:if="${#fields.hasErrors('fechaContratacion')}" class="text-danger" th:errors="*{fechaContratacion}"></div>
+        </div>
+
+        <!-- Avion -->
+        <div>
+            <label for="avion" class="form-label" th:text="#{msg.trabajador.avion}"></label>
+            <select th:field="*{avion.id}" id="avion" class="form-select" required>
+                <option th:each="avion : ${aviones}"
+                        th:value="${avion.id}"
+                        th:text="${avion.modelo}">
+                </option>
+            </select>
+            <div th:if="${#fields.hasErrors('avion.id')}" class="text-danger" th:errors="*{avion.id}"></div>
+        </div>
+
+        <!-- Botones -->
+        <div class="buttons">
+            <button type="submit" class="btn btn-primary" th:text="${trabajador.id} == null ? #{msg.trabajador.add} : #{msg.trabajador.update}"></button>
+            <a href="#" th:href="@{/trabajadores}" class="btn btn-secondary" th:text="#{msg.back}"></a>
+        </div>
+    </form>
+</main>
+<!-- Incluir el fragmento del footer -->
+
+
+</body>
+</html>
