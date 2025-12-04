@@ -82,11 +82,11 @@ public class TrabajadorController {
     public String showEditForm(@RequestParam("id") Long id, Model model, Locale locale) {
         logger.info("Mostrando formulario de edición para el trabajador con ID {}", id);
         Optional<Trabajador> trabajadorOpt = trabajadorRepository.findById(id);
-        if (trabajadorOpt.isPresent()) {
+        if (!trabajadorOpt.isPresent()) {
             logger.warn("No se encontró el trabajador con ID {}", id);
             model.addAttribute("errorMessage", "No se encontró el trabajador.");
         } else {
-            model.addAttribute("trabajador", trabajadorOpt);
+            model.addAttribute("trabajador", trabajadorOpt.get());
         }
         model.addAttribute("aviones", avionRepository.findAll()); // Agregar lista de aviones para elegir
         return "pages/trabajador/trabajador-form";
