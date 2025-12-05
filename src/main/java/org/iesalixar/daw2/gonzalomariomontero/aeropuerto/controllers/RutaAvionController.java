@@ -49,10 +49,17 @@ public class RutaAvionController {
                             @RequestParam(required = false) String sort,
                             Model model,
                             Locale locale) {
-        logger.info("Listando rutas");
+        logger.info("Listando rutas" + (search != null ? ("..." + search) : ""));
         Pageable pageable = PageRequest.of(page - 1, 5, getSort(sort));
-        Page<Ruta> rutas = rutaRepository.findAll(pageable);
-        int totalPages = (int) Math.ceil((double) rutaRepository.count() / 5);
+        Page<Ruta> rutas;
+        int totalPages = 0;
+        if (search != null && !search.isBlank()) {
+            rutas = rutaRepository.findByAeropuertoOrigen_NombreContainingIgnoreCaseOrAeropuertoDestino_NombreContainingIgnoreCase(search, search, pageable);
+            totalPages = (int) Math.ceil((double) rutaRepository.countByAeropuertoOrigen_NombreContainingIgnoreCaseOrAeropuertoDestino_NombreContainingIgnoreCase(search, search) / 5);
+        } else {
+            rutas = rutaRepository.findAll(pageable);
+            totalPages = (int) Math.ceil((double) rutaRepository.count() / 5);
+        }
         model.addAttribute("listRutas", rutas.toList());
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("currentPage", page);

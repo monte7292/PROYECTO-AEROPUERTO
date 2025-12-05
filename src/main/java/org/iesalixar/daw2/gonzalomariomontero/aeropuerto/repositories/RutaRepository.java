@@ -19,4 +19,8 @@ public interface RutaRepository extends JpaRepository<Ruta, Long> {
             @Param("AeropuertoOrigen") String AeropuertoOrigen,
             @Param("AeropuertoDestino") String AeropuertoDestino
     );
+
+    Page<Ruta> findByAeropuertoOrigen_NombreContainingIgnoreCaseOrAeropuertoDestino_NombreContainingIgnoreCase(String origenNombre, String destinoNombre, Pageable pageable);
+
+    long countByAeropuertoOrigen_NombreContainingIgnoreCaseOrAeropuertoDestino_NombreContainingIgnoreCase(String origenNombre, String destinoNombre);
 }

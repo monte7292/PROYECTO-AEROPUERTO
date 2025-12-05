@@ -9,4 +9,8 @@ public interface DirectorRepository extends JpaRepository<Director, Long> {
     Page<Director> findAll(Pageable pageable);
 
     // Resto de métodos que vayamos considerando hacer
+
+    Page<Director> findByNombreContainingIgnoreCaseOrApellidosContainingIgnoreCase(String nombre, String apellidos, Pageable pageable);
+
+    long countByNombreContainingIgnoreCaseOrApellidosContainingIgnoreCase(String nombre, String apellidos);
 }

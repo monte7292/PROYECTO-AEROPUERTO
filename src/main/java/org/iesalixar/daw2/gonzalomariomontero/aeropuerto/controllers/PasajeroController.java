@@ -54,15 +54,20 @@ public class PasajeroController {
         Pageable pageable = PageRequest.of(page - 1, 5, getSort(sort));
         Page<Pasajero> pasajeros;
         int totalPages = 0;
-        pasajeros = pasajeroRepository.findAll(pageable);
-        totalPages = (int) Math.ceil((double) pasajeroRepository.count() / 5);
+        if (search != null && !search.isBlank()) {
+            pasajeros = pasajeroRepository.findByNombreContainingIgnoreCaseOrApellidosContainingIgnoreCase(search, search, pageable);
+            totalPages = (int) Math.ceil((double) pasajeroRepository.countByNombreContainingIgnoreCaseOrApellidosContainingIgnoreCase(search, search) / 5);
+        } else {
+            pasajeros = pasajeroRepository.findAll(pageable);
+            totalPages = (int) Math.ceil((double) pasajeroRepository.count() / 5);
+        }
         logger.info("Se han cargado {} pasajeros.", pasajeros.toList().size());
-        model.addAttribute("listPasajeros", pasajeros.toList()); // Pasar la lista de pasajeros al modelo
+        model.addAttribute("listPasajeros", pasajeros.toList());
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("currentPage", page);
         model.addAttribute("search", search);
         model.addAttribute("sort", sort);
-        return "pages/pasajero/pasajero"; // Nombre de la plantilla Thymeleaf a renderizar
+        return "pages/pasajero/pasajero";
     }
 
     /**

@@ -53,15 +53,20 @@ public class TrabajadorController {
         Pageable pageable = PageRequest.of(page - 1, 5, getSort(sort));
         Page<Trabajador> trabajador;
         int totalPages = 0;
-        trabajador = trabajadorRepository.findAll(pageable);
-        totalPages = (int) Math.ceil((double) trabajadorRepository.count() / 5);
+        if (search != null && !search.isBlank()) {
+            trabajador = trabajadorRepository.findByNombreContainingIgnoreCaseOrApellidosContainingIgnoreCase(search, search, pageable);
+            totalPages = (int) Math.ceil((double) trabajadorRepository.countByNombreContainingIgnoreCaseOrApellidosContainingIgnoreCase(search, search) / 5);
+        } else {
+            trabajador = trabajadorRepository.findAll(pageable);
+            totalPages = (int) Math.ceil((double) trabajadorRepository.count() / 5);
+        }
         logger.info("Se han cargado {} trabajadores.", trabajador.toList().size());
-        model.addAttribute("listTrabajadores", trabajador.toList()); // Pasar la lista de trabajadores al modelo
+        model.addAttribute("listTrabajadores", trabajador.toList());
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("currentPage", page);
         model.addAttribute("search", search);
         model.addAttribute("sort", sort);
-        return "pages/trabajador/trabajador"; // Nombre de la plantilla Thymeleaf a renderizar
+        return "pages/trabajador/trabajador";
     }
 
     /**

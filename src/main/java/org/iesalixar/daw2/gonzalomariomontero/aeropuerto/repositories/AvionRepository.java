@@ -11,4 +11,8 @@ public interface AvionRepository extends JpaRepository<Avion, Long> {
     List<Avion> findByModeloContainingIgnoreCase(String modelo);
     /* Para mostrar en el /aeropuertos/edit?id=1 los aviones que hay */
     List<Avion> findByAeropuertoId(Long aeropuertoId);
+
+    Page<Avion> findByModeloContainingIgnoreCaseOrFabricanteContainingIgnoreCase(String modelo, String fabricante, Pageable pageable);
+
+    long countByModeloContainingIgnoreCaseOrFabricanteContainingIgnoreCase(String modelo, String fabricante);
 }

@@ -9,4 +9,8 @@ public interface TrabajadorRepository extends JpaRepository<Trabajador, Long> {
     Page<Trabajador> findAll(Pageable pageable);
 
     // Resto de métodos que vayamos considerando hacer
+
+    Page<Trabajador> findByNombreContainingIgnoreCaseOrApellidosContainingIgnoreCase(String nombre, String apellidos, Pageable pageable);
+
+    long countByNombreContainingIgnoreCaseOrApellidosContainingIgnoreCase(String nombre, String apellidos);
 }

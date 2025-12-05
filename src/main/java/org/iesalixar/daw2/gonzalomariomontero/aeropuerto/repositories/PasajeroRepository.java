@@ -20,4 +20,8 @@ public interface PasajeroRepository extends JpaRepository<Pasajero, Long> {
     boolean existsByDocumento(@Param("documento") String documento);
 
     // Resto de métodos que vayamos considerando hacer
+
+    Page<Pasajero> findByNombreContainingIgnoreCaseOrApellidosContainingIgnoreCase(String nombre, String apellidos, Pageable pageable);
+
+    long countByNombreContainingIgnoreCaseOrApellidosContainingIgnoreCase(String nombre, String apellidos);
 }

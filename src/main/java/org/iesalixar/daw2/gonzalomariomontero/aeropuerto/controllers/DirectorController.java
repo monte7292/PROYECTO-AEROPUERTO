@@ -54,15 +54,20 @@ public class DirectorController {
         Pageable pageable = PageRequest.of(page - 1, 5, getSort(sort));
         Page<Director> directores;
         int totalPages = 0;
-        directores = directorRepository.findAll(pageable);
-        totalPages = (int) Math.ceil((double) directorRepository.count() / 5);
+        if (search != null && !search.isBlank()) {
+            directores = directorRepository.findByNombreContainingIgnoreCaseOrApellidosContainingIgnoreCase(search, search, pageable);
+            totalPages = (int) Math.ceil((double) directorRepository.countByNombreContainingIgnoreCaseOrApellidosContainingIgnoreCase(search, search) / 5);
+        } else {
+            directores = directorRepository.findAll(pageable);
+            totalPages = (int) Math.ceil((double) directorRepository.count() / 5);
+        }
         logger.info("Se han cargado {} directores.", directores.toList().size());
-        model.addAttribute("listDirectores", directores.toList()); // Pasar la lista de directores al modelo
+        model.addAttribute("listDirectores", directores.toList());
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("currentPage", page);
         model.addAttribute("search", search);
         model.addAttribute("sort", sort);
-        return "pages/director/director"; // Nombre de la plantilla Thymeleaf a renderizar
+        return "pages/director/director";
     }
 
     /**

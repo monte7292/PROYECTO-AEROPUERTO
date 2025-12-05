@@ -50,31 +50,24 @@ public class AvionPasajeroController {
     // LISTA DE AVIONES
     @GetMapping
     public String listAviones(@RequestParam(defaultValue = "1") int page, @RequestParam(required = false) String search, @RequestParam(required = false) String sort, Model model, Locale locale) {
-        logger.info("Solicitando la lista de todos los aviones...");
+        logger.info("Solicitando la lista de todos los aviones..." + search);
         Pageable pageable = PageRequest.of(page - 1, 5, getSort(sort));
         Page<Avion> aviones;
         int totalPages = 0;
-        aviones = avionRepository.findAll(pageable);
-        totalPages = (int) Math.ceil((double) avionRepository.count() / 5);
+        if (search != null && !search.isBlank()) {
+            aviones = avionRepository.findByModeloContainingIgnoreCaseOrFabricanteContainingIgnoreCase(search, search, pageable);
+            totalPages = (int) Math.ceil((double) avionRepository.countByModeloContainingIgnoreCaseOrFabricanteContainingIgnoreCase(search, search) / 5);
+        } else {
+            aviones = avionRepository.findAll(pageable);
+            totalPages = (int) Math.ceil((double) avionRepository.count() / 5);
+        }
         logger.info("Se han cargado {} aviones.", aviones.toList().size());
-        model.addAttribute("listAviones", aviones.toList()); // Pasar la lista de directores al modelo
+        model.addAttribute("listAviones", aviones.toList());
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("currentPage", page);
         model.addAttribute("search", search);
         model.addAttribute("sort", sort);
-        return "pages/avion/avion"; // Nombre de la plantilla Thymeleaf a renderizar
-
-        /*
-        try {
-            List<Avion> listAviones = avionRepository.findAll();
-            model.addAttribute("listAviones", listAviones);
-            logger.info("Se han cargado {} aviones.", listAviones.size());
-        } catch (Exception e) {
-            logger.error("Error al listar los aviones: {}", e.getMessage());
-            model.addAttribute("errorMessage", "Error al listar los aviones.");
-        }
-
-        return "pages/avion/avion";*/
+        return "pages/avion/avion";
     }
 
     // FORMULARIO NUEVO

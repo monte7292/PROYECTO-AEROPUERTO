@@ -58,15 +58,20 @@ public class TicketController {
         Pageable pageable = PageRequest.of(page - 1, 5, getSort(sort));
         Page<Ticket> tickets;
         int totalPages = 0;
-        tickets = ticketRepository.findAll(pageable);
-        totalPages = (int) Math.ceil((double) ticketRepository.count() / 5);
+        if (search != null && !search.isBlank()) {
+            tickets = ticketRepository.findByAsientoContainingIgnoreCase(search, pageable);
+            totalPages = (int) Math.ceil((double) ticketRepository.countByAsientoContainingIgnoreCase(search) / 5);
+        } else {
+            tickets = ticketRepository.findAll(pageable);
+            totalPages = (int) Math.ceil((double) ticketRepository.count() / 5);
+        }
         logger.info("Se han cargado {} tickets.", tickets.toList().size());
-        model.addAttribute("listTickets", tickets.toList()); // Pasar la lista de provincias al modelo
+        model.addAttribute("listTickets", tickets.toList());
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("currentPage", page);
         model.addAttribute("search", search);
         model.addAttribute("sort", sort);
-        return "pages/ticket/ticket"; // Nombre de la plantilla Thymeleaf a renderizar
+        return "pages/ticket/ticket";
     }
 
     /**
