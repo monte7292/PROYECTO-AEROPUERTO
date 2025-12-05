@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS pasajero (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
     apellidos VARCHAR(100) NOT NULL,
-    documento VARCHAR(100) NOT NULL,
+    documento VARCHAR(9) NOT NULL UNIQUE,
     email VARCHAR(100)
 );
 

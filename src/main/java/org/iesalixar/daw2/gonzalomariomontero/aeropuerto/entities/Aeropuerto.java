@@ -52,10 +52,7 @@ public class Aeropuerto {
     @JoinColumn(name = "id_director", nullable = false) // Clave foránea en la tabla Aeropuerto que referencia a la tabla Director.
     private Director director;
 
-    /*
-    @OneToMany(mappedBy = "aeropuerto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Avion> aviones;*/
-
+    // Relación con entidad 'Avión'
     @OneToMany(mappedBy = "aeropuerto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

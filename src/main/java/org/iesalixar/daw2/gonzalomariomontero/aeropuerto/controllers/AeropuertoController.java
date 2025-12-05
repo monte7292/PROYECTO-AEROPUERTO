@@ -18,7 +18,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.context.MessageSource;
-import org.springframework.dao.DataIntegrityViolationException;
 
 import javax.naming.Binding;
 import java.util.List;
@@ -99,20 +98,13 @@ public class AeropuertoController {
             return "pages/aeropuerto/aeropuerto-form";  // Devuelve el formulario para mostrar los errores de validación
         }
         logger.info("Insertando nuevo aeropuerto con código {}", aeropuerto.getCodIata());
-        if (aeropuertoRepository.existsByCodIata(aeropuerto.getCodIata())) {
-            logger.warn("El código IATA {} ya existe.", aeropuerto.getCodIata());
-            redirectAttributes.addFlashAttribute("errorMessage",
-                    messageSource.getMessage("msg.aeropuerto.codIata.duplicate", null, locale));
-            return "redirect:/aeropuertos/new";
-        }
-        try {
-            aeropuertoRepository.save(aeropuerto);
-        } catch (DataIntegrityViolationException ex) {
-            logger.error("Violación de integridad al insertar aeropuerto: {}", ex.getMessage());
-            redirectAttributes.addFlashAttribute("errorMessage",
-                    messageSource.getMessage("msg.aeropuerto.codIata.duplicate", null, locale));
-            return "redirect:/aeropuertos/new";
-        }
+        /*if (provinciaRepository.existsProvinceByCode(provincia.getCode())) {
+            logger.warn("El código de la región {} ya existe.", provincia.getCode());
+            redirectAttributes.addFlashAttribute("errorMessage", "El código de la provincia ya existe.");
+            // Corregido: ruta de redirección debe ser /provinces/new
+            return "redirect:/provinces/new";
+        }*/
+        aeropuertoRepository.save(aeropuerto);
         logger.info("Aeropuerto {} insertado con éxito.", aeropuerto.getCodIata());
         redirectAttributes.addFlashAttribute("successMessage",
                 messageSource.getMessage("msg.aeropuerto.insert.success", null, locale));
@@ -125,20 +117,12 @@ public class AeropuertoController {
             return "pages/aeropuerto/aeropuerto-form";  // Devuelve el formulario para mostrar los errores de validación
         }
         logger.info("Actualizando aeropuerto con ID {}", aeropuerto.getId());
-        if (aeropuertoRepository.existsByCodIataAndIdNot(aeropuerto.getCodIata(), aeropuerto.getId())) {
-            logger.warn("El código IATA {} ya existe para otro aeropuerto.", aeropuerto.getCodIata());
-            redirectAttributes.addFlashAttribute("errorMessage",
-                    messageSource.getMessage("msg.aeropuerto.codIata.duplicate", null, locale));
-            return "redirect:/aeropuertos/edit?id=" + aeropuerto.getId();
-        }
-        try {
-            aeropuertoRepository.save(aeropuerto);
-        } catch (DataIntegrityViolationException ex) {
-            logger.error("Violación de integridad al actualizar aeropuerto: {}", ex.getMessage());
-            redirectAttributes.addFlashAttribute("errorMessage",
-                    messageSource.getMessage("msg.aeropuerto.codIata.duplicate", null, locale));
-            return "redirect:/aeropuertos/edit?id=" + aeropuerto.getId();
-        }
+        /*if (provinciaRepository.existsProvinceByCodeAndNotId(provincia.getCode())) {
+            logger.warn("El código de la región {} ya existe para otra región.", provincia.getCode());
+            redirectAttributes.addFlashAttribute("errorMessage", "El código de la provincia ya existe para otra región.");
+            return "redirect:/provinces/edit?id=" + provincia.getId();
+        }*/
+        aeropuertoRepository.save(aeropuerto);
         logger.info("Aeropuerto con ID {} actualizada con éxito.", aeropuerto.getId());
         redirectAttributes.addFlashAttribute("successMessage",
                 messageSource.getMessage("msg.aeropuerto.update.success", null, locale));

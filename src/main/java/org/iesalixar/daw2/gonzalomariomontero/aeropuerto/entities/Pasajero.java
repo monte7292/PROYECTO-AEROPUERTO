@@ -42,8 +42,8 @@ public class Pasajero {
 
     // Campo que almacena el Dni del pasajero.
     @NotEmpty(message = "{msg.pasajero.documento.notEmpty}")
-    @Size(max = 100, message = "{msg.pasajero.documento.size}")
-    @Column(name = "documento", nullable = false, length = 100)
+    @Size(max = 9, message = "{msg.pasajero.documento.size}")
+    @Column(name = "documento", nullable = false, length = 9)
     private String documento;
 
     // Campo que almacena el email del pasajero.

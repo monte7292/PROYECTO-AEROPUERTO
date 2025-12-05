@@ -38,34 +38,6 @@ public class Avion {
     @Column(name = "estado", nullable = false)
     private String estado;
 
-    /*
-    @NotNull(message = "{msg.avion.aeropuerto.notNull}")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_aeropuerto", nullable = false)
-    private Aeropuerto aeropuerto;
-
-    //Relacion one to many
-    //el mapeado es el nombre de la tabla
-    @OneToMany(mappedBy = "avion", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Trabajador> trabajadores;
-
-    @ManyToMany
-    @JoinTable(
-            name = "ruta_avion",
-            joinColumns = @JoinColumn(name = "id_ruta"),
-            inverseJoinColumns = @JoinColumn(name = "id_avion")
-    )
-    private List<Ruta> rutas;
-
-    @ManyToMany
-    @JoinTable(
-            name = "pasajero_avion",
-            joinColumns = @JoinColumn(name = "id_pasajero"),
-            inverseJoinColumns = @JoinColumn(name = "id_avion")
-    )
-    private List<Pasajero> pasajeros;
-*/
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_aeropuerto", nullable = false)
     @ToString.Exclude

@@ -29,23 +29,6 @@ public class Ruta {
     @Column(name = "distancia", nullable = false, length = 5)
     private int distancia;
 
-    /*
-    @NotNull(message = "{msg.avion.aeropuerto.notNull}")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idAeropuertoOrigen", nullable = false)
-    private Aeropuerto aeropuertoOrigen;
-
-    @NotNull(message = "{msg.avion.aeropuerto.notNull}")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idAeropuertoDestino", nullable = false)
-    private Aeropuerto aeropuertoDestino;
-
-    //Está será ña relación manytomany con Avion
-    // Es la lista de objetos de rutan que se crean en Avion - linea 55
-    @ManyToMany(mappedBy = "rutas")
-    private List<Avion> aviones;
-
-    */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idAeropuertoOrigen", nullable = false)
     @ToString.Exclude
