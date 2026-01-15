@@ -7,6 +7,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -63,6 +64,24 @@ public class CustomOAuth2SuccessHandler implements
 
         // Obtener el nombre de usuario (por ejemplo, el login de GitHub)
         String username = oAuth2User.getAttribute("login");
+
+        // Para Atlassian puesto que usa el registration id
+        String registrationId =
+                ((OAuth2AuthenticationToken) authentication)
+                        .getAuthorizedClientRegistrationId();
+
+        // Comprobar si es un proveedor de los que hemos hecho
+        // Si es de atlassian, guardamos en el username el account_id
+        if ("github".equals(registrationId)) {
+            username = oAuth2User.getAttribute("login");
+        } else if ("atlassian".equals(registrationId)) {
+            username = oAuth2User.getAttribute("account_id");
+        } else {
+            throw new OAuth2AuthenticationException("Proveedor no soportado");
+        }
+
+
+
 
         // Verificar si el usuario está registrado en la base de datos
         if (!userRepository.existsByUsername(username)) {
