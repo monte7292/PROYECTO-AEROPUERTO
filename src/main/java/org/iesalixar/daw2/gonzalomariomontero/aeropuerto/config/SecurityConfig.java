@@ -69,6 +69,13 @@ public class SecurityConfig {
                             .failureHandler(customOAuth2FailureHandler) // Handler para fallo en autenticación
                             .permitAll(); // Permite acceso a la página de login a todos los usuarios
                 })
+                .oauth2Login(oauth2 -> {
+                    logger.debug("Configurando login con OAuth2");
+                    oauth2
+                            .loginPage("/login")// Reutiliza la página de inicio de sesión personalizada
+                            .defaultSuccessUrl("/", true) // Redirige al inicio después del login exitoso con OAuth2
+                            .permitAll();
+                })
                 .logout(form -> {
                     logger.debug("Configurando fin de sesión");
                     form
