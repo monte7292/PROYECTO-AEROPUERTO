@@ -8,10 +8,11 @@
 <main class="flex-shrink-0">
     <div class="container">
         <h1 class="mt-5" th:text="#{spring.security.ui.login.title}"></h1>
-        <div th:if="${errorMessage}" class="alert alert-danger">
-            <p th:text="${errorMessage}"></p>
-        </div>
-        <div class="row justify-content-center">
+        div th:if="${errorMessage}" class="alert alert-danger">
+        <p th:text="${errorMessage}"></p>
+    </div>
+
+    <div class="row justify-content-center">
             <div class="col-md-6">
                 <form th:action="@{/login}" method="post" class="form-signin">
                     <!-- Campo de usuario -->
@@ -34,6 +35,14 @@
                     <button class="btn btn-primary w-100" type="submit"
                             th:text="#{spring.security.ui.login.submit}"></button>
                 </form>
+                <div class="row justify-content-center mt-3">
+                    <div class="col-md-6">
+                        <!-- Botón de inicio de sesión con GitHub -->
+                        <a href="/oauth2/authorization/github" class="btn btn-dark btn-lg w100">
+                            <i class="bi bi-github"></i> Iniciar sesión con GitHub
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
