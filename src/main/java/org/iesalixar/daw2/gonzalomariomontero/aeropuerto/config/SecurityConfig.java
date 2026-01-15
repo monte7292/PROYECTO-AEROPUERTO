@@ -1,7 +1,10 @@
 package org.iesalixar.daw2.gonzalomariomontero.aeropuerto.config;
 
+import org.iesalixar.daw2.gonzalomariomontero.aeropuerto.handlers.CustomOAuth2FailureHandler;
+import org.iesalixar.daw2.gonzalomariomontero.aeropuerto.handlers.CustomOAuth2SuccessHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,6 +26,11 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
     private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
+
+    @Autowired
+    private CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
+    @Autowired
+    private CustomOAuth2FailureHandler customOAuth2FailureHandler;
     /**
      * Configura el filtro de seguridad para las solicitudes HTTP, especificando
      las
@@ -57,7 +65,8 @@ public class SecurityConfig {
                     logger.debug("Configurando formulario de inicio de sesión");
                     form
                             .loginPage("/login") // Página personalizada de login
-                            .defaultSuccessUrl("/") // Redirige al inicio después del login
+                            .successHandler(customOAuth2SuccessHandler) // Usa el Success Handler personalizado
+                            .failureHandler(customOAuth2FailureHandler) // Handler para fallo en autenticación
                             .permitAll(); // Permite acceso a la página de login a todos los usuarios
                 })
                 .logout(form -> {
