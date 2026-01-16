@@ -63,7 +63,7 @@ public class CustomOAuth2SuccessHandler implements
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
 
         // Obtener el nombre de usuario (por ejemplo, el login de GitHub)
-        String username = oAuth2User.getAttribute("login");
+        String username;
 
         // Para Atlassian puesto que usa el registration id
         String registrationId =
@@ -76,9 +76,13 @@ public class CustomOAuth2SuccessHandler implements
             username = oAuth2User.getAttribute("login");
         } else if ("atlassian".equals(registrationId)) {
             username = oAuth2User.getAttribute("account_id");
+        } else if ("discord".equals(registrationId)) {
+            username = oAuth2User.getAttribute("id");
         } else {
             throw new OAuth2AuthenticationException("Proveedor no soportado");
         }
+
+        
 
 
 
