@@ -77,7 +77,7 @@ public class CustomOAuth2SuccessHandler implements
         } else if ("atlassian".equals(registrationId)) {
             username = oAuth2User.getAttribute("account_id");
         } else if ("discord".equals(registrationId)) {
-            username = oAuth2User.getAttribute("id");
+            username = oAuth2User.getAttribute("username");
         } else {
             throw new OAuth2AuthenticationException("Proveedor no soportado");
         }
