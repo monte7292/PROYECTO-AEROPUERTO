@@ -88,13 +88,11 @@ public class CustomOAuth2SuccessHandler implements
             username = oAuth2User.getAttribute("username");
         } else if ("slack".equals(registrationId)) {
             username = oAuth2User.getAttribute("real_name");
+        } else if ("google".equals(registrationId)) {
+            username = oAuth2User.getAttribute("email");
         } else {
             throw new OAuth2AuthenticationException("Proveedor no soportado");
         }
-
-        
-
-
 
 
         // Verificar si el usuario está registrado en la base de datos
