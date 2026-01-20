@@ -1,7 +1,10 @@
 package org.iesalixar.daw2.gonzalomariomontero.aeropuerto.handlers;
 
+import org.iesalixar.daw2.gonzalomariomontero.aeropuerto.config.SecurityConfig;
 import org.iesalixar.daw2.gonzalomariomontero.aeropuerto.repositories.UserRepository;
 import org.iesalixar.daw2.gonzalomariomontero.aeropuerto.services.CustomUserDetailsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -32,6 +35,9 @@ import java.io.IOException;
 public class CustomOAuth2SuccessHandler implements
         AuthenticationSuccessHandler {
 
+    private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
+
+
     @Autowired
     private UserRepository userRepository;
 
@@ -59,6 +65,7 @@ public class CustomOAuth2SuccessHandler implements
                                         HttpServletResponse response,
                                         Authentication authentication) throws
             IOException, ServletException {
+
         // Obtener el objeto OAuth2User del usuario autenticado
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
 
@@ -70,14 +77,17 @@ public class CustomOAuth2SuccessHandler implements
                 ((OAuth2AuthenticationToken) authentication)
                         .getAuthorizedClientRegistrationId();
 
+        logger.info("Probando.");
         // Comprobar si es un proveedor de los que hemos hecho
         // Si es de atlassian, guardamos en el username el account_id
         if ("github".equals(registrationId)) {
             username = oAuth2User.getAttribute("login");
         } else if ("atlassian".equals(registrationId)) {
-            username = oAuth2User.getAttribute("account_id");
+            username = oAuth2User.getAttribute("email");
         } else if ("discord".equals(registrationId)) {
             username = oAuth2User.getAttribute("username");
+        } else if ("slack".equals(registrationId)) {
+            username = oAuth2User.getAttribute("real_name");
         } else {
             throw new OAuth2AuthenticationException("Proveedor no soportado");
         }
