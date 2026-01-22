@@ -90,6 +90,8 @@ public class CustomOAuth2SuccessHandler implements
             username = oAuth2User.getAttribute("real_name");
         } else if ("google".equals(registrationId)) {
             username = oAuth2User.getAttribute("email");
+        } else if ("dropbox".equals(registrationId)) {
+            username = oAuth2User.getAttribute("account_id");
         } else {
             throw new OAuth2AuthenticationException("Proveedor no soportado");
         }
