@@ -74,7 +74,9 @@ public class SecurityConfig {
                     oauth2
                             .loginPage("/login")// Reutiliza la página de inicio de sesión personalizada
                             .successHandler(customOAuth2SuccessHandler) // Handler de éxito
-                            .failureHandler(customOAuth2FailureHandler); // Handler de error
+                            .failureHandler(customOAuth2FailureHandler) // Handler de error
+                            .permitAll(); // Permite acceso a la página de login a todos los usuarios
+
                 })
                 .logout(form -> {
                     logger.debug("Configurando fin de sesión");
