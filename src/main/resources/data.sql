@@ -222,3 +222,66 @@ VALUES (1, 1),
        (18, 18),
        (19, 19),
        (20, 20);
+
+
+------------------------------------------------------------
+-- USUARIOS
+------------------------------------------------------------
+
+
+-- Insertar datos de ejemplo para 'roles'
+INSERT
+IGNORE INTO roles (id, name) VALUES
+(1, 'ROLE_ADMIN'),
+(2, 'ROLE_MANAGER'),
+(3, 'ROLE_USER');
+-- Insertar datos de ejemplo para 'users'. La contraseña de cada usuario es password
+INSERT
+IGNORE INTO users (id, username, password, enabled, provider, first_name,
+last_name, created_date, last_modified_date, last_password_change_date)
+VALUES
+(1, 'admin', '$2b$12$FVRijCavVZ7Qt15.CQssHe9m/6eLAdjAv0PiOKFIjMU161wApxzye',
+true, 'local', 'Admin', 'User', NOW(), NOW(), NOW()),
+(2, 'manager', '$2b$12$FVRijCavVZ7Qt15.CQssHe9m/6eLAdjAv0PiOKFIjMU161wApxzye',
+true, 'local', 'Manager', 'User', NOW(), NOW(), NOW()),
+(3, 'normal', '$2b$12$FVRijCavVZ7Qt15.CQssHe9m/6eLAdjAv0PiOKFIjMU161wApxzye',
+true, 'local', 'Regular', 'User', NOW(), NOW(), NOW()),
+(4, 'monte7292', 12345, true, 'github', 'Monte', 'GitHub', NOW(), NOW(), NOW()),
+(5, 'discordUser', 12345, true, 'discord', 'Discord', 'User', NOW(), NOW(), NOW()),
+(6, 'programagons', 12345, true, 'github', 'Programagons', 'GitHub', NOW(), NOW(), NOW()),
+(7, 'programagons@gmail.com', 12345, true, 'google', 'Programagons', 'Google', NOW(), NOW(), NOW()),
+(8, 'xdeadx1358@gmail.com', 12345, true, 'dropbox', 'Mario', 'Dropbox', NOW(), NOW(), NOW());
+
+
+-- Asignar el rol de administrador al usuario con id 1
+INSERT
+IGNORE INTO user_roles (user_id, role_id) VALUES
+(1, 1);
+-- Asignar el rol de gestor al usuario con id 2
+INSERT
+IGNORE INTO user_roles (user_id, role_id) VALUES
+(2, 2);
+-- Asignar el rol de usuario normal al usuario con id 3
+INSERT
+IGNORE INTO user_roles (user_id, role_id) VALUES
+(3, 3);
+-- Asignar el rol de usuario normal al usuario de GitHub
+INSERT
+IGNORE INTO user_roles (user_id, role_id) VALUES
+(4, 3);
+-- Asignar el rol de usuario normal al usuario de Discord
+INSERT
+IGNORE INTO user_roles (user_id, role_id) VALUES
+(5, 3);
+-- Asignar el rol de usuario normal al usuario de Github
+INSERT
+IGNORE INTO user_roles (user_id, role_id) VALUES
+(6, 3);
+-- Asignar el rol de usuario normal al usuario de Google
+INSERT
+IGNORE INTO user_roles (user_id, role_id) VALUES
+(7, 3);
+-- Asignar el rol de usuario normal al usuario de Dropbox
+INSERT
+IGNORE INTO user_roles (user_id, role_id) VALUES
+(8, 3);
